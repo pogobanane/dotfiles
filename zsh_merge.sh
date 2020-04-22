@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [ -e /etc/zsh ]; then
-	$zshrc="/etc/zsh/zshrc"
+	zshrc="/etc/zsh/zshrc"
 else
-	$zshrc="/etc/zshrc"
+	zshrc="/etc/zshrc"
 fi
 
-cp $zshrc ./vimrc
+cp $zshrc ./zshrc

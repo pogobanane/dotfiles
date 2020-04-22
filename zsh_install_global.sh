@@ -7,9 +7,9 @@ which zsh
 set +e
 
 if [ -e /etc/zsh ]; then
-	$zshrc="/etc/zsh/zshrc"
+	zshrc="/etc/zsh/zshrc"
 else
-	$zshrc="/etc/zshrc"
+	zshrc="/etc/zshrc"
 fi
 
 echo "=> $zshrc"
@@ -28,7 +28,7 @@ sudo install -m "644" -b -S ".old" zshrc $zshrc
 echo "Installing dep into /usr/share/zsh/share/antigen.zsh."
 if [ -e /usr/share/zsh/share/antigen.zsh ]; then
 	read -p "Overwrite /usr/share/zsh/share/antigen.zsh? (y/N): " confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
-	rm /usr/share/zsh/share/antigen.zsh
+	sudo rm /usr/share/zsh/share/antigen.zsh
 fi
 sudo mkdir -p /usr/share/zsh/share
 sudo curl -L git.io/antigen -o /usr/share/zsh/share/antigen.zsh
