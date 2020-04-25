@@ -38,6 +38,13 @@ augroup DetectIndent
    autocmd BufReadPost *  DetectIndent
 augroup END
 
+" ale
+" dependencies/prequesites
+" rustup component add rls
+" rustup component add rust-analysis
+" rustup component add rust-src
+let g:ale_linters = {'rust': ['rls']}
+
 " ddollar/nerdcommentar
 map C <leader>ci
 
