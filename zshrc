@@ -52,7 +52,7 @@ antigen bundle systemd
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#686868"
+ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=240"
 ZSH_AUTOSUGGEST_USE_ASYNC="true"
 antigen bundle zsh-users/zsh-autosuggestions
 
