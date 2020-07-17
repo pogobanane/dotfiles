@@ -1,0 +1,10 @@
+[Trigger]
+Type = File
+Operation = Install
+Operation = Upgrade
+Target = boot/vmlinuz*
+
+[Action]
+Description = Updating linux-lts timestamp for refind...
+When = PostTransaction
+Exec = /usr/bin/sh -c "touch /boot/vmlinuz-linux && touch /boot/vmlinuz-linux-lts"
