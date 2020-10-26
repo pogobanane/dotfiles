@@ -1,0 +1,6 @@
+#!/bin/bash
+
+mkfifo /tmp/async-term-askpass.fifo &> /dev/null
+read -s -p "Password for to provide to askpass: " PW
+echo ""
+echo "$PW" > /tmp/async-term-askpass.fifo

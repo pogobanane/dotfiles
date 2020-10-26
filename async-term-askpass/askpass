@@ -1,0 +1,4 @@
+#!/bin/bash
+
+mkfifo /tmp/async-term-askpass.fifo &> /dev/null
+cat /tmp/async-term-askpass.fifo
