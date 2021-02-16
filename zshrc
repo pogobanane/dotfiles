@@ -28,7 +28,15 @@ set mouse=a
 ###############################################################
 
 # requires the antigen-git package
-source /usr/share/zsh/share/antigen.zsh
+if [ -e /usr/share/zsh/share/antigen.zsh ]; then
+  echo "using global antigen"
+  source /usr/share/zsh/share/antigen.zsh
+elif [ -e ~/.nix-profile/share/antigen/antigen.zsh ]; then
+  echo "using nix-profile antigen"
+  source ~/.nix-profile/share/antigen/antigen.zsh
+else
+  echo "no antigen found"
+fi
 
 # Load the oh-my-zsh's library.
 # This is a minimalistic baseline configuration. 
@@ -101,3 +109,4 @@ ZSH_THEME_GIT_PROMPT_DELETED="%{$fg_bold[red]%}-"
 ZSH_THEME_GIT_PROMPT_RENAMED="%{$fg_bold[magenta]%}>"
 ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg_bold[yellow]%}#"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[cyan]%}?"
+
