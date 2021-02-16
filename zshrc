@@ -11,7 +11,15 @@ path+=$HOME/bin
 typeset -U path
 
 export SSH_ASKPASS=/usr/bin/ksshaskpass
-export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+
+if [[ ${SSH_AUTH_SOCK} == "/tmp/"* ]];then
+ echo "using forwarded $SSH_AUTH_SOCK as ssh-agent"
+elif [[ -S "/run/user/${UID}/ssh-agent" ]]; then
+ export SSH_AUTH_SOCK="/run/user/${UID}/ssh-agent"
+else
+ export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+fi
+
 export EDITOR=vim
 
 alias sve="sudo EDITOR=$EDITOR virsh edit"
