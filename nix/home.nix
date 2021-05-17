@@ -168,7 +168,7 @@
           " override (themes?) bracket highlighting []
           hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
         '';
-        vimrcConfig.plug.plugins = with pkgs.vimPlugins; [ 
+        vimrcConfig.packages.nixbundle.start = with pkgs.vimPlugins; [ 
           vim-sensible 
           # detenctindent
           nerdcommenter
