@@ -7,9 +7,24 @@
 with pkgs;
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ((builtins.fetchTarball {
+        url = "https://github.com/Mic92/retiolum/archive/refs/heads/master.tar.gz";
+        sha256 = "sha256:1yzh0rnxx09jpkz9drjl0q8xr38r0z72wlvvzif5pzj4dnm69y30";
+      }) + "/modules/retiolum")
     ];
+
+  networking.firewall.enable = false;
+
+  services.k3s.enable = true;
+  environment.systemPackages = [ pkgs.k3s ];
+
+  networking.retiolum = {
+    ipv4 = "10.243.29.172";
+    ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -43,7 +58,7 @@ with pkgs;
   # services.xserver.enable = true;
 
 
-  
+
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
