@@ -25,7 +25,6 @@
   # home.environment.variables = { EDITOR = "rvim"; };
   xdg.configFile."nvim/init.vim".source = ~/dotfiles/vimrc;
   
-
   programs.direnv.enable = true;
   programs.direnv.enableNixDirenvIntegration = true;
 
@@ -33,9 +32,17 @@
     antigen
     fzf
     tree
+    git
+    tmux
+    psmisc
+    libguestfs-with-appliance
+    lazygit
+    ack
+    ripgrep
+    bottom # btm
     (
       vim_configurable.customize {
-        name = "rvim";
+        name = "vim";
         vimrcConfig.customRC = ''
           " 1. run this to install vim-plug
           " curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
@@ -69,7 +76,7 @@
           " rustup component add rls
           " rustup component add rust-analysis
           " rustup component add rust-src
-          let g:ale_linters = {'rust': ['rustc', 'rls']}
+          let g:ale_linters = {'rust': ['analyzer']}
 
           " ddollar/nerdcommentar
           map C <leader>ci
@@ -120,6 +127,7 @@
           map <leader>W :w<CR>
           map <leader>n :NERDTree<CR>
           let g:NERDTreeWinSize=25
+          let g:ackprg = 'rg --vimgrep'
 
           set number 
 
@@ -184,6 +192,7 @@
           zoomwintab-vim
           vim-tmux-navigator
           vim-bufkill
+          ack-vim
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent
