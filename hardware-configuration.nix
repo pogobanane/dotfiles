@@ -30,6 +30,9 @@
     # options = [ "trans=virtio" "nofail" ];
   };
 
+  services.logind.extraConfig = ''
+    RuntimeDirectorySize=50%
+  '';
   swapDevices = [ ];
 
 }

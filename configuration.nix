@@ -6,17 +6,15 @@
 
 with pkgs;
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ((builtins.fetchTarball {
-        url = "https://github.com/Mic92/retiolum/archive/refs/heads/master.tar.gz";
-        sha256 = "sha256:1yzh0rnxx09jpkz9drjl0q8xr38r0z72wlvvzif5pzj4dnm69y30";
-      }) + "/modules/retiolum")
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./modules/nix-daemon.nix
+  ];
 
   networking.firewall.enable = false;
+
+  programs.sysdig.enable = true;
 
   services.k3s.enable = true;
   environment.systemPackages = [ pkgs.k3s ];
