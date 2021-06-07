@@ -12,7 +12,20 @@ with pkgs;
     ./modules/nix-daemon.nix
   ];
 
-  networking.firewall.enable = false;
+  # for some reasons our firewall, breaks caligo... no body got time to debug this...
+  networking.firewall.enable = true;
+  networking.firewall.allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
+  networking.firewall.allowedUDPPortRanges = [ { from = 0; to = 65535; } ];
+  networking.firewall.checkReversePath = false;
+  #networking.firewall.interfaces."tinc.retiolum".allowedTCPPorts = [ 0 ];
+  # keep in mind that this is unlikely to be effective, because kubernetes
+  # throws iptable rules all over the place
+  networking.firewall.extraCommands = ''
+    iptables -I INPUT 1 -i tinc.retiolum -j DROP
+  '';
+  networking.firewall.extraStopCommands = ''
+    iptables -D INPUT -i tinc.retiolum -j DROP
+  '';
 
   programs.sysdig.enable = true;
 
