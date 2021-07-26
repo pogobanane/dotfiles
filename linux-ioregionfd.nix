@@ -1,4 +1,4 @@
-{ buildLinux, fetchFromGitHub, linuxPackages_5_13, fetchurl, modDirVersionArg ? null, ... }@args:
+{ buildLinux, fetchFromGitHub, pkgs, fetchurl, modDirVersionArg ? null, ... }@args:
 buildLinux (args // rec {
   version = "5.12.14";
   modDirVersion = if (modDirVersionArg == null) then
@@ -19,7 +19,7 @@ buildLinux (args // rec {
       KVM_IOREGION y
     '';
   # 5.12 patch list has one fix we already have in our branch
-  }] ++ linuxPackages_5_13.kernel.kernelPatches;
+  }]; # ++ pkgs.linuxPackages_5_13.kernel.kernelPatches;
   extraMeta.branch = "5.12";
   ignoreConfigErrors = true;
 } // (args.argsOverride or { }))

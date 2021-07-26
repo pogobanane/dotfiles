@@ -31,7 +31,7 @@
   };
 
   services.logind.extraConfig = ''
-    RuntimeDirectorySize=50%
+    RuntimeDirectorySize=70%
   '';
   swapDevices = [ ];
 

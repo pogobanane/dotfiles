@@ -12,6 +12,10 @@
     #home-manager.url = "github:rycee/home-manager/release-21.05";
     #home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    #doom-emacs.url = "github:hlissner/doom-emacs";
+    #doom-emacs.url = "github:Mic92/doom-emacs/org-msg";
+    #doom-emacs.flake = false;
+
     retiolum.url = "github:Mic92/retiolum";
   };
 
@@ -19,7 +23,8 @@
     self,
     nixpkgs,
     retiolum,
-    lambda-pirate
+    lambda-pirate,
+    #doom-emacs
   }: {
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs retiolum lambda-pirate;
