@@ -58,6 +58,15 @@ in
     (load "default.el")
   '';
 
+  home.file.".zshrc_actual".source = ./zshrc;
+  home.file.".zshrc".text = ''
+    source ${pkgs.antigen}/share/antigen/antigen.zsh
+    source ~/.zshrc_actual
+  '';
+
+  home.file.".tmux.conf".source = ./tmux.conf;
+  home.file.".tmate.conf".source = ./tmate.conf;
+
   home.packages = with pkgs; [
     antigen
     fzf
@@ -70,7 +79,7 @@ in
     ack
     ripgrep
     bottom # btm
-    doom-emacs
+    #doom-emacs
     sendtelegram
     (
       vim_configurable.customize {
