@@ -37,6 +37,27 @@
         "type": "github"
       }
     },
+    "home-manager": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1627267207,
+        "narHash": "sha256-chP4cF4yV0ZUI9E0zwm5KFmRJJ8sHnGrSaKzRKOMioU=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "addc78bea024c85860d60d9682a1ed2664fdf2f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "ref": "master",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "lambda-pirate": {
       "inputs": {
         "fenix": "fenix",
@@ -81,16 +102,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1627028370,
-        "narHash": "sha256-LADE3V4Bj/dUicXpdreEkaMoAZ225Oi9zcydMUq2I6A=",
-        "owner": "Mic92",
+        "lastModified": 1627170405,
+        "narHash": "sha256-6t7ISnt0Iqc2jxIf5+/su6eFmZNWnPAOA1JeOv9lLRE=",
+        "owner": "Nixos",
         "repo": "nixpkgs",
-        "rev": "2c8a8e816461cf415072c69ea82c2dfda2f5664a",
+        "rev": "ecaf3da9340231e5493eccc3db87604a3705da42",
         "type": "github"
       },
       "original": {
-        "owner": "Mic92",
-        "ref": "master",
+        "owner": "Nixos",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -112,6 +133,7 @@
     },
     "root": {
       "inputs": {
+        "home-manager": "home-manager",
         "lambda-pirate": "lambda-pirate",
         "nixpkgs": "nixpkgs",
         "retiolum": "retiolum"

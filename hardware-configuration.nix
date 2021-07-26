@@ -15,7 +15,7 @@
 
   fileSystems."/" = { 
     # device = "/dev/disk/by-uuid/69760ea0-7597-472f-b19f-cb47a73076c8";
-    device = "/dev/disk/by-uuid/df5c7181-43ea-450f-b894-f0288d2449e3;
+    device = "/dev/disk/by-uuid/df5c7181-43ea-450f-b894-f0288d2449e3";
     fsType = "ext4";
   };
 
@@ -29,8 +29,8 @@
     device = "/home/peter/.ssh";
     fsType = "9p";
     # skip mount in nested qemu;
+    # options = [ "trans=virtio" "nofail" ];
   };
-  # #o#p#t#i#o#n#s# #=# #[# #"#t#r#a#n#s#=#v#i#r#t#i#o#"# #"#n#o#f#a#i#l#"# #]#;#
 
   services.logind.extraConfig = ''
     RuntimeDirectorySize=70%

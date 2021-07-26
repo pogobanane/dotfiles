@@ -15,15 +15,18 @@ with pkgs;
   networking.firewall.enable = true;
   networking.firewall.interfaces.enp1s0.allowedTCPPorts = [ 22 ];
 
+  # not flake ready
+  programs.command-not-found.enable = false;
+
   programs.sysdig.enable = true;
 
   #services.k3s.enable = true;
   #environment.systemPackages = [ pkgs.k3s ];
 
-  #networking.retiolum = {
-    #ipv4 = "10.243.29.172";
-    #ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
-  #};
+  networking.retiolum = {
+    ipv4 = "10.243.29.172";
+    ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
