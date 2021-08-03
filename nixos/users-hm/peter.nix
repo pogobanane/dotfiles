@@ -102,6 +102,7 @@ in
           vim-tmux-navigator
           vim-bufkill
           ack-vim
+          vim-osc52
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent
