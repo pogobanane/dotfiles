@@ -7,30 +7,43 @@
 " 2. create basic vimrc
 " 3. install plugins by running :PlugInstall in vim
 
-let &t_SI = "\<Esc>[6 q"
-let &t_SR = "\<Esc>[3 q"
-let &t_EI = "\<Esc>[0 q"
-" preferrable for Konsole?
-" let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-" let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-" let &t_EI = "\<Esc>]50;CursorShape=0\x7"
 
 " leader key defined somewhere else
 let mapleader = "\<space>"
 map <leader>ot :term ++curwin<CR>
 
+call plug#begin()
+Plug 'tpope/vim-sensible'
+Plug 'roryokane/detectindent'
+Plug 'ddollar/nerdcommenter'
+Plug 'dense-analysis/ale'
+Plug 'tomasr/molokai'
+Plug 'scrooloose/nerdtree'
+Plug 'junegunn/rainbow_parentheses.vim'
+Plug 'junegunn/fzf'
+Plug 'ctrlpvim/ctrlp.vim' " vimscript only fuzzy search
+Plug 'airblade/vim-gitgutter'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+Plug 'Yggdroot/indentLine' " mark levels of line indentation |
+Plug 'troydm/zoomwintab.vim'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'qpkorr/vim-bufkill' " :BD is :bdelete without closing windows
+call plug#end()
+
 " detectindent
-" augroup DetectIndent
-"    autocmd!
-"    autocmd BufReadPost *  DetectIndent
-" augroup END
+augroup DetectIndent
+   autocmd!
+   autocmd BufReadPost *  DetectIndent
+augroup END
 
 " ale
 " dependencies/prequesites
 " rustup component add rls
 " rustup component add rust-analysis
 " rustup component add rust-src
-let g:ale_linters = { 'rust': ['analyzer', 'rls'], 'go': ['golangserver'] }
+let g:ale_linters = {'rust': ['rls']}
 
 " ddollar/nerdcommentar
 map C <leader>ci
@@ -44,7 +57,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
 " junegunn/rainbow_parentheses.vim
-" au BufEnter * :RainbowParentheses<CR>
+au BufEnter * :RainbowParentheses<CR>
 
 " junegunn/fzf
 map <leader>f :FZF<CR> 
@@ -60,16 +73,6 @@ function! s:bufopen(e)
   execute 'buffer' matchstr(a:e, '^[ 0-9]*')
 endfunction
 
-" tmux navigator fix for nixos
-" let g:tmux_navigator_no_mappings = 1
-map <leader>j :TmuxNavigateDown<cr>
-nnoremap <silent> <c-h> :NERDTree
-" nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-" nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-" nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-" nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-" nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
-
 nnoremap <silent> <Leader><Enter> :call fzf#run({
 \   'source':  reverse(<sid>buflist()),
 \   'sink':    function('<sid>bufopen'),
@@ -80,8 +83,6 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 " other
 map <leader>W :w<CR>
 map <leader>n :NERDTree<CR>
-let g:NERDTreeWinSize=25
-let g:ackprg = 'rg --vimgrep'
 
 set number 
 
@@ -94,7 +95,7 @@ set mouse=a
 
 " :tabnew to open new tab
 map <C-p> :tabnext<CR>
-" map <C-u> :tabprevious<CR> no thats already scroll up
+map <C-u> :tabprevious<CR>
 " :e to open new buffer in current window
 " :bd to close current buffer
 " :ls to list all buffers
@@ -125,8 +126,5 @@ set nomodeline
 " todo:
 " - list of recently edited files
 
-" vmap y :w !xclip -se c -i<CR><CR>
-" vmap p :r!xclip -se c -o<CR>
-vmap <C-c> y:Oscyank<cr>
-" override (themes?) bracket highlighting []
-hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
+vmap y :w !xclip -se c -i<CR><CR>
+vmap p :r!xclip -se c -o<CR>
