@@ -129,4 +129,4 @@ set nomodeline
 " vmap p :r!xclip -se c -o<CR>
 vmap <C-c> y:Oscyank<cr>
 " override (themes?) bracket highlighting []
-hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
+autocmd ColorScheme * hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
