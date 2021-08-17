@@ -19,6 +19,15 @@ let
 
     curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" &> /dev/null
   '';
+  my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
+    name = "vim-paste-easy";
+    src = pkgs.fetchFromGitHub {
+      owner = "roxma";
+      repo = "vim-paste-easy";
+      rev = "c28c2e4fc7b2d57efb54787bc6d67120b523d42c";
+      sha256 = "sha256-DbVyfr9uH3o1GSvWv06/5HO2S5JXVYZvudPN2RemOY0=";
+    };
+  };
 in
 {
 
@@ -86,6 +95,7 @@ in
         name = "vim";
         vimrcConfig.customRC = builtins.readFile ./vimrc;
         vimrcConfig.packages.nixbundle.start = with pkgs.vimPlugins; [ 
+          my-vim-paste-easy
           vim-sensible 
           # detenctindent
           nerdcommenter
