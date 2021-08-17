@@ -113,6 +113,7 @@ in
           vim-bufkill
           ack-vim
           vim-osc52
+          tabular
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent

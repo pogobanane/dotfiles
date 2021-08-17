@@ -18,6 +18,8 @@ let &t_EI = "\<Esc>[0 q"
 " leader key defined somewhere else
 let mapleader = "\<space>"
 map <leader>ot :term ++curwin<CR>
+nnoremap J <C-e>
+nnoremap K <C-y>
 
 " detectindent
 " augroup DetectIndent
