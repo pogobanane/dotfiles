@@ -32,10 +32,10 @@ with pkgs;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "kvm" "kvm_amd" ];
-   #boot.kernelPackages = let 
-       #linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
-     #in
-       #pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
+  boot.kernelPackages = let 
+      linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
+    in
+      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
 
   networking.hostName = "aendernix"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -103,7 +103,7 @@ with pkgs;
   #   firefox
   # ];
   environment.systemPackages = [
-    #config.boot.kernelPackages.perf
+    config.boot.kernelPackages.perf
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
