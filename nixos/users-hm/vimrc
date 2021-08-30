@@ -81,6 +81,7 @@ nnoremap <silent> <Leader><Enter> :call fzf#run({
 
 " other
 map <leader>W :w<CR>
+command Sudow :w !sudo tee % > /dev/null
 map <leader>n :NERDTree<CR>
 let g:NERDTreeWinSize=25
 let g:ackprg = 'rg --vimgrep'
