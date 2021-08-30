@@ -12,8 +12,8 @@
       ({ pkgs, ... }: {
         imports = [
           retiolum.nixosModules.retiolum
-          #lambda-pirate.nixosModules.knative
-          #lambda-pirate.nixosModules.vhive
+          lambda-pirate.nixosModules.knative
+          lambda-pirate.nixosModules.vhive
         ];
 
         nix.nixPath = [
