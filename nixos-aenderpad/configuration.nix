@@ -67,6 +67,12 @@
   #   isNormalUser = true;
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
+  users.users.peter = {
+    isNormalUser = true;
+    home = "/home/peter";
+    # shell = zsh;
+    extraGroups = [ "wheel" ];
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -78,7 +84,7 @@
   ];
 
   # not flake ready
-  programs.command-not-found = false;
+  programs.command-not-found.enable = false;
 
   programs.sysdig.enable = true;
 
@@ -89,6 +95,7 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+  programs.zsh.enable = true;
 
   # List services that you want to enable:
 

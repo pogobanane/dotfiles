@@ -1,5 +1,5 @@
 { nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager }: {
-  aendernix = nixosSystem {
+  aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
       ./configuration.nix
@@ -11,7 +11,7 @@
       }
       ({ pkgs, ... }: {
         imports = [
-          retiolum.nixosModules.retiolum
+          #retiolum.nixosModules.retiolum
           #lambda-pirate.nixosModules.knative
           #lambda-pirate.nixosModules.vhive
         ];
