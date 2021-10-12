@@ -3,7 +3,7 @@
     trustedUsers = [ "peter" "root" ];
     gc.automatic = true;
     gc.dates = "03:15";
-    package = pkgs.nixFlakes;
+    package = pkgs.nixUnstable;
 
     # should be enough?
     nrBuildUsers = 32;
