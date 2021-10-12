@@ -32,12 +32,12 @@ with pkgs;
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.kernelModules = [ "kvm" "kvm_amd" ];
-  boot.kernelPackages = let 
-      linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
-    in
-      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
+  # boot.kernelPackages = let 
+  #     linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
+  #   in
+  #     pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
 
-  networking.hostName = "aendernix"; # Define your hostname.
+  networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
