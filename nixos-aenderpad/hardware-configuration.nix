@@ -5,36 +5,34 @@
 
 {
   imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
+    [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" = { 
-    # device = "/dev/disk/by-uuid/69760ea0-7597-472f-b19f-cb47a73076c8";
-    device = "/dev/disk/by-uuid/df5c7181-43ea-450f-b894-f0288d2449e3";
-    fsType = "ext4";
-  };
+  fileSystems."/" =
+    { device = "zroot/root/nixos";
+      fsType = "zfs";
+    };
 
-  fileSystems."/boot" = { 
-    # device = "/dev/disk/by-uuid/6FDD-EA58";
-    device = "/dev/disk/by-uuid/E95B-B644";
-    fsType = "vfat";
-  };
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/3E25-330D";
+      fsType = "vfat";
+    };
 
-  fileSystems."/home/peter/.ssh" = {
-    device = "/home/peter/.ssh";
-    fsType = "9p";
-    # skip mount in nested qemu;
-    # options = [ "trans=virtio" "nofail" ];
-  };
+  fileSystems."/home" =
+    { device = "zroot/root/home";
+      fsType = "zfs";
+    };
 
-  services.logind.extraConfig = ''
-    RuntimeDirectorySize=70%
-  '';
+  fileSystems."/tmp" =
+    { device = "zroot/root/tmp";
+      fsType = "zfs";
+    };
+
   swapDevices = [ ];
 
 }

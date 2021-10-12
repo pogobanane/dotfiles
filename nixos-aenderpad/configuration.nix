@@ -4,41 +4,20 @@
 
 { config, pkgs, ... }:
 
-with pkgs;
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    ./modules/nix-daemon.nix
-  ];
-
-  networking.firewall.enable = true;
-  networking.firewall.interfaces.enp1s0.allowedTCPPorts = [ 22 ];
-
-  # not flake ready
-  programs.command-not-found.enable = false;
-
-  programs.sysdig.enable = true;
-
-  #services.k3s.enable = true;
-  #environment.systemPackages = [ pkgs.k3s ];
-
-  networking.retiolum = {
-    ipv4 = "10.243.29.172";
-    ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
-  };
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./modules/nix-daemon.nix
+    ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.kernelModules = [ "kvm" "kvm_amd" ];
-  # boot.kernelPackages = let 
-  #     linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
-  #   in
-  #     pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
 
   networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostId = "faae4fe2";
 
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
@@ -47,7 +26,10 @@ with pkgs;
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.enp1s0.useDHCP = true;
+  networking.interfaces.eth0.useDHCP = true;
+  networking.interfaces.eth0.macAddress = "94:05:bb:11:3e:80";
+  networking.interfaces.wlan0.useDHCP = true;
+  
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -64,7 +46,7 @@ with pkgs;
   # services.xserver.enable = true;
 
 
-
+  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -85,26 +67,20 @@ with pkgs;
   #   isNormalUser = true;
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
-  users.users.peter = {
-    isNormalUser = true;
-    home = "/home/peter";
-    shell = zsh;
-    extraGroups = [ "wheel" ];
-  };
-
-  security.sudo.extraConfig = ''
-    Defaults timestamp_timeout=15
-  '';
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  # environment.systemPackages = with pkgs; [
-  #   wget vim
-  #   firefox
-  # ];
-  environment.systemPackages = [
-    config.boot.kernelPackages.perf
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    firefox
+    git
   ];
+
+  # not flake ready
+  programs.command-not-found = false;
+
+  programs.sysdig.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -113,12 +89,11 @@ with pkgs;
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-  programs.zsh.enable = true;
 
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -132,7 +107,7 @@ with pkgs;
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  system.stateVersion = "21.11"; # Did you read the comment?
 
 }
 
