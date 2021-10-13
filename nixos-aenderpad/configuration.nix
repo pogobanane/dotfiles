@@ -70,7 +70,7 @@
   users.users.peter = {
     isNormalUser = true;
     home = "/home/peter";
-    # shell = zsh;
+    shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
 
@@ -80,8 +80,17 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     firefox
+    chromium
+    ethtool
+    nextcloud-client
+    gnomeExtensions.appindicator
+    gnome.gnome-tweaks
+    keepassxc
     git
   ];
+  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  # allow fractional scaling:
+  # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
   # not flake ready
   programs.command-not-found.enable = false;
@@ -98,6 +107,12 @@
   programs.zsh.enable = true;
 
   # List services that you want to enable:
+ 
+  services.xserver.enable = true;
+  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.desktopManager.gnome.enable = true; 
+
+  services.flatpak.enable = true;
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

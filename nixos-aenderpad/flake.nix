@@ -12,6 +12,8 @@
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+
     #doom-emacs.url = "github:hlissner/doom-emacs";
     #doom-emacs.url = "github:Mic92/doom-emacs/org-msg";
     #doom-emacs.flake = false;
@@ -25,10 +27,11 @@
     retiolum,
     home-manager,
     lambda-pirate,
+    nixos-hardware,
     #doom-emacs
   }: {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs lambda-pirate home-manager retiolum;
+        inherit nixpkgs lambda-pirate home-manager retiolum nixos-hardware;
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
   };

@@ -1,8 +1,9 @@
-{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager }: {
+{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
       ./configuration.nix
+      nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
       ./hardware-configuration.nix
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
