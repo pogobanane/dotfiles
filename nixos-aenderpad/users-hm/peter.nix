@@ -63,6 +63,14 @@ in
   programs.direnv.nix-direnv.enable = true;
   programs.direnv.nix-direnv.enableFlakes = true;
 
+  programs.git = {
+    enable = true;
+    userName  = "Pogobanane";
+    userEmail = "aenderboy@gmx.de";
+  };
+  
+  # config.programs.ssh.startAgent = true;
+
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")
   '';

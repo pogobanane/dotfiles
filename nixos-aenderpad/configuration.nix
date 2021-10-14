@@ -41,6 +41,7 @@
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
   # };
+  time.timeZone = "Europe/Berlin";
 
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
@@ -74,19 +75,25 @@
     extraGroups = [ "wheel" ];
   };
 
+  security.sudo.extraConfig = ''
+    Defaults timestamp_timeout=15
+  '';
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
+    git
     firefox
     chromium
     ethtool
+    # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
     gnomeExtensions.appindicator
     gnome.gnome-tweaks
     keepassxc
-    git
+    alacritty
   ];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
   # allow fractional scaling:
@@ -115,18 +122,22 @@
   services.flatpak.enable = true;
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
+  programs.ssh = { 
+    startAgent = true;
+  };
+
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
+  # THIs value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.11"; # Did you read the comment?
