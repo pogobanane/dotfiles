@@ -32,7 +32,7 @@
   
   networking.retiolum = {
     ipv4 = "10.243.29.201";
-    ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
+    ipv6 = "42:0:3c46:2aad:ed1e:33cf:aece:d216";
   };
 
   # Configure network proxy if necessary
@@ -102,6 +102,7 @@
     keepassxc
     alacritty
   ];
+  environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
   # allow fractional scaling:
   # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
