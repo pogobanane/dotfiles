@@ -58,7 +58,7 @@ in
 
   # home.environment.variables = { EDITOR = "rvim"; };
   xdg.configFile."nvim/init.vim".source = ./nvimrc;
-  
+
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
   programs.direnv.nix-direnv.enableFlakes = true;
@@ -83,6 +83,7 @@ in
 
   home.file.".tmux.conf".source = ./tmux.conf;
   home.file.".tmate.conf".source = ./tmate.conf;
+  home.file.".imapfilter/config.lua".source = ./imapfilter.lua;
 
   home.packages = with pkgs; [
     antigen
@@ -98,6 +99,7 @@ in
     bottom # btm
     #doom-emacs
     sendtelegram
+    imapfilter
     (
       vim_configurable.customize {
         name = "vim";
