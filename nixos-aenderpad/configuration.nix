@@ -30,6 +30,10 @@
   networking.interfaces.eth0.macAddress = "94:05:bb:11:3e:80";
   networking.interfaces.wlan0.useDHCP = true;
   
+  networking.retiolum = {
+    ipv4 = "10.243.29.201";
+    ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
