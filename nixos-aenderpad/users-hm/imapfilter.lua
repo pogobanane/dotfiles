@@ -19,11 +19,12 @@ function dump(o)
 end
 
 function addressfilter(mailbox, address)
-    results = mailbox:is_unseen() +
+    results = mailbox:is_unseen() * (
            mailbox:contain_from(address) + 
            mailbox:contain_to(address) + 
            mailbox:contain_cc(address) + 
            mailbox:contain_bcc(address)
+	   )
     i = 0
     io.write(string.format("Filtering for %s...\n", address))
     for _, message in ipairs(results) do
@@ -38,6 +39,15 @@ function addressfilter(mailbox, address)
     io.write(string.format("Filtered %d messages.\n", i))
     --io.write(i)
     return results
+end
+
+function custom_idle(mbox)
+    io.write("Wait for new stuff...\n")
+    if #mbox:is_unseen() == 0 then
+        if not mbox:enter_idle() then
+            sleep(300)
+        end
+    end
 end
 
 ---------------
@@ -61,17 +71,25 @@ account1 = IMAP {
     password = get_password(),
 }
 
-result = addressfilter(account1["Inbox"], "qemu-devel@nongnu.org")
-result:move_messages(account1["qemu-devel"])
+function dostuff(mbox)
+    result = addressfilter(account1["Inbox"], "qemu-devel@nongnu.org")
+    result:move_messages(account1["qemu-devel"])
+    
+    result = addressfilter(account1["Inbox"], "kvm@vger.kernel.org")
+    result:move_messages(account1["kvm"])
+    
+    result = addressfilter(account1["Inbox"], "virtio-dev@lists.oasis-open.org")
+    result:move_messages(account1["virtio-dev"])
+    
+    result = addressfilter(account1["Inbox"], "mitarbeiter@in.tum.de")
+    result:move_messages(account1["virtio-dev"])
+end
 
-result = addressfilter(account1["Inbox"], "kvm@vger.kernel.org")
-result:move_messages(account1["kvm"])
+--while true do
+    --custom_idle(account1["Inbox"])
+    dostuff(account1["Inbox"])
+--end
 
-result = addressfilter(account1["Inbox"], "virtio-dev@lists.oasis-open.org")
-result:move_messages(account1["virtio-dev"])
-
-result = addressfilter(account1["Inbox"], "mitarbeiter@in.tum.de")
-result:move_messages(account1["virtio-dev"])
 
 --mailboxes, folders = account1:list_all()
 --io.write(dump(mailboxes))
