@@ -1,5 +1,16 @@
 { lib, config, pkgs, ... }: with lib; {
   
+  environment.sessionVariables = {
+    QT_QPA_PLATFORM = "wayland"; # qt apps disable wayland by default
+    XDG_SESSION_TYPE = "wayland";
+    MOZ_ENABLE_WAYLAND = "1"; # mozillas wayland backend is experimental and disabled by default
+  };
+  nixpkgs.overlays = [ (self: super: { chromium = super.chromium.override {
+    commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+  }; } ) ];
+  # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
+  # not there yet: flatpak run --env=XDG_SESSION_TYPE=wayland --env=QT_QPA_PLATFORM=wayland --socket=wayland --enable-features=UseOzonePlatform --ozone-platform=wayland io.typora.Typora
+
   environment.systemPackages = with pkgs; [
     firefox
     chromium
