@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules/nix-daemon.nix
+      ./modules/gnome.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -92,20 +93,8 @@
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
-    firefox
-    chromium
     ethtool
-    # fprintd # seems to brick the login screen on ThinkPad E14 amd
-    nextcloud-client
-    gnomeExtensions.appindicator
-    gnome.gnome-tweaks
-    keepassxc
-    alacritty
   ];
-  environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
-  # allow fractional scaling:
-  # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 
   # not flake ready
   programs.command-not-found.enable = false;
@@ -123,12 +112,6 @@
 
   # List services that you want to enable:
  
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true; 
-
-  services.flatpak.enable = true;
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.passwordAuthentication = false;
