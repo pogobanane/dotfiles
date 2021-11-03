@@ -10,15 +10,19 @@
       ./hardware-configuration.nix
       ./modules/nix-daemon.nix
       ./modules/gnome.nix
+      ./modules/logger.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # changing this seems to require reboot twice:
+  # boot.kernelParams = ["zfs.zfs_arc_sys_free=536870912"];
+  boot.kernelParams = ["zfs.zfs_arc_max=3221225472"];
 
   networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.hostId = "faae4fe2";
+  networking.hostId = "faae4fe2"; # for zfs
 
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
@@ -94,6 +98,7 @@
     wget
     git
     ethtool
+    htop
   ];
 
   # not flake ready

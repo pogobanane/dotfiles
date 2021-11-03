@@ -9,6 +9,7 @@
     commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
   }; } ) ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
+  # opening chrome://flags/#enable-webrtc-pipewire-capturer in chrome and change "WebRTC PipeWire support" to "Enabled" makes screen sharing work
   # not there yet: flatpak run --env=XDG_SESSION_TYPE=wayland --env=QT_QPA_PLATFORM=wayland --socket=wayland --enable-features=UseOzonePlatform --ozone-platform=wayland io.typora.Typora
 
   environment.systemPackages = with pkgs; [
@@ -20,6 +21,12 @@
     gnome.gnome-tweaks
     keepassxc
     alacritty
+    vlc
+    obs-studio
+    libreoffice
+    gimp
+    thunderbird
+    pdfarranger
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
@@ -31,6 +38,22 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  # printing:
+  services.printing.enable = true;
+
   services.flatpak.enable = true;
+
+  services.shairport-sync.enable = true;
+  users.users.shairport.group = "shairport";
+  users.groups.shairport = {};
+  networking.firewall.allowedTCPPorts = [ 
+    5353 # avahi
+    # shairport-sync
+    5000 
+    6000
+    6001
+    6002
+    6003
+  ];
 }
 
