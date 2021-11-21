@@ -6,10 +6,10 @@
   };
   systemd.timers.logger.wantedBy = [ "timers.target" ];
   systemd.timers.logger.enable = true;
-  systemd.services.logger.path = [ pkgs.bash pkgs.coreutils pkgs.procps ];
+  systemd.services.logger.path = [ pkgs.bash pkgs.coreutils pkgs.procps pkgs.gawk ];
   systemd.services.logger.serviceConfig = {
     # Restart = "never";
-    ExecStart = "${pkgs.bash}/bin/bash -c 'echo $(date) $(free -h | head -n 2 | tail -n 1) >> /root/log'";
+    ExecStart = ''${pkgs.bash}/bin/bash -c "echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log" '';
   };
   
 #  environment.sessionVariables = {

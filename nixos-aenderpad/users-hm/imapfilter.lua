@@ -82,7 +82,10 @@ function dostuff(mbox)
     result:move_messages(account1["virtio-dev"])
     
     result = addressfilter(account1["Inbox"], "mitarbeiter@in.tum.de")
-    result:move_messages(account1["virtio-dev"])
+    result:move_messages(account1["mitarbeiter"])
+
+    result = addressfilter(account1["virtio-dev"], "mitarbeiter@in.tum.de")
+    result:move_messages(account1["mitarbeiter"])
 end
 
 --while true do

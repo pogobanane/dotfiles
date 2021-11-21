@@ -17,8 +17,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   # changing this seems to require reboot twice:
-  # boot.kernelParams = ["zfs.zfs_arc_sys_free=536870912"];
-  boot.kernelParams = ["zfs.zfs_arc_max=3221225472"];
+  boot.kernelParams = [
+    "zfs.zfs_arc_sys_free=3221225472"
+    "zfs.zfs_arc_max=3221225472"
+  ];
 
   networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -81,11 +83,13 @@
     isNormalUser = true;
     home = "/home/peter";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "docker" ];
     openssh.authorizedKeys.keys = [ 
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDITBcN9iw5Fn7yyfgiWFet3QWDoMcUNtzLi+PNoYS7jksvcKZy5pLOjE6wCpkbYx+Tcb4MyvoWPXvwdo5FfL4XdhZRO+JlZ66p/rGssq/wEr2BBUwohP7o39JLtiyXGXSsK6MO2aceOFLQr4KAdaeD8ST0XumGcV6bGqIbjFsK5FCxFhO8NkCFtavBjDwKUm3uyOnVCWMp12abUphzxrVtWhcsnw5GapohATP03mCNxmrn/L7x393HutxgjyduScX7++MjwVE6J7wCnztPUtJbh9jYemr/K9fBMBbLhQagOjrlQYGU5frgmLrPCRZusyg5HjWx6gJIxs/DskfgmW+V peter@aenderarch" # gitpogobanane
     ];
   };
+
+  virtualisation.docker.enable = true;
 
   security.sudo.extraConfig = ''
     Defaults timestamp_timeout=15
@@ -99,6 +103,7 @@
     git
     ethtool
     htop
+    iotop
   ];
 
   # not flake ready
@@ -127,10 +132,11 @@
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 ];
+  networking.firewall.allowedTCPPorts = [ 22 1337 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  services.resolved.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
