@@ -18,6 +18,19 @@
     # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
     gnomeExtensions.appindicator
+    gnomeExtensions.gesture-improvements
+    gnomeExtensions.bluetooth-quick-connect
+    gnomeExtensions.switcher
+    gnomeExtensions.sound-output-device-chooser
+    gnomeExtensions.tactile
+    gnomeExtensions.noannoyance-2
+    # not as well wtf it should be
+    # gnomeExtensions.noannoyance
+    # gnomeExtensions.application-volume-mixer
+    # gnomeExtensions.run-or-raise	
+    # not available on gnome 41
+    #gnomeExtensions.clock-override
+    #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
     gnome.gnome-tweaks
     keepassxc
     alacritty
@@ -40,6 +53,7 @@
 
   # printing:
   services.printing.enable = true;
+  services.printing.drivers = [ pkgs.gutenprint ]; # often replaces hplip
 
   services.flatpak.enable = true;
 

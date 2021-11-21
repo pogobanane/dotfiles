@@ -61,7 +61,7 @@ in
 
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  programs.direnv.nix-direnv.enableFlakes = true;
+  # programs.direnv.nix-direnv.enableFlakes = true;
 
   programs.git = {
     enable = true;
@@ -100,6 +100,7 @@ in
     #doom-emacs
     sendtelegram
     imapfilter
+    languagetool
     (
       vim_configurable.customize {
         name = "vim";
@@ -124,6 +125,7 @@ in
           ack-vim
           vim-osc52
           tabular
+          vim-LanguageTool
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent
