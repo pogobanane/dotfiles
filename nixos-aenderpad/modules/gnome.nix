@@ -22,8 +22,9 @@
     gnomeExtensions.bluetooth-quick-connect
     gnomeExtensions.switcher
     gnomeExtensions.sound-output-device-chooser
-    gnomeExtensions.tactile
+    # gnomeExtensions.tactile
     gnomeExtensions.noannoyance-2
+    gnomeExtensions.forge
     # not as well wtf it should be
     # gnomeExtensions.noannoyance
     # gnomeExtensions.application-volume-mixer

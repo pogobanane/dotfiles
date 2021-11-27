@@ -98,18 +98,17 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1637469704,
-        "narHash": "sha256-tNbrZZDHCLBw5/3REe8Dm/WMYiAXgXy7n5GuhRn5lI0=",
-        "owner": "Nixos",
-        "repo": "nixpkgs",
-        "rev": "296032dd5ff5e4c266782e73f9c00ee044f19c70",
-        "type": "github"
+        "lastModified": 1637534976,
+        "narHash": "sha256-HBj+N2di300SV+H4ve2LnTuOvps89L90ZMd3zg4T1Pk=",
+        "ref": "pogo/nixos-unstable-small",
+        "rev": "bf2e8068e6bac97ecf5f1393caec886bd9738c56",
+        "revCount": 332939,
+        "type": "git",
+        "url": "file:///home/peter/dev/nix/nixpkgs"
       },
       "original": {
-        "owner": "Nixos",
-        "ref": "nixos-unstable-small",
-        "repo": "nixpkgs",
-        "type": "github"
+        "type": "git",
+        "url": "file:///home/peter/dev/nix/nixpkgs"
       }
     },
     "retiolum": {
