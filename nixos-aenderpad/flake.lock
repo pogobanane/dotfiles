@@ -100,15 +100,16 @@
       "locked": {
         "lastModified": 1637959987,
         "narHash": "sha256-slFYQryTmoVXK8YgtYQAwXBDULKPxxcTI6iq5vvNhpI=",
-        "ref": "pogo/nixos-unstable-small",
+        "owner": "Nixos",
+        "repo": "nixpkgs",
         "rev": "fc9ee3bc0b9e6d30f76f4b37084711ae03114e21",
-        "revCount": 334247,
-        "type": "git",
-        "url": "file:///home/peter/dev/nix/nixpkgs"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "file:///home/peter/dev/nix/nixpkgs"
+        "owner": "Nixos",
+        "ref": "nixos-unstable-small",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "retiolum": {
