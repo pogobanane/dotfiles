@@ -41,6 +41,7 @@
     gimp
     thunderbird
     pdfarranger
+    hexchat
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
