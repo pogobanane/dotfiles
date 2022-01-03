@@ -44,11 +44,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1638571010,
-        "narHash": "sha256-KSO7u13VRLdklQTKYJaBSfVcurEvw+HifAsHR7V2i5E=",
+        "lastModified": 1641121012,
+        "narHash": "sha256-svaOMxNMQgFHjcxdmLojOxTxfqSENtnO+S3kb+npIwY=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "781d25b315def05cd7ede3765226c54216f0b1fe",
+        "rev": "8e7a10602d1eb1d242c9d3f9b822203d5751a8c6",
         "type": "github"
       },
       "original": {
@@ -82,11 +82,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1638440530,
-        "narHash": "sha256-kmoNW+RmSka988iWvSrkiAxO8g6D76O0gW2cIIhL6U8=",
+        "lastModified": 1640686209,
+        "narHash": "sha256-6glXUlKRDhEhNuYx6r3fXU6KH2/Vq9mJZjB9oUpwrmc=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "4c9f07277bd4bc29a051ff2a0ca58c6403e3881a",
+        "rev": "46df95ca81e7e4cf3458cdb4b7d1714b5fce9da5",
         "type": "github"
       },
       "original": {
@@ -98,27 +98,27 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1638565206,
-        "narHash": "sha256-5z7RBRw0qh3REJieanK3PkMHl0EuzZr2efZqAz44Bjg=",
+        "lastModified": 1640959792,
+        "narHash": "sha256-zYSR//06FU2TDOpKKj0Hkff6unsxk3NwwNFuB1loU6E=",
         "owner": "Nixos",
         "repo": "nixpkgs",
-        "rev": "f9a1652a858329525c143450db2474ef439cf6c1",
+        "rev": "59bfda72480496f32787cec8c557182738b1bd3f",
         "type": "github"
       },
       "original": {
         "owner": "Nixos",
-        "ref": "nixos-unstable-small",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
     },
     "retiolum": {
       "locked": {
-        "lastModified": 1638528473,
-        "narHash": "sha256-8tdTsHQRVcYdRe3D9gvmzoCjeJsBw57qpMGJNfrF+cc=",
+        "lastModified": 1641160810,
+        "narHash": "sha256-+66f4vmUu2mtxKU6Ril3KFnsD65bv8uzsMmk1Y6rPao=",
         "owner": "Mic92",
         "repo": "retiolum",
-        "rev": "a6f03db013ef93ddc1bbfe180264b007d0c8db53",
+        "rev": "7617f67cfdfd8dad33b58f91f50c7e852d32c558",
         "type": "github"
       },
       "original": {
