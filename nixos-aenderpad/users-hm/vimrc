@@ -19,6 +19,11 @@ let &t_EI = "\<Esc>[0 q"
 set spelllang=en_gb
 set spellfile=~/.config/spellfile.utf-8.add
 
+" sane tabs and indents
+set expandtab
+set tabstop=2
+set shiftwidth=2
+
 " leader key defined somewhere else
 let mapleader = "\<space>"
 map <leader>ot :term ++curwin<CR>
