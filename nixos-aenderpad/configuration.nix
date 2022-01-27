@@ -16,6 +16,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.supportedFilesystems = [ "ntfs" ];
   # changing this seems to require reboot twice:
   boot.kernelParams = [
     "zfs.zfs_arc_sys_free=3221225472"

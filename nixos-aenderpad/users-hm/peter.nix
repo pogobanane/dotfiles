@@ -101,6 +101,7 @@ in
     sendtelegram
     imapfilter
     languagetool
+    nix-index
     (
       vim_configurable.customize {
         name = "vim";

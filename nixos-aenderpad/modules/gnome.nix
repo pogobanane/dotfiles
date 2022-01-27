@@ -59,6 +59,18 @@
 
   services.flatpak.enable = true;
 
+  systemd.services.audio-off = {
+    description = "Mute audio before suspend";
+    wantedBy = [ "sleep.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      Environment = "XDG_RUNTIME_DIR=/run/user/1000";
+      User = "joerg";
+      RemainAfterExit = "yes";
+      ExecStart = "${pkgs.pamixer}/bin/pamixer --mute";
+    };
+  };
+
   services.shairport-sync.enable = true;
   users.users.shairport.group = "shairport";
   users.groups.shairport = {};
