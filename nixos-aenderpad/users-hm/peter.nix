@@ -92,7 +92,7 @@ in
     git
     tmux
     psmisc
-    libguestfs-with-appliance
+    # libguestfs-with-appliance
     lazygit
     ack
     ripgrep

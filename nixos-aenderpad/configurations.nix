@@ -13,6 +13,7 @@
       ({ pkgs, ... }: {
         imports = [
           retiolum.nixosModules.retiolum
+          retiolum.nixosModules.ca
           #lambda-pirate.nixosModules.knative
           #lambda-pirate.nixosModules.vhive
         ];
