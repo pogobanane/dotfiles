@@ -60,8 +60,8 @@ in
   xdg.configFile."nvim/init.vim".source = ./nvimrc;
   
   programs.direnv.enable = true;
-  programs.direnv.nix-direnv.enable = true;
-  programs.direnv.nix-direnv.enableFlakes = true;
+  #programs.direnv.nix-direnv.enable = true;
+  #programs.direnv.nix-direnv.enableFlakes = true;
 
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")
@@ -83,13 +83,14 @@ in
     git
     tmux
     psmisc
-    libguestfs-with-appliance
+    #libguestfs-with-appliance
     lazygit
     ack
     ripgrep
     bottom # btm
     #doom-emacs
     sendtelegram
+    nodePackages.pyright
     (
       vim_configurable.customize {
         name = "vim";
