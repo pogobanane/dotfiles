@@ -7,27 +7,28 @@
 # vim starts terminals as xterm even if running in tmux
 [[ ! $TERM = *screen* ]] && [ ! $TERM = 'xterm' ] && tmux new -t default
 
-ssh_auth_sock_static=/tmp/ssh-static-ccnoiewa
-echo "ssh-auth-sock was $SSH_AUTH_SOCK"
-if [[ $TERM = *screen* ]]; then
- # if in tmux, use static
- export SSH_AUTH_SOCK=$ssh_auth_sock_static
- echo "Using $ssh_auth_sock_static (tmux detected)"
-else
- #export SSH_ASKPASS=/usr/bin/ksshaskpass
- if [[ ${SSH_AUTH_SOCK} == "/tmp/"* ]];then
-  echo "forwared ssh-agent $SSH_AUTH_SOCK"
- elif [[ -S "/run/user/${UID}/ssh-agent" ]]; then
-  export SSH_AUTH_SOCK="/run/user/${UID}/ssh-agent"
- else
-  export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
- fi
- # offer the socket statically
- ln -sf $SSH_AUTH_SOCK $ssh_auth_sock_static
-fi
-if [[ ! $(ssh-add -l) ]]; then 
- echo "WARNING: ssh-agent not operational"
-fi
+# why did we need this again?
+# ssh_auth_sock_static=/tmp/ssh-static-ccnoiewa
+# echo "ssh-auth-sock was $SSH_AUTH_SOCK"
+# if [[ $TERM = *screen* ]]; then
+#  # if in tmux, use static
+#  export SSH_AUTH_SOCK=$ssh_auth_sock_static
+#  echo "Using $ssh_auth_sock_static (tmux detected)"
+# else
+#  #export SSH_ASKPASS=/usr/bin/ksshaskpass
+#  if [[ ${SSH_AUTH_SOCK} == "/tmp/"* ]];then
+#   echo "forwared ssh-agent $SSH_AUTH_SOCK"
+#  elif [[ -S "/run/user/${UID}/ssh-agent" ]]; then
+#   export SSH_AUTH_SOCK="/run/user/${UID}/ssh-agent"
+#  else
+#   export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+#  fi
+#  # offer the socket statically
+#  ln -sf $SSH_AUTH_SOCK $ssh_auth_sock_static
+# fi
+# if [[ ! $(ssh-add -l) ]]; then 
+#  echo "WARNING: ssh-agent not operational"
+# fi
 
 path+=$HOME/bin
 typeset -U path
