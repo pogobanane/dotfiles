@@ -17,7 +17,7 @@ else
  #export SSH_ASKPASS=/usr/bin/ksshaskpass
  if [[ ${SSH_AUTH_SOCK} == "/tmp/"* ]];then
   echo "forwared ssh-agent $SSH_AUTH_SOCK"
- elif [[ -S "/run/user/${UID}/ssh-agent" ]]; then
+ elif [[ -S "/run/user/${UID}/ssh-agent" || -S "/run/user/${UID}/keyring/ssh" ]]; then
   export SSH_AUTH_SOCK="/run/user/${UID}/ssh-agent"
  else
   export SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket

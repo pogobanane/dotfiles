@@ -11,8 +11,12 @@
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
   boot.initrd.kernelModules = [ ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
-  boot.kernelPackages = pkgs.linuxPackages; # _latest; 
   boot.kernelModules = [ "kvm-amd" ];
+  # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
+  boot.kernelPackages = let
+      linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
+    in
+      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =

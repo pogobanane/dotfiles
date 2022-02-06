@@ -64,11 +64,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1643633564,
-        "narHash": "sha256-7Mk9ajHJkJnTgGwPLkGxAa4irbxO9NY9WyiIIdT3g5I=",
+        "lastModified": 1643705706,
+        "narHash": "sha256-iW7zS55Aibnr3taQYLdk2mRRcPp75eDz+4wIio838Cc=",
         "owner": "pogobanane",
         "repo": "lambda-pirate",
-        "rev": "56daeacdb059bf0c855521b7a2011af1930a08ca",
+        "rev": "3d4708365b80bf674a117929f039b7af93e17c61",
         "type": "github"
       },
       "original": {
@@ -95,11 +95,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1643347846,
-        "narHash": "sha256-O0tyXF//ppRpe9yT1Uu5n34yI2MWDyY6ZiJ4Qn5zIkE=",
+        "lastModified": 1643524588,
+        "narHash": "sha256-Qh5AazxdOQRORbGkkvpKoovDl6ej/4PhDabFsqnueqw=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "5bb20f9dc70e9ee16e21cc404b6508654931ce41",
+        "rev": "efeefb2af1469a5d1f0ae7ca8f0dfd9bb87d5cfb",
         "type": "github"
       },
       "original": {
