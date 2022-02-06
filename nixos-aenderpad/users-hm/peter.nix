@@ -84,6 +84,7 @@ in
   home.file.".tmux.conf".source = ./tmux.conf;
   home.file.".tmate.conf".source = ./tmate.conf;
   home.file.".imapfilter/config.lua".source = ./imapfilter.lua;
+  home.file.".config/lazygit/config.yml".source = ./lazygit.yml;
 
   home.packages = with pkgs; [
     antigen

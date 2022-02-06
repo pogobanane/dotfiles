@@ -4,7 +4,8 @@
   # To update all inputs:
   # $ nix flake update .
   inputs = {
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    # nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
