@@ -103,6 +103,21 @@ in
     imapfilter
     languagetool
     nix-index
+    (weechat.override {
+      configure = { availablePlugins, ... }: {
+        scripts = with pkgs.weechatScripts; [
+          weechat-otr
+          wee-slack
+          multiline
+          weechat-matrix
+        ];
+        plugins = [
+          availablePlugins.python
+          availablePlugins.perl
+          availablePlugins.lua
+        ];
+      };
+    })
     (
       vim_configurable.customize {
         name = "vim";
