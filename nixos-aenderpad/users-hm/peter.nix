@@ -103,6 +103,7 @@ in
     imapfilter
     languagetool
     nix-index
+    element-desktop
     (weechat.override {
       configure = { availablePlugins, ... }: {
         scripts = with pkgs.weechatScripts; [
