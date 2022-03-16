@@ -68,6 +68,17 @@ in
     userName  = "Pogobanane";
     userEmail = "aenderboy@gmx.de";
   };
+
+  programs.tmux = {
+    enable = true;
+    extraConfig = builtins.readFile ./tmux.conf;
+    plugins = with pkgs; [
+      tmuxPlugins.resurrect # save/restore sessions
+      tmuxPlugins.nord # powerline-ish theme
+      tmuxPlugins.pain-control # sane pane contol bindings
+      tmuxPlugins.sensible # general sanity
+    ];
+  };
   
   # config.programs.ssh.startAgent = true;
 
@@ -81,7 +92,6 @@ in
     source ~/.zshrc_actual
   '';
 
-  home.file.".tmux.conf".source = ./tmux.conf;
   home.file.".tmate.conf".source = ./tmate.conf;
   home.file.".config/lazygit/config.yml".source = ./lazygit.yml;
 
