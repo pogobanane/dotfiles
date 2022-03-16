@@ -1,0 +1,8 @@
+[core]
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+[include]
+  path = ~/.gitconfig.local
+[user]
+  name = Pogobanane
+  email = aenderboy@gmx.de
