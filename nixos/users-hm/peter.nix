@@ -60,7 +60,7 @@ in
   xdg.configFile."nvim/init.vim".source = ./nvimrc;
   
   programs.direnv.enable = true;
-  #programs.direnv.nix-direnv.enable = true;
+  programs.direnv.nix-direnv.enable = true;
   #programs.direnv.nix-direnv.enableFlakes = true;
 
   home.file.".emacs.d/init.el".text = ''
