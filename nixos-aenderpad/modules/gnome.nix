@@ -42,6 +42,9 @@
     thunderbird
     pdfarranger
     hexchat
+    zoom-us
+    element-desktop
+    languagetool
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];

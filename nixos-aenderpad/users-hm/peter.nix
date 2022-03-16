@@ -1,7 +1,6 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
 { config, lib, pkgs, ... }:
-
 let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
@@ -30,6 +29,7 @@ let
   };
 in
 {
+  imports = [ ./gui.nix ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -83,7 +83,6 @@ in
 
   home.file.".tmux.conf".source = ./tmux.conf;
   home.file.".tmate.conf".source = ./tmate.conf;
-  home.file.".imapfilter/config.lua".source = ./imapfilter.lua;
   home.file.".config/lazygit/config.yml".source = ./lazygit.yml;
 
   home.packages = with pkgs; [
@@ -100,25 +99,7 @@ in
     bottom # btm
     #doom-emacs
     sendtelegram
-    imapfilter
-    languagetool
     nix-index
-    element-desktop
-    (weechat.override {
-      configure = { availablePlugins, ... }: {
-        scripts = with pkgs.weechatScripts; [
-          weechat-otr
-          wee-slack
-          multiline
-          weechat-matrix
-        ];
-        plugins = [
-          availablePlugins.python
-          availablePlugins.perl
-          availablePlugins.lua
-        ];
-      };
-    })
     (
       vim_configurable.customize {
         name = "vim";
@@ -167,5 +148,4 @@ in
     )
     # rustup
   ];
-
 }
