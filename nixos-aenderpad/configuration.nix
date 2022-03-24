@@ -11,6 +11,7 @@
       ./modules/nix-daemon.nix
       ./modules/gnome.nix
       ./modules/logger.nix
+      ./modules/dnsmasq.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
