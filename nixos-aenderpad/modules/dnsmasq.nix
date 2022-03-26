@@ -1,5 +1,4 @@
-# to be used with netboot-pixie-core.nix
-{config, ...}: let
+{config, lib, ...}: let
   external = "wlan0";
 in {
   systemd.network.netdevs.internal.netdevConfig = {
@@ -18,9 +17,12 @@ in {
   };
 
   # Add any internal interface with the following command:
-  # $ nmcli dev disconnect eth0
+  # $ nmcli dev set eth0 managed no
   # $ ip link set eth0 master internal
+  # to disable again:
+  # $ ip link set eth0 nomaster && nmcli dev set eth0 managed yes
   services.dnsmasq.enable = !config.virtualisation.libvirtd.enable;
+  services.dnsmasq.resolveLocalQueries = lib.mkDefault false; # don't use it locally for dns
   services.dnsmasq.extraConfig = ''
     interface=internal
     #interface=virttap

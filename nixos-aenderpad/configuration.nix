@@ -140,6 +140,7 @@
   networking.firewall.enable = true;
   # disable to make systemd-resolvd work (which is enabled by retiolum module through systemd.network.enable)
   services.resolved.enable = false;
+  systemd.services.systemd-networkd-wait-online.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

@@ -8,6 +8,7 @@ let
   }) {
     doomPrivateDir = ./doom.d;
   };
+
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
     echo "Sending \$1 as message to me: $1"
 
@@ -18,6 +19,14 @@ let
 
     curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" &> /dev/null
   '';
+
+  ls1vpn = pkgs.writeShellApplication {
+    name = "ls1vpn";
+    runtimeInputs = [ pkgs.libsecret pkgs.openvpn pkgs.gnome.seahorse ];
+    # text = "secret-tool store --label='foobar' setting-name foo";
+    text = "${pkgs.gnome.seahorse}libexec/seahorse/ssh-askpass";
+  };
+
   my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
     name = "vim-paste-easy";
     src = pkgs.fetchFromGitHub {
@@ -59,9 +68,18 @@ in
   # home.environment.variables = { EDITOR = "rvim"; };
   xdg.configFile."nvim/init.vim".source = ./nvimrc;
 
+  #systemd.user.services.ls1vpn = {
+  #  Unit = {
+  #    Description = "foobar desc";
+  #  };
+  #  Service = {
+  #    ExecStart = "${ls1vpn}/bin/ls1vpn";
+  #  };
+  #};
+
   programs.direnv.enable = true;
   programs.direnv.nix-direnv.enable = true;
-  # programs.direnv.nix-direnv.enableFlakes = true;
+  programs.direnv.nix-direnv.enableFlakes = true;
 
   programs.git = {
     enable = true;
