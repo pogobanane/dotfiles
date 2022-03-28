@@ -1,0 +1,15 @@
+[core]
+  excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
+[include]
+  path = ~/.gitconfig.local
+[user]
+  name = Pogobanane
+  email = aenderboy@gmx.de
+[rerere]
+  enabled = true
+[pull]
+  rebase = true
+  autostash = true
+[rebase]
+  autoStash = true

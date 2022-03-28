@@ -81,12 +81,6 @@ in
   programs.direnv.nix-direnv.enable = true;
   programs.direnv.nix-direnv.enableFlakes = true;
 
-  programs.git = {
-    enable = true;
-    userName  = "Pogobanane";
-    userEmail = "aenderboy@gmx.de";
-  };
-
   programs.tmux = {
     enable = true;
     extraConfig = builtins.readFile ./tmux.conf;
@@ -99,6 +93,8 @@ in
   };
   
   # config.programs.ssh.startAgent = true;
+
+  home.file.".gitconfig".source = ./gitconfig;
 
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")

@@ -45,6 +45,7 @@
     zoom-us
     element-desktop
     languagetool
+    calibre
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
