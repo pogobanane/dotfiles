@@ -133,7 +133,8 @@
         "lambda-pirate": "lambda-pirate",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
-        "retiolum": "retiolum"
+        "retiolum": "retiolum",
+        "sops-nix": "sops-nix"
       }
     },
     "rust-analyzer-src": {
@@ -150,6 +151,26 @@
         "owner": "rust-analyzer",
         "ref": "nightly",
         "repo": "rust-analyzer",
+        "type": "github"
+      }
+    },
+    "sops-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1647279403,
+        "narHash": "sha256-ZsHfMah9+TElcjaENsaOIFHBNNtSbXmyLFVbiJiAECs=",
+        "owner": "Mic92",
+        "repo": "sops-nix",
+        "rev": "c01f48b055ac776f9831c9d4a0fff83e3b74dbe3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     }

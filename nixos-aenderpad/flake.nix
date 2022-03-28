@@ -20,6 +20,9 @@
     #doom-emacs.url = "github:Mic92/doom-emacs/org-msg";
     #doom-emacs.flake = false;
 
+    sops-nix.url = github:Mic92/sops-nix;
+    sops-nix.inputs.nixpkgs.follows = "nixpkgs";
+
     retiolum.url = "github:Mic92/retiolum";
   };
 
@@ -30,10 +33,11 @@
     home-manager,
     lambda-pirate,
     nixos-hardware,
-    #doom-emacs
+    #doom-emacs,
+    sops-nix
   }: {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs lambda-pirate home-manager retiolum nixos-hardware;
+        inherit nixpkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix;
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
   };

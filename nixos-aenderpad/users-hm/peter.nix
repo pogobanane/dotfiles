@@ -95,6 +95,10 @@ in
   # config.programs.ssh.startAgent = true;
 
   home.file.".gitconfig".source = ./gitconfig;
+  home.file.".gitignore".text = ''
+    .direnv/
+    result/
+  '';
 
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")

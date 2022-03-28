@@ -1,10 +1,11 @@
-{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware }: {
+{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
       ./configuration.nix
-      nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
       ./hardware-configuration.nix
+      nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
+      sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
