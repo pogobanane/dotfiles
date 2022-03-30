@@ -151,7 +151,7 @@
         "nur": "nur",
         "retiolum": "retiolum",
         "sops-nix": "sops-nix",
-        "tumpkgs": "tumpkgs"
+        "stablepkgs": "stablepkgs"
       }
     },
     "rust-analyzer-src": {
@@ -191,18 +191,18 @@
         "type": "github"
       }
     },
-    "tumpkgs": {
+    "stablepkgs": {
       "locked": {
-        "lastModified": 1648539026,
-        "narHash": "sha256-MPJYqltP+/0xkShNr5hbu/CkCQB6TJL54UXdrdfGzTk=",
-        "owner": "TUM-DSE",
+        "lastModified": 1648553562,
+        "narHash": "sha256-xQhRKu6h0phd56oCzGjkhHkY4eDI1XKedGqkFtlXapk=",
+        "owner": "Nixos",
         "repo": "nixpkgs",
-        "rev": "0d928c32cb15c966a796d00098ee9b242f738276",
+        "rev": "9b168e5e62406fa2e55e132f390379a6ba22b402",
         "type": "github"
       },
       "original": {
-        "owner": "TUM-DSE",
-        "ref": "release-21.11-backports",
+        "owner": "Nixos",
+        "ref": "nixos-21.11",
         "repo": "nixpkgs",
         "type": "github"
       }

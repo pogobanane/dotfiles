@@ -7,6 +7,8 @@
     # nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
+    stablepkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
+    nur.url = github:nix-community/NUR;
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
@@ -24,25 +26,22 @@
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     retiolum.url = "github:Mic92/retiolum";
-
-    nur.url = github:nix-community/NUR;
-    tumpkgs.url = github:TUM-DSE/nixpkgs/release-21.11-backports;
   };
 
   outputs = {
     self,
     nixpkgs,
+    nur,
+    stablepkgs,
     retiolum,
     home-manager,
     lambda-pirate,
     nixos-hardware,
     #doom-emacs,
     sops-nix,
-    nur,
-    tumpkgs
   }: {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix nur tumpkgs;
+        inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix;
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
   };
