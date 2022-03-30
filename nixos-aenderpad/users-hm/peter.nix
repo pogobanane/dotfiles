@@ -128,6 +128,8 @@ in
     #doom-emacs
     sendtelegram
     nix-index
+    sops
+    age
     (
       vim_configurable.customize {
         name = "vim";

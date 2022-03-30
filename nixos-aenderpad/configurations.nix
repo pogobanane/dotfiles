@@ -1,4 +1,4 @@
-{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix }: {
+{ nixpkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, nur, tumpkgs }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
@@ -10,6 +10,14 @@
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
         home-manager.users.peter = import ./users-hm/peter.nix;
+      }
+      {
+        nixpkgs.overlays = [
+          nur.overlay
+          (final: prev: {
+            sops = tumpkgs.legacyPackages.x86_64-linux.sops;
+          })
+        ];
       }
       ({ pkgs, ... }: {
         imports = [

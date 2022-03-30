@@ -112,6 +112,21 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "lastModified": 1648619881,
+        "narHash": "sha256-mtll2CzJ9lbYCOvdl7v8crCVJ9+2fxW+r3dXRaZdxXQ=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "f45018a47238c2b83754f049cafa32166336f83f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "retiolum": {
       "locked": {
         "lastModified": 1644733753,
@@ -133,8 +148,10 @@
         "lambda-pirate": "lambda-pirate",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
+        "nur": "nur",
         "retiolum": "retiolum",
-        "sops-nix": "sops-nix"
+        "sops-nix": "sops-nix",
+        "tumpkgs": "tumpkgs"
       }
     },
     "rust-analyzer-src": {
@@ -171,6 +188,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "sops-nix",
+        "type": "github"
+      }
+    },
+    "tumpkgs": {
+      "locked": {
+        "lastModified": 1648539026,
+        "narHash": "sha256-MPJYqltP+/0xkShNr5hbu/CkCQB6TJL54UXdrdfGzTk=",
+        "owner": "TUM-DSE",
+        "repo": "nixpkgs",
+        "rev": "0d928c32cb15c966a796d00098ee9b242f738276",
+        "type": "github"
+      },
+      "original": {
+        "owner": "TUM-DSE",
+        "ref": "release-21.11-backports",
+        "repo": "nixpkgs",
         "type": "github"
       }
     }
