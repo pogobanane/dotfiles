@@ -27,6 +27,12 @@ let
     text = "${pkgs.gnome.seahorse}libexec/seahorse/ssh-askpass";
   };
 
+  sopspw = pkgs.writeShellApplication {
+    name = "sopspw";
+    runtimeInputs = [ pkgs.sops pkgs.age ];
+    text = "SOPS_AGE_KEY=$(${pkgs.age}/bin/age -d ~/.config/sops/age/keys.age) ${pkgs.sops}/bin/sops \"$@\"";
+  };
+
   my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
     name = "vim-paste-easy";
     src = pkgs.fetchFromGitHub {
@@ -129,6 +135,7 @@ in
     sendtelegram
     nix-index
     sops
+    sopspw
     age
     (
       vim_configurable.customize {
