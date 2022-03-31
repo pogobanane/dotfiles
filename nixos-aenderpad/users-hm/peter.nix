@@ -33,6 +33,12 @@ let
     text = "SOPS_AGE_KEY=$(${pkgs.age}/bin/age -d ~/.config/sops/age/keys.age) ${pkgs.sops}/bin/sops \"$@\"";
   };
 
+  nscan = pkgs.writeShellApplication {
+    name = "nscan";
+    runtimeInputs = [ pkgs.nmap ];
+    text = "${pkgs.nmap}/bin/nmap -sP \"$@\"";
+  };
+
   my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
     name = "vim-paste-easy";
     src = pkgs.fetchFromGitHub {
@@ -137,6 +143,7 @@ in
     sops
     sopspw
     age
+    nscan
     (
       vim_configurable.customize {
         name = "vim";
