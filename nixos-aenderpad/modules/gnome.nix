@@ -46,12 +46,20 @@
     element-desktop
     languagetool
     calibre
+
+    # for iphone
+    libimobiledevice
+    ifuse
+    libheif
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
   # allow fractional scaling:
   # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
+
+  # for iphone
+  services.usbmuxd.enable = true;
 
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
