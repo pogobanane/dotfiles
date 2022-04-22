@@ -11,5 +11,9 @@
 [pull]
   rebase = true
   autostash = true
+  twohead = ort
 [rebase]
   autoStash = true
+[merge]
+  tool = vim -d
+  conflictstyle = diff3
