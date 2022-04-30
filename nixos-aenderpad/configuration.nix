@@ -108,6 +108,15 @@
     iotop
   ];
 
+  # Since git version 2.33.3, it fails when operating on a repo of
+  # another user. When `nixos-rebuild switch` is run as root, but the config
+  # repo is owned by a normal user, this error occurs. Therefore we set an
+  # exception for that folder here.
+  environment.etc.gitconfig.text = ''
+    [safe]
+      directory = /home/peter/dev/dotfiles
+  '';
+
   # not flake ready
   programs.command-not-found.enable = false;
 
