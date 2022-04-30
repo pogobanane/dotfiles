@@ -1,4 +1,8 @@
 { lib, config, pkgs, ... }: with lib; {
+
+  imports = [
+    ./pipewire-audio.nix
+  ];
   
   environment.sessionVariables = {
     QT_QPA_PLATFORM = "wayland"; # qt apps disable wayland by default
