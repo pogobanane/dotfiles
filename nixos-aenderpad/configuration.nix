@@ -12,6 +12,7 @@
       ./modules/gnome.nix
       ./modules/logger.nix
       ./modules/dnsmasq.nix
+      ./modules/tor-ssh.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
