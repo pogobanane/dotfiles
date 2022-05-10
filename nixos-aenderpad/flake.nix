@@ -4,6 +4,8 @@
   # To update all inputs:
   # $ nix flake update .
   inputs = {
+    flake-utils.url = "github:numtide/flake-utils";
+
     # nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
@@ -39,11 +41,19 @@
     nixos-hardware,
     #doom-emacs,
     sops-nix,
+    flake-utils,
   }: {
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix;
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
-  };
+    }
+    // (flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+    in {
+      devShells = {
+        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+      };
+    }));
 }
 
