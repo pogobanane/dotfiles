@@ -13,5 +13,7 @@
       htop      #
       bottom    # better htop
 
+      # network state
+      ethtool
     ];
   }
