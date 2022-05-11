@@ -110,6 +110,7 @@ in
   home.file.".gitignore".text = ''
     .direnv/
     result/
+    *.swp
   '';
 
   home.file.".emacs.d/init.el".text = ''
