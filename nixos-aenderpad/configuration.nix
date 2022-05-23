@@ -13,6 +13,7 @@
       ./modules/logger.nix
       ./modules/dnsmasq.nix
       ./modules/tor-ssh.nix
+      ./modules/remote-builder.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
