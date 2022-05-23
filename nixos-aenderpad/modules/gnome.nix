@@ -50,6 +50,8 @@
     element-desktop
     languagetool
     calibre
+    mumble
+    marktext
 
     # for iphone
     libimobiledevice

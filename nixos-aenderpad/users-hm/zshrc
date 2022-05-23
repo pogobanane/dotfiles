@@ -71,6 +71,18 @@ nix-unpack() {
       --run "cp -r \$buildInputs $pkg; chmod -R +w $pkg"
 }
 
+killp() {
+  local pid=$(ps -ef | sed 1d | eval "fzf ${FZF_DEFAULT_OPTS} -m --header='[kill:process]'" | awk '{print $2}')
+  if [[ "$pid" != "" ]]; then
+    echo $pid | xargs sudo kill -${1:-9}
+    killp
+  fi
+}
+
+alias dd='dd status=progress'
+
+alias sshp='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
+
 if [ -n "${commands[direnv]}" ]; then
   eval "$(direnv hook zsh)"
 fi
