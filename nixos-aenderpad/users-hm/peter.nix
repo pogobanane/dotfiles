@@ -20,6 +20,14 @@ let
     curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" &> /dev/null
   '';
 
+  nixos-generations = pkgs.writeScriptBin "nixos-generations" ''
+    echo "Sending \$1 as message to me: $1"
+
+    echo "list: nix-env --list-generations --profile /nix/var/nix/profiles/system"
+    echo "delete: nix-collect-garbage --delete-older-than 30d"
+    echo "or: nix-env --delete generations 4 5 6 --profile ..."
+  '';
+
   ls1vpn = pkgs.writeShellApplication {
     name = "ls1vpn";
     runtimeInputs = [ pkgs.libsecret pkgs.openvpn pkgs.gnome.seahorse ];
