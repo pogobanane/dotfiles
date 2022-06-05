@@ -62,6 +62,9 @@
         sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
         rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
       };
+      packages = {
+        map = pkgs.callPackage ./pkgs/map.nix { };
+      };
     }));
 }
 
