@@ -136,6 +136,7 @@ in
 
   home.packages = with pkgs; [
     antigen
+    zoxide
     fzf
     tree
     git

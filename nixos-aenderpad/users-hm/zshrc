@@ -79,6 +79,27 @@ killp() {
   fi
 }
 
+if [[ -n ${commands[zoxide]} ]]; then
+  eval "$(zoxide init zsh)"
+else
+  alias z="builtin cd"
+fi
+
+cd() {
+  if [[ "$1" == "--" ]]; then
+    shift
+  fi
+  local to="${1:-$HOME}"
+  if [[ -f "$to" ]]; then
+    to="$(dirname $to)"
+  fi
+
+  # fallback to zoxide if builtin cd fails
+  if ! builtin cd "$to" && [[ -n ${commands[zoxide]} ]]; then
+    __zoxide_z "$to"
+  fi
+}
+
 alias dd='dd status=progress'
 
 alias sshp='ssh -o PreferredAuthentications=password -o PubkeyAuthentication=no'
