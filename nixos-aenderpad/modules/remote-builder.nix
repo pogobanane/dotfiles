@@ -2,7 +2,7 @@
   nix.distributedBuilds = true;
   nix.buildMachines = [
     {
-      hostName = "ryan.r";
+      hostName = "ryan.dse.in.tum.de";
       sshUser = "ssh-ng://nix";
       sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops
       system = "x86_64-linux";
@@ -14,7 +14,7 @@
       ];
     }
     {
-      hostName = "graham.r";
+      hostName = "graham.dse.in.tum.de";
       sshUser = "ssh-ng://nix";
       sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops
       system = "x86_64-linux";
