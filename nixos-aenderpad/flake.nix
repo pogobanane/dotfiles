@@ -7,15 +7,15 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     # nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
-    stablepkgs.url = "github:Nixos/nixpkgs/nixos-21.11";
+    stablepkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
     nur.url = github:nix-community/NUR;
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-21.11";
+    home-manager.url = "github:nix-community/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
