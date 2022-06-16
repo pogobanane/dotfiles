@@ -47,21 +47,25 @@
     #doom-emacs,
     sops-nix,
     flake-utils,
-    fenix
-  }: {
+    fenix,
+    ctile,
+  }: let 
+    pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    fenixPkgs = fenix.packages.x86_64-linux;
+  in {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix;
+        inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
         nixosSystem = nixpkgs.lib.nixosSystem;
+      };
+      devShells.x86_64-linux = { 
+        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+        rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
       };
     }
     // (flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
       fenixPkgs = fenix.packages.${system};
     in {
-      devShells = {
-        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
-        rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
-      };
       packages = {
         map = pkgs.callPackage ./pkgs/map.nix { };
       };
