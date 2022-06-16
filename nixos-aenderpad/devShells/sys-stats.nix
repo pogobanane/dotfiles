@@ -5,6 +5,8 @@
       iotop     # per process io rates
       sysstat   # iostat: per device io rates
       nfs-utils # nfsiostat
+      ioping    # disk latencies
+      ncdu      # du but as terminal UI
 
       # network IO monitoring
       iftop     # per peer network rates
