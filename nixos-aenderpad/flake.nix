@@ -15,6 +15,9 @@
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
 
+    ctile.url = "git+https://gitlab.com/pogobanane/gnome-ctile.git?ref=dev";
+    ctile.inputs.nixpkgs.follows = "nixpkgs";
+
     home-manager.url = "github:nix-community/home-manager/release-22.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 

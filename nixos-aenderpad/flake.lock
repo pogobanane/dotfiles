@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "ctile": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1655369744,
+        "narHash": "sha256-9OFr76S/Drrt8FdBLyMBLj1CPFlh5j62q9ThpQd05b8=",
+        "ref": "dev",
+        "rev": "f3516d39913db11146520b2d47edde4e0b9d9c31",
+        "revCount": 50,
+        "type": "git",
+        "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
+      },
+      "original": {
+        "ref": "dev",
+        "type": "git",
+        "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": [
@@ -213,6 +234,7 @@
     },
     "root": {
       "inputs": {
+        "ctile": "ctile",
         "fenix": "fenix",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",

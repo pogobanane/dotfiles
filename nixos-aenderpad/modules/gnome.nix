@@ -22,6 +22,7 @@
     # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
     gnome.gnome-terminal
+    ctile
     gnomeExtensions.appindicator
     gnomeExtensions.gesture-improvements
     gnomeExtensions.bluetooth-quick-connect
