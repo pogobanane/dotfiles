@@ -1,3 +1,5 @@
+# delete this once map-cmd is available in nixpkgs
+# https://github.com/NixOS/nixpkgs/pull/176552/files
 { lib, stdenv, fetchFromGitHub }:
 
 stdenv.mkDerivation rec {
