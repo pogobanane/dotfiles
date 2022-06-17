@@ -16,9 +16,10 @@
 
   # Not using the nixos service since that has not been working.
   # TODO fix nixos module/doc.
-  #services.shairport-sync.enable = true;
-  #users.users.shairport.group = "shairport";
-  #users.groups.shairport = {};
+  services.shairport-sync.enable = true;
+  systemd.services.shairport-sync.enable = false; # this one no worky
+  users.users.shairport.group = "shairport";
+  users.groups.shairport = {};
   systemd.user.services = {
     shairport-sync = {
       description = "Apple AirPlay audio sink";
