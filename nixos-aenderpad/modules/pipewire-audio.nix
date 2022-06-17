@@ -13,4 +13,17 @@
     jack.enable = true;
   };
   security.rtkit.enable = true;
+
+  # Not using the nixos service since that has not been working.
+  # TODO fix nixos module/doc.
+  #services.shairport-sync.enable = true;
+  #users.users.shairport.group = "shairport";
+  #users.groups.shairport = {};
+  systemd.user.services = {
+    shairport-sync = {
+      description = "Apple AirPlay audio sink";
+      serviceConfig.ExecStart = ''${pkgs.shairport-sync}/bin/shairport-sync -v -o pa'';
+      after = [ "pipewire.service" ];
+    };
+  };
 }

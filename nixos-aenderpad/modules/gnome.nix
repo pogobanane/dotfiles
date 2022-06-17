@@ -91,9 +91,6 @@
     };
   };
 
-  services.shairport-sync.enable = true;
-  users.users.shairport.group = "shairport";
-  users.groups.shairport = {};
   networking.firewall.allowedTCPPorts = [ 
     5353 # avahi
     # shairport-sync
