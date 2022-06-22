@@ -33,6 +33,8 @@
         nix.nixPath = [
           "nixpkgs=${pkgs.path}"
           "home-manager=${home-manager}"
+          #now managed by home-manager in ~/.config/nixpkgs/config.nix
+          #"nur=${nur}"
         ];
       })
     ];

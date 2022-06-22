@@ -40,6 +40,7 @@
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
     gnome.gnome-tweaks
     keepassxc
+    bitwarden
     alacritty
     vlc
     obs-studio
