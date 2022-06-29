@@ -1,6 +1,76 @@
-#!/bin/perl
+#!/usr/bin/env perl
+# TODO: we should probably aquire some kind of lock before reading profiles and stores
 
 use File::Basename;
+use Getopt::Long;
+
+my $NIXOS_PROFILE = "/nix/var/nix/profiles/system";
+
+sub help() {
+  print "nixos-generations v0.0.1
+Usage: nixos-generations [subcommand]
+
+Subcommands:
+  --help             Shows this help.
+  --list             Lists NixOS generations.
+  --show-efi         Shows common culprits for full boot/EFI partitions.
+                     Garbage-collecting all generations for a culprit frees space.
+  --gc <generations> Garbage-collect and delete <generations> as specified 
+                     for `nix-env --delete-generations` (e.g. '3 4', '+5', '30d').
+                     WARNING: This garbage-collect may also delete other 
+                     unreferenced nix-store items.
+";
+}
+
+sub parse_args() {
+  my $help = '';
+  my $list = '';
+  my $show_efi = '';
+  my @gc;
+
+  GetOptions('help' => \$help, 'list' => \$list, 'show-efi' => \$show_efi, 'gc=s{1,}' => \@gc) or die help();
+
+  if ($help) {
+    help();
+  } elsif ($list) {
+    list();
+  } elsif ($show_efi) {
+    show_efi();
+  } elsif (@gc) {
+    gc(@gc);
+  } else {
+    help();
+    exit 1;
+  }
+
+  exit 0;
+}
+
+sub list {
+  system("nix-env --list-generations --profile $NIXOS_PROFILE");
+}
+
+sub show_efi() {
+  print "There are two types of big NixOS files on EFI partitions: initrd and kernels (bzImage).\n";
+  print "\n# Initrds:\n\n";
+  efi_sizes("initrd");
+  print "\n\n# Kernels:\n\n";
+  efi_sizes("kernel");
+}
+
+sub gc() {
+  my $generations = join(" ", @_);
+  my $cmd = "nix-env --delete-generations $generations --profile $NIXOS_PROFILE";
+  print("# $cmd\n");
+  system($cmd) == 0 or die "Deleting generations failed ($?).";
+  $cmd = "nix-store --gc";
+  print("# $cmd\n");
+  system($cmd) == 0 or die "Collecting garbage failed ($?)";
+  print("
+Generations $generations deleted. To remove potentially deleted kernels from the boot/EFI partition, run:
+sudo nixos-rebuild switch
+");
+}
 
 # https://stackoverflow.com/a/7852925/4108673
 sub get_filesize_str
@@ -37,12 +107,12 @@ sub profile2label {
   return $description;
 }
 
-my $profiles = "/nix/var/nix/profiles/system*";
-my @generations = glob( $profiles );
-
 # $1 either "kernel" or "initrd"
 sub efi_sizes {
   my $suffix = shift;
+
+  my $profiles = "$NIXOS_PROFILE*";
+  my @generations = glob( $profiles );
 
   my %linuxes; 
   for (my $g = 0; $g <= $#generations; $g++) {
@@ -64,8 +134,4 @@ sub efi_sizes {
   }
 }
 
-print "There are two types of big NixOS files on EFI partitions: initrd and kernels (bzImage).\n";
-print "\n# Initrds:\n\n";
-efi_sizes("initrd");
-print "\n\n# Kernels:\n\n";
-efi_sizes("kernel");
+parse_args();
