@@ -38,34 +38,34 @@ sub profile2label {
 }
 
 my $profiles = "/nix/var/nix/profiles/system*";
-my @dirs = glob( $profiles );
-my @generations;
-foreach(@dirs) {
-  push(@generations, $_);
-}
+my @generations = glob( $profiles );
 
-my %linuxes; 
-for (my $g = 0; $g <= $#generations; $g++) {
-  my $initrd = readlink( $generations[$g] . "/initrd");
-  my $kernel = readlink( $generations[$g] . "/kernel");
-  push( @{ $linuxes{"$initrd"} }, $generations[$g]);
-  #push( @{ $linuxes{"$kernel"} }, $generations[$g][2]);
-}
+# $1 either "kernel" or "initrd"
+sub efi_sizes {
+  my $suffix = shift;
 
-# oneliners
-#for $linux ( keys %linuxes ) { 
-#  my $initrd_size = get_filesize_str($linux);
-#  print "$linux ($initrd_size)-> @{ $linuxes{$linux} }\n"; 
-#}
+  my %linuxes; 
+  for (my $g = 0; $g <= $#generations; $g++) {
+    my $file = readlink( $generations[$g] . "/$suffix");
+    push( @{ $linuxes{"$file"} }, $generations[$g]);
+  }
 
-# multiline list
-for $linux ( keys %linuxes ) { # this dict is unsorted which results in top-level order to be random
-  my $initrd_size = get_filesize_str($linux);
-  print "$linux ($initrd_size): \n"; #@{ $linuxes{$linux} }\n"; 
-  foreach(@{ $linuxes{$linux} }) {
-    my $epoch_timestamp = (stat($_))[10];
-    my $timestamp       = localtime($epoch_timestamp);
-    my $label = profile2label($_);
-    print "    - NixOS generation $label from $timestamp\n";
+  # multiline list
+  for $linux ( keys %linuxes ) { # this dict is unsorted which results in top-level order to be random
+    my $file_size = get_filesize_str($linux);
+    my $labels = join(" ", map { profile2label($_) } @{ $linuxes{$linux} });
+    print "$linux ($file_size): $labels\n";
+    foreach(@{ $linuxes{$linux} }) {
+      my $epoch_timestamp = (stat($_))[10];
+      my $timestamp       = localtime($epoch_timestamp);
+      my $label = profile2label($_);
+      print "    - NixOS generation $label from $timestamp\n";
+    }
   }
 }
+
+print "There are two types of big NixOS files on EFI partitions: initrd and kernels (bzImage).\n";
+print "\n# Initrds:\n\n";
+efi_sizes("initrd");
+print "\n\n# Kernels:\n\n";
+efi_sizes("kernel");
