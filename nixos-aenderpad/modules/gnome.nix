@@ -101,5 +101,14 @@
     6002
     6003
   ];
+  networking.firewall.allowedUDPPorts = [ 
+    5353 # avahi
+    # shairport-sync
+    5000 
+    6000
+    6001
+    6002
+    6003
+  ];
 }
 

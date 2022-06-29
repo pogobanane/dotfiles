@@ -37,13 +37,28 @@ in {
     ## static leases
     #dhcp-host=52:54:00:1d:e1:33,192.168.32.2
     #dhcp-host=52:54:00:8f:73:d7,192.168.32.3
+    dhcp-host=22:11:11:11:11:22,192.168.32.32
   '';
 
   networking.nat = {
     enable = true;
     externalInterface = external;
     internalInterfaces = ["internal"];
+    #dmzHost = "192.168.32.61";
+    #forwardPorts = [
+      #{
+        #destination = "192.168.32.32:80";
+        #proto = "tcp";
+        #sourcePort = 80;
+      #}
+      #{
+        #destination = "192.168.32.32:443";
+        #proto = "tcp";
+        #sourcePort = 443;
+      #}
+    #];
   };
+  networking.firewall.enable = false;
 
   networking.firewall.allowedTCPPorts = [
     # pixiecore

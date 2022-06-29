@@ -42,9 +42,19 @@
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  networking.interfaces.eth0.useDHCP = true;
-  networking.interfaces.eth0.macAddress = "94:05:bb:11:3e:80";
-  networking.interfaces.wlan0.useDHCP = true;
+  #networking.interfaces.eth0.useDHCP = true;
+  #networking.interfaces.eth0.macAddress = "94:05:bb:11:4e:80";
+  #networking.interfaces.eth1.useDHCP = true;
+  #networking.interfaces.eth1.macAddress = "94:05:bb:11:3e:80";
+  #networking.interfaces.wlan0.useDHCP = true;
+  # bridge for qemu VMs
+  #networking.bridges."VMs".interfaces = [ "enp4s0f3u1u1" ];
+  environment.etc."qemu/bridge.conf" = {
+    user = "root";
+    group = "qemu";
+    mode = "640";
+    text = "allow all";
+  };
   
   networking.retiolum = {
     ipv4 = "10.243.29.201";
@@ -150,10 +160,10 @@
 
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 22 1337 ];
+  networking.firewall.allowedTCPPorts = [ 22 80 443 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = true;
+  networking.firewall.enable = false;
   # disable to make systemd-resolvd work (which is enabled by retiolum module through systemd.network.enable)
   services.resolved.enable = false;
   systemd.services.systemd-networkd-wait-online.enable = false;
