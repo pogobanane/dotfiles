@@ -14,9 +14,9 @@
       {
         nixpkgs.overlays = [
           nur.overlay
-          (final: prev: {
-            sops = stablepkgs.legacyPackages.x86_64-linux.sops;
-          })
+          #(final: prev: {
+            #sops = stablepkgs.legacyPackages.x86_64-linux.sops;
+          #})
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
           })

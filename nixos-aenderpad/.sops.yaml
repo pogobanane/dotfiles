@@ -5,10 +5,16 @@
 keys:
   - &peter age1r8v7gf5wxmggsecapn2ptm3q6gjpyquw2fm3dwhr59jpmyjvzcfqd03zcd
   - &aenderpad age1vwya6v5s0tz6mlv4cyw4zl2gwm6c3623hj7sydy4rflwsqwy8u4qeutg8a
-  #- &aenderpadnotsurewhatthisisfor 5bcd3cefb129957e49719059f879810458b2b9c9
+  - &aenderpad-hm age17ut6245xkmg7q84zqvcesr7v65zjfsse09es9qwnckay9mynl4gqeqj7af
+  #- &aenderpadnotsurewhatthisisfor 5bcd3cefb129957e49719059f879810458b2b9c9 # probably something with sopspw
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
     - age:
       - *peter
       - *aenderpad
+  - path_regex: users-hm/secrets.yaml$
+    key_groups:
+    - age:
+      - *peter
+      - *aenderpad-hm

@@ -1,6 +1,6 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, modulesPath, ... }:
 let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
@@ -35,6 +35,14 @@ let
     text = "SOPS_AGE_KEY=$(${pkgs.age}/bin/age -d ~/.config/sops/age/keys.age) ${pkgs.sops}/bin/sops \"$@\"";
   };
 
+  sops-nix = pkgs.fetchFromGitHub {
+    owner = "Mic02";
+    repo = "sops-nix";
+    rev = "feat/home-manager";
+    ref = "c4d7f1cbd0f971e1dd625988556dd83539ee422f";
+    sha256 = "";
+  };
+
   nscan = pkgs.writeShellApplication {
     name = "nscan";
     runtimeInputs = [ pkgs.nmap ];
@@ -52,7 +60,25 @@ let
   };
 in
 {
-  imports = [ ./gui.nix ];
+  imports = [ 
+    ./gui.nix
+    ./sops.nix
+  ];
+
+  #home-manager.sharedModules = [
+    #./sops.nix
+  #];
+
+  # Configuration of secrets
+  # TODO: see comment in sops.nix
+  # sops = {
+  #   #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
+  #   age.keyFile = "/home/peter/.config/sops/age/aenderpad_home_manager.txt";
+  #   secrets.example_key = {
+  #     sopsFile = ./secrets.yaml;
+  #     path = "/run/user/1000/example_key.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
+  #   };
+  # };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

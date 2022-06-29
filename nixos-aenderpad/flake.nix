@@ -27,7 +27,7 @@
     #doom-emacs.url = "github:Mic92/doom-emacs/org-msg";
     #doom-emacs.flake = false;
 
-    sops-nix.url = github:Mic92/sops-nix;
+    sops-nix.url = github:Mic92/sops-nix/feat/home-manager;
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     retiolum.url = "github:Mic92/retiolum";
