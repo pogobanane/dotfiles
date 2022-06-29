@@ -1,5 +1,5 @@
 {config, ...}: {
-  nix.distributedBuilds = true;
+  nix.distributedBuilds = false;
   nix.buildMachines = [
     {
       hostName = "ryan.dse.in.tum.de";
