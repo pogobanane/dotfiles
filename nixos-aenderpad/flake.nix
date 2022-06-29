@@ -70,7 +70,8 @@
       fenixPkgs = fenix.packages.${system};
     in {
       packages = {
-        map = pkgs.callPackage ./pkgs/map.nix { };
+        map-cmd = pkgs.callPackage ./pkgs/map.nix { };
+        nixos-generations = pkgs.writeScriptBin "nixos-generations" ./users-hm/nixos-generations;
       };
     }));
 }
