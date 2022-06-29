@@ -10,6 +10,7 @@ let
   };
 
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
+    set -e
     echo "Sending \$1 as message to me: $1"
 
     TOKEN=$(cat /home/peter/.ssh/telegram_bot_token)
@@ -17,7 +18,7 @@ let
     URL="https://api.telegram.org/bot$TOKEN/sendMessage"
     MESSAGE="$1"
 
-    curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" &> /dev/null
+    [[ $(curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" | ${pkgs.jq}/bin/jq .ok) = "true" ]]
   '';
 
   nixos-generations = pkgs.writeScriptBin "nixos-generations" ./nixos-generations;
