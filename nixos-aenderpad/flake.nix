@@ -62,6 +62,8 @@
       };
       devShells.x86_64-linux = { 
         sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+        containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
+        networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
         rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
       };
     }
