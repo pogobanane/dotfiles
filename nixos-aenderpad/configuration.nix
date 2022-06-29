@@ -16,6 +16,11 @@
       ./modules/remote-builder.nix
     ];
 
+  sops.defaultSopsFile = ./secrets.yaml;
+  sops.secrets.telegram_bot_token = {
+    path = "/etc/telegram_bot_token";
+    owner = "peter";
+  };
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -152,6 +157,7 @@
   # disable to make systemd-resolvd work (which is enabled by retiolum module through systemd.network.enable)
   services.resolved.enable = false;
   systemd.services.systemd-networkd-wait-online.enable = false;
+  systemd.services.NetworkManager-wait-online.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
