@@ -18,7 +18,7 @@
 
   sops.defaultSopsFile = ./secrets.yaml;
   sops.secrets.telegram_bot_token = {
-    path = "/etc/telegram_bot_token";
+    path = "/home/peter/.ssh/telegram_bot_token";
     owner = "peter";
   };
   # Use the systemd-boot EFI boot loader.

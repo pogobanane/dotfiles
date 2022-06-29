@@ -12,7 +12,7 @@ let
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
     echo "Sending \$1 as message to me: $1"
 
-    TOKEN=$(cat /etc/telegram_bot_token)
+    TOKEN=$(cat /home/peter/.ssh/telegram_bot_token)
     CHAT_ID="272730663"
     URL="https://api.telegram.org/bot$TOKEN/sendMessage"
     MESSAGE="$1"
