@@ -9,15 +9,15 @@
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
-        home-manager.extraSpecialArgs.sops-nix = sops-nix;
+        home-manager.extraSpecialArgs = {
+          inherit sops-nix;
+          inherit nur;
+        };
         home-manager.users.peter = import ./users-hm/peter.nix;
       }
       {
         nixpkgs.overlays = [
           nur.overlay
-          #(final: prev: {
-            #sops = stablepkgs.legacyPackages.x86_64-linux.sops;
-          #})
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
           })
@@ -34,8 +34,7 @@
         nix.nixPath = [
           "nixpkgs=${pkgs.path}"
           "home-manager=${home-manager}"
-          #now managed by home-manager in ~/.config/nixpkgs/config.nix
-          #"nur=${nur}"
+          # "nur=${nur}" #now managed by home-manager in ~/.config/nixpkgs/config.nix:
         ];
       })
     ];

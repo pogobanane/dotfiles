@@ -1,6 +1,6 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
-{ config, lib, pkgs, sops-nix, ... }:
+{ config, lib, pkgs, sops-nix, nur, ... }:
 let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
@@ -93,6 +93,15 @@ in
   # changes in each release.
   home.stateVersion = "21.03";
 
+  home.file.".config/nixpkgs/config.nix".text = ''
+    {
+        packageOverrides = pkgs: {
+          # pin nur to same version as for NixOS
+          nur = import (${nur}) { inherit pkgs; };
+      };
+    }
+  '';
+
   # home.environment.variables = { EDITOR = "rvim"; };
   xdg.configFile."nvim/init.vim".source = ./nvimrc;
 
@@ -140,46 +149,6 @@ in
 
   home.file.".tmate.conf".source = ./tmate.conf;
   home.file.".config/lazygit/config.yml".source = ./lazygit.yml;
-
-  home.file.".config/nixpkgs/config.nix".text = let 
-    #flake-inputs2 = (builtins.getFlake (toString ./.)).inputs;
-    flake-inputs = (import ../flake.nix).inputs;
-    assertion = if (flake-inputs.nur.url == "github:nix-community/NUR") then throw "unexpected NUR url" else "";
-  in ''
-    #${flake-inputs.nur.url}
-    {
-        packageOverrides = pkgs: {
-
-          #nur = import ({flake-inputs2.nur}) { inherit pkgs; };
-          nur = import (
-            # boring and gives nix-shell other nur version than nixos:
-            builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz"
-
-            #builtins.fetchGit {
-            #  url = "https://github.com/nix-community/NUR.git";
-            #  rev = "{flake-inputs.nur.rev}";
-            #}
-
-            #builtins.fetchTarball {
-            #  # Get the revision by choosing a version from https://github.com/nix-community/NUR/commits/master
-            #  url = "https://github.com/nix-community/NUR/archive/3a6a6f4da737da41e27922ce2cfacf68a109ebce.tar.gz";
-            #  # Get the hash by running `nix-prefetch-url --unpack <url>` on the above url
-            #  sha256 = "04387gzgl8y555b3lkz9aiw9xsldfg4zmzp930m62qw8zbrvrshd";
-            #}
-
-            ) {
-          inherit pkgs;
-            };
-      };
-    }
-  '';
-    #{
-      #nixpkgs.config.packageOverrides = pkgs: {
-        #nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-          #inherit pkgs;
-        #};
-      #};
-    #}
 
   home.packages = with pkgs; [
     antigen
