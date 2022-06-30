@@ -12,6 +12,7 @@
         home-manager.extraSpecialArgs = {
           inherit sops-nix;
           inherit nur;
+          inherit nixpkgs;
         };
         home-manager.users.peter = import ./users-hm/peter.nix;
       }

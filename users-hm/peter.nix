@@ -1,6 +1,6 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
-{ config, lib, pkgs, sops-nix, nur, ... }:
+{ config, lib, nixpkgs, pkgs, sops-nix, nur, ... }:
 let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
@@ -95,6 +95,9 @@ in
 
   home.file.".config/nixpkgs/config.nix".text = ''
     {
+      # pin nixpkgs to same version as for NixOS
+      pkgs ? import (${nixpkgs}){}
+    }: {
         packageOverrides = pkgs: {
           # pin nur to same version as for NixOS
           nur = import (${nur}) { inherit pkgs; };
