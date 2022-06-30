@@ -9,6 +9,7 @@
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs.sops-nix = sops-nix;
         home-manager.users.peter = import ./users-hm/peter.nix;
       }
       {

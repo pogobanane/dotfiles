@@ -8,12 +8,12 @@ keys:
   - &aenderpad-hm age17ut6245xkmg7q84zqvcesr7v65zjfsse09es9qwnckay9mynl4gqeqj7af
   #- &aenderpadnotsurewhatthisisfor 5bcd3cefb129957e49719059f879810458b2b9c9 # probably something with sopspw
 creation_rules:
-  - path_regex: secrets.yaml$
+  - path_regex: ^secrets.yaml$
     key_groups:
     - age:
       - *peter
       - *aenderpad
-  - path_regex: users-hm/secrets.yaml$
+  - path_regex: ^users-hm/secrets.yaml$
     key_groups:
     - age:
       - *peter
