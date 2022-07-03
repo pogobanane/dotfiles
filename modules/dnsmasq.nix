@@ -1,5 +1,6 @@
 {config, lib, ...}: let
-  external = "wlan0";
+  #external = "wlan0";
+  external = "enp4s0f3u1u1"; # docking station home
 in {
   systemd.network.netdevs.internal.netdevConfig = {
     Name = "internal";
@@ -10,6 +11,7 @@ in {
       [Match]
       Name=internal
       [Network]
+      Address=192.168.32.1/24
       Address=192.168.32.50/24
       LLMNR=true
       LLDP=true
@@ -25,7 +27,6 @@ in {
   services.dnsmasq.resolveLocalQueries = lib.mkDefault false; # don't use it locally for dns
   services.dnsmasq.extraConfig = ''
     interface=internal
-    #interface=virttap
     listen-address=127.0.0.1
     dhcp-range=192.168.32.50,192.168.32.100,12h
     # disable dns
