@@ -73,7 +73,7 @@
     in {
       packages = {
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
-        nixos-generations = pkgs.writeScriptBin "nixos-generations" ./users-hm/nixos-generations;
+        nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
       };
     }));
 }

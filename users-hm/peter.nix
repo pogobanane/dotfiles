@@ -21,7 +21,7 @@ let
     [[ $(curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" | ${pkgs.jq}/bin/jq .ok) = "true" ]]
   '';
 
-  nixos-generations = pkgs.writeScriptBin "nixos-generations" ./nixos-generations;
+  nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
 
   ls1vpn = pkgs.writeShellApplication {
     name = "ls1vpn";
