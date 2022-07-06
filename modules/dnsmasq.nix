@@ -17,6 +17,20 @@ in {
       LLDP=true
     '';
   };
+  networking.hosts = let 
+    tld = "example.org";
+  in {
+    "192.168.32.32" = [
+      "${tld}"
+      "nextcloud.${tld}"
+      "gitlab.${tld}"
+      "warmap.${tld}"
+      "okelmann-peter.${tld}"
+      "pogobanane.${tld}"
+      "oldhq.${tld}"
+    ];
+  };
+
 
   # Add any internal interface with the following command:
   # $ nmcli dev set eth0 managed no
@@ -45,8 +59,8 @@ in {
     enable = true;
     externalInterface = external;
     internalInterfaces = ["internal"];
-    #dmzHost = "192.168.32.61";
-    #forwardPorts = [
+    dmzHost = "192.168.32.32";
+    forwardPorts = [
       #{
         #destination = "192.168.32.32:80";
         #proto = "tcp";
@@ -57,7 +71,7 @@ in {
         #proto = "tcp";
         #sourcePort = 443;
       #}
-    #];
+    ];
   };
   networking.firewall.enable = false;
 

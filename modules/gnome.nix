@@ -56,6 +56,13 @@
     calibre
     mumble
     marktext
+    dbeaver
+
+    # teamspeak
+    #teamspeak_client
+    #libsForQt5.qtwayland
+    #libsForQt5.plasma-wayland-protocols
+    # broken on wayland right now
 
     # for iphone
     libimobiledevice
