@@ -134,11 +134,7 @@ in
   # config.programs.ssh.startAgent = true;
 
   home.file.".gitconfig".source = ./gitconfig;
-  home.file.".gitignore".text = ''
-    .direnv/
-    result/
-    *.swp
-  '';
+  home.file.".gitignore".source = ./gitignore;
 
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")
