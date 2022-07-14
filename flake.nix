@@ -61,10 +61,13 @@
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
       devShells.x86_64-linux = { 
-        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
         containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
+        latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; };
         networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
+        node = pkgs.callPackage ./devShells/node.nix { inherit pkgs; };
+        python = pkgs.callPackage ./devShells/python.nix { inherit pkgs; };
         rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
+        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
       };
     }
     // (flake-utils.lib.eachDefaultSystem (system: let
