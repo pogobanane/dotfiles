@@ -32,6 +32,9 @@
 
     retiolum.url = "github:Mic92/retiolum";
 
+    tex2nix.url = "github:Mic92/tex2nix";
+    tex2nix.inputs.utils.follows = "nixpkgs";
+
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -52,9 +55,11 @@
     flake-utils,
     fenix,
     ctile,
+    tex2nix,
   }: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = fenix.packages.x86_64-linux;
+    tex2nixPkgs = tex2nix.packages.x86_64-linux;
   in {
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
@@ -62,7 +67,7 @@
       };
       devShells.x86_64-linux = { 
         containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
-        latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; };
+        latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; inherit tex2nixPkgs; };
         networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
         node = pkgs.callPackage ./devShells/node.nix { inherit pkgs; };
         python = pkgs.callPackage ./devShells/python.nix { inherit pkgs; };

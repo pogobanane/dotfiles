@@ -1,9 +1,8 @@
-{pkgs ? import <nixpkgs> {} }:
+{pkgs, tex2nixPkgs}:
   pkgs.mkShell {
     buildInputs = with pkgs; [
-      tex2nix
-      texlive.latexmk
-      texlive.latexindent
       texlab # lang serv
+      tex2nixPkgs.tex2nix
+      (texlive.combine { inherit (texlive) scheme-small latexmk latexindent; })
     ];
   }
