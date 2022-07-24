@@ -64,12 +64,13 @@ in
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
     secrets.te_bo_to = {
-      #path = "%r/te_bo_to.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
+      path = "%r/te_bo_to.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
     };
   };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  systemd.user.startServices = "sd-switch"; # experimental way to automatically restart systemd.user services
 
   #programs.doom-emacs = {
     #enable = true;
@@ -195,6 +196,7 @@ in
           vim-osc52
           tabular
           vim-LanguageTool
+          # ripgrep
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent

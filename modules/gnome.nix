@@ -57,6 +57,8 @@
     mumble
     marktext
     dbeaver
+    pavucontrol
+    cider
 
     # teamspeak
     #teamspeak_client
