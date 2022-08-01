@@ -177,7 +177,7 @@ _fishy_collapsed_wd() {
 
 user_color='green'; [ $UID -eq 0 ] && user_color='red'
 return_status="%{$fg_bold[red]%}%(?.. %?)%{$reset_color%}"
-PROMPT='%n@%m${return_status}%{$fg[$user_color]%}%(!.#.>)%{$reset_color%} '
+PROMPT='${name}:%n@%m${return_status}%{$fg[$user_color]%}%(!.#.>)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 
 date_time_string="+%a %T"
