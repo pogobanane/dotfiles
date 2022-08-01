@@ -125,7 +125,7 @@ in
     enable = true;
     extraConfig = builtins.readFile ./tmux.conf;
     plugins = with pkgs; [
-      tmuxPlugins.resurrect # save/restore sessions
+      tmuxPlugins.resurrect # save/restore sessions leader+S (save) and +R (restore)
       tmuxPlugins.nord # powerline-ish theme
       tmuxPlugins.pain-control # sane pane contol bindings
       tmuxPlugins.sensible # general sanity
@@ -196,6 +196,7 @@ in
           vim-osc52
           tabular
           vim-LanguageTool
+          vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S
           # ripgrep
         ];
 #          tpope/vim-sensible
