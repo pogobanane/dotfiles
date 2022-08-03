@@ -6,7 +6,15 @@
 {
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  ];
+
+
+  # as soon as i upgrade 5.16
+  # also: upstream it https://github.com/NixOS/nixos-hardware/pull/438
+  #boot = lib.mkIf (lib.versionAtLeast config.boot.kernelPackages.kernel.version "5.17") {
+  #  kernelParams = [ "initcall_blacklist=acpi_cpufreq_init" ];
+  #  kernelModules = [ "amd-pstate" ];
+  #};
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
   boot.initrd.kernelModules = [ ];
