@@ -178,7 +178,9 @@ _fishy_collapsed_wd() {
 user_color='green'; [ $UID -eq 0 ] && user_color='red'
 return_status="%{$fg_bold[red]%}%(?.. %?)%{$reset_color%}"
 shell_name="$name:"; [ -z $name ] && shell_name=
-PROMPT='${shell_name}%n@%m${return_status}%{$fg[$user_color]%}%(!.#.>)%{$reset_color%} '
+host_color=$(md5sum <<<$(hostname) | cut -c-2 | xargs -i printf "%03d\n" "0x{}")
+host_colored_name="%{$FG[${host_color}]%}%m%{$reset_color%}"
+PROMPT='${shell_name}%n@${host_colored_name}${return_status}%{$fg[$user_color]%}%(!.#.>)%{$reset_color%} '
 PROMPT2='%{$fg[red]%}\ %{$reset_color%}'
 
 date_time_string="+%a %T"
