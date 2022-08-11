@@ -39,6 +39,11 @@
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
 
+  # use networkmanager with a local systemd-resolved as DNS server.
+  networking.networkmanager.enable = false;
+  systemd.network.enable = true;
+  services.resolved.enable = true;
+
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
@@ -165,8 +170,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
-  # disable to make systemd-resolvd work (which is enabled by retiolum module through systemd.network.enable)
-  services.resolved.enable = false;
   systemd.services.systemd-networkd-wait-online.enable = false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
