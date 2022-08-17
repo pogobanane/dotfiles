@@ -61,9 +61,9 @@ let g:airline_powerline_fonts = 1
 
 " junegunn/fzf.vim
 map <leader>f :Files<CR>
-map <leader><Enter> :Buffers
+map <leader><Enter> :Buffers<CR>
 " opened files and buffers ordered by last accessed
-map <leader>h :History
+map <leader>h :History<CR>
 
 " vim-submode
 " adds a new editor mode for resizing splits. 
