@@ -40,7 +40,7 @@
   # time.timeZone = "Europe/Amsterdam";
 
   # use networkmanager with a local systemd-resolved as DNS server.
-  networking.networkmanager.enable = false;
+  networking.networkmanager.enable = true;
   systemd.network.enable = true;
   services.resolved.enable = true;
 
