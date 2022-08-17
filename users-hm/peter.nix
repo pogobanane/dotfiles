@@ -200,6 +200,7 @@ in
           vim-LanguageTool
           vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S
           vim-submode
+          vim-cpp-enhanced-highlight
           # ripgrep
         ];
 #          tpope/vim-sensible
