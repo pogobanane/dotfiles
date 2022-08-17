@@ -59,19 +59,11 @@ let g:airline_powerline_fonts = 1
 " junegunn/rainbow_parentheses.vim
 " au BufEnter * :RainbowParentheses<CR>
 
-" junegunn/fzf
-map <leader>f :FZF<CR> 
-
-function! s:buflist()
-  redir => ls
-  silent ls
-  redir END
-  return split(ls, '\n')
-endfunction
-
-function! s:bufopen(e)
-  execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-endfunction
+" junegunn/fzf.vim
+map <leader>f :Files<CR>
+map <leader><Enter> :Buffers
+" opened files and buffers ordered by last accessed
+map <leader>h :History
 
 " tmux navigator fix for nixos
 " let g:tmux_navigator_no_mappings = 1
@@ -82,13 +74,6 @@ nnoremap <silent> <c-h> :NERDTree
 " nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 " nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 " nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
-
-nnoremap <silent> <Leader><Enter> :call fzf#run({
-\   'source':  reverse(<sid>buflist()),
-\   'sink':    function('<sid>bufopen'),
-\   'options': '+m',
-\   'down':    len(<sid>buflist()) + 2
-\ })<CR>
 
 " other
 map <leader>W :w<CR>
