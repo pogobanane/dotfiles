@@ -8,7 +8,8 @@
 
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
-    unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    #unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    unstablepkgs.url = "github:Nixos/nixpkgs/backport-184877-to-release-22.05";
     nur.url = github:nix-community/NUR;
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
