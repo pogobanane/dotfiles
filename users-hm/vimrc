@@ -65,6 +65,26 @@ map <leader><Enter> :Buffers
 " opened files and buffers ordered by last accessed
 map <leader>h :History
 
+" vim-submode
+" adds a new editor mode for resizing splits. 
+" Enter with <C-w>r, resize with hjkl and exit with <Esc>
+try
+    call submode#enter_with('winsize', 'n', '', '<C-w>r', ':<C-u>call ResizeWindow()<CR>')
+    call submode#leave_with('winsize', 'n', '', '<Esc>')
+catch
+endtry
+
+function! ResizeWindow()
+    let curwin = winnr()
+    wincmd j | let target1 = winnr() | exe curwin "wincmd w"
+    wincmd l | let target2 = winnr() | exe curwin "wincmd w"
+
+    execute printf("call submode#map ('winsize', 'n', 'r', 'j', '<C-w>%s')", curwin == target1 ? "-" : "+")
+    execute printf("call submode#map ('winsize', 'n', 'r', 'k', '<C-w>%s')", curwin == target1 ? "+" : "-")
+    execute printf("call submode#map ('winsize', 'n', 'r', 'h', '<C-w>%s')", curwin == target2 ? ">" : "<")
+    execute printf("call submode#map ('winsize', 'n', 'r', 'l', '<C-w>%s')", curwin == target2 ? "<" : ">")
+endfunction
+
 " tmux navigator fix for nixos
 " let g:tmux_navigator_no_mappings = 1
 map <leader>j :TmuxNavigateDown<cr>

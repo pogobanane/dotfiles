@@ -22,6 +22,8 @@ let
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
+  
+  vim-submode = pkgs.callPackage ../pkgs/vim-submode.nix { };
 
   ls1vpn = pkgs.writeShellApplication {
     name = "ls1vpn";
@@ -189,7 +191,7 @@ in
           vim-airline
           vim-airline-themes
           indentLine
-          zoomwintab-vim
+          zoomwintab-vim # <C-w>o to zoom a buffer to whole screen size
           vim-tmux-navigator
           vim-bufkill
           ack-vim
@@ -197,6 +199,7 @@ in
           tabular
           vim-LanguageTool
           vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S
+          vim-submode
           # ripgrep
         ];
 #          tpope/vim-sensible
