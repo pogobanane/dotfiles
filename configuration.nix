@@ -32,6 +32,23 @@
     "zfs.zfs_arc_max=3221225472"
   ];
 
+  specialisation = {
+    upstream = {
+      inheritParentConfig = true;
+      configuration = {
+        # revert to when it (5.19) is compatible with zfs again
+        #boot.kernelPackages = pkgs.linuxPackages_latest;
+        boot.kernelPackages = pkgs.linuxPackages_5_18;
+      };
+    };
+    upstream-lts = {
+      inheritParentConfig = true;
+      configuration = {
+        boot.kernelPackages = pkgs.linuxPackages;
+      };
+    };
+  };
+
   networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hostId = "faae4fe2"; # for zfs

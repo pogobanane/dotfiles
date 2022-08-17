@@ -24,7 +24,7 @@
   boot.kernelPackages = let
       linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
     in
-      pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd);
+      pkgs.lib.mkDefault (pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd));
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
