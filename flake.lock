@@ -273,8 +273,8 @@
         "nur": "nur",
         "retiolum": "retiolum",
         "sops-nix": "sops-nix",
-        "stablepkgs": "stablepkgs",
-        "tex2nix": "tex2nix"
+        "tex2nix": "tex2nix",
+        "unstablepkgs": "unstablepkgs"
       }
     },
     "rust-analyzer-src": {
@@ -334,22 +334,6 @@
         "type": "github"
       }
     },
-    "stablepkgs": {
-      "locked": {
-        "lastModified": 1660581366,
-        "narHash": "sha256-et+bi9/jlSF/pHx5AYB9ZP2XDdZEQ0vnF7xlvs4503Y=",
-        "owner": "Nixos",
-        "repo": "nixpkgs",
-        "rev": "3d47bbaa26e7a771059d828eecf3bd8bf28a8b0f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Nixos",
-        "ref": "nixos-22.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "tex2nix": {
       "inputs": {
         "flake-utils": "flake-utils_3",
@@ -366,6 +350,22 @@
       "original": {
         "owner": "Mic92",
         "repo": "tex2nix",
+        "type": "github"
+      }
+    },
+    "unstablepkgs": {
+      "locked": {
+        "lastModified": 1660646295,
+        "narHash": "sha256-V4G+egGRc3elXPTr7QLJ7r7yrYed0areIKDiIAlMLC8=",
+        "owner": "Nixos",
+        "repo": "nixpkgs",
+        "rev": "762b003329510ea855b4097a37511eb19c7077f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
         "type": "github"
       }
     }

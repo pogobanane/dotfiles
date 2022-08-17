@@ -6,10 +6,9 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    # nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
     # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
-    stablepkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
+    unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
@@ -46,7 +45,7 @@
     self,
     nixpkgs,
     nur,
-    stablepkgs,
+    unstablepkgs,
     retiolum,
     home-manager,
     lambda-pirate,
@@ -63,7 +62,7 @@
     tex2nixPkgs = tex2nix.packages.x86_64-linux;
   in {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs nur stablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
+        inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
       devShells.x86_64-linux = { 

@@ -1,4 +1,4 @@
-{ nixpkgs, nur, stablepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile }: {
+{ nixpkgs, nur, unstablepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
@@ -21,6 +21,7 @@
           nur.overlay
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
+            # foobar = unstablepkgs.legacyPackages.x86_64-linux.foobar;
           })
         ];
       }
