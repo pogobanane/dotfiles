@@ -8,6 +8,22 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  # this seems to apply with
+  # ls /sys/devices/platform/i8042/serio1/input/input*/
+  # sudo udevadm test /sys/class/input/event16
+  services.udev.extraHwdb = ''
+    mouse:ps2::name:ETPS/2 Elantech TrackPoint:*
+      POINTINGSTICK_SENSITIVITY=2
+
+    input:b0011v0002p000Ee0000-e0,1,2,k110,111,112,r0,1,amlsfw
+      POINTINGSTICK_SENSITIVITY=2
+
+    input:b0000v0000p0000e0000-e0,5,kramlsfw2,
+      POINTINGSTICK_SENSITIVITY=2
+
+    evdev:name:ETPS/2 Elantech TrackPoint:dmi:bvn*:bvr*:bd*:svnLENOVO:pn*:pvr*:*
+      POINTINGSTICK_SENSITIVITY=2
+  '';
 
   # as soon as i upgrade 5.16
   # also: upstream it https://github.com/NixOS/nixos-hardware/pull/438
