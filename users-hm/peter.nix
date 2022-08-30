@@ -53,6 +53,16 @@ let
       sha256 = "sha256-DbVyfr9uH3o1GSvWv06/5HO2S5JXVYZvudPN2RemOY0=";
     };
   };
+
+  p4-syntax-highlighter-collection = pkgs.vimUtils.buildVimPlugin {
+    name = "p4-syntax-highlighter-collection";
+    src = pkgs.fetchFromGitHub {
+      owner = "c3m3gyanesh";
+      repo = "p4-syntax-highlighter-collection";
+      rev = "e6525b5ea5eb31148dcc7957cb49985de6e582c3";
+      sha256 = "sha256-exZ89Q30OwpIl00SG8KhRxA8vbnRNdJhZVGNZMDYLVQ=";
+    };
+  };
 in
 {
   imports = [ 
@@ -201,6 +211,7 @@ in
           vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S
           vim-submode
           vim-cpp-enhanced-highlight
+          p4-syntax-highlighter-collection
         ];
 #          tpope/vim-sensible
 #          roryokane/detectindent

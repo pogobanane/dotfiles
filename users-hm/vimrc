@@ -56,6 +56,10 @@ let g:airline_theme='molokai'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 
+" p4 syntax highlighting
+let g:p4_no_p4_16 = 1
+let p4_no_p4_16 = 1
+
 " junegunn/rainbow_parentheses.vim
 " au BufEnter * :RainbowParentheses<CR>
 
