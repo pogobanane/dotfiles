@@ -212,7 +212,8 @@ def addHost(ip: str, hostname: str):
     except KeyError:
         hosts[ip] = []
 
-    hosts[ip] += [hostname]
+    if not hostname in hosts[ip]:
+        hosts[ip] += [hostname]
 
 for a in everything:
     try:
