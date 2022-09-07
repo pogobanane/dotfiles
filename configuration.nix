@@ -15,6 +15,7 @@
       ./modules/tor-ssh.nix
       ./modules/remote-builder.nix
       ./modules/zsh.nix
+      ./modules/libreweb/libreweb.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;
@@ -52,6 +53,8 @@
   networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hostId = "faae4fe2"; # for zfs
+
+  networking.libreweb = true;
 
   # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
