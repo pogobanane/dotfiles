@@ -39,6 +39,7 @@ alias sve="sudo EDITOR=$EDITOR virsh edit"
 
 set ttymouse=xterm2
 set mouse=a
+zstyle ':completion:*' rehash true
 
 #function subl () {
 #	/usr/bin/flatpak run --branch=stable --arch=x86_64 --command=sublime --file-forwarding com.sublimetext.three $@ &>/dev/null &
@@ -95,7 +96,7 @@ cd() {
   fi
 
   # fallback to zoxide if builtin cd fails
-  if ! builtin cd "$to" && [[ -n ${commands[zoxide]} ]]; then
+  if ! builtin cd "$to" 2&>/dev/null && [[ -n ${commands[zoxide]} ]]; then
     __zoxide_z "$to"
   fi
 }
@@ -158,6 +159,14 @@ antigen bundle HeroCC/LS_COLORS
 
 # Tell Antigen that you're done.
 antigen apply
+
+###############################################################
+#                overwrite some antigen things                #
+###############################################################
+
+if [[ -n ${commands[lsd]} ]]; then
+  alias ls="lsd --classify --date=relative"
+fi
 
 
 ###############################################################
