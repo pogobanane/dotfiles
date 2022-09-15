@@ -168,6 +168,7 @@ in
     fzf
     tree
     git
+    git-absorb
     tmux
     psmisc
     # libguestfs-with-appliance

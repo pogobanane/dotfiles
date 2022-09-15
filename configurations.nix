@@ -21,7 +21,7 @@
           nur.overlay
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
-            # foobar = unstablepkgs.legacyPackages.x86_64-linux.foobar;
+            nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
           })
         ];
       }

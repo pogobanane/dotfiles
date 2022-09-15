@@ -7,7 +7,7 @@
     flake-utils.url = "github:numtide/flake-utils";
 
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
-    # nixpkgs.url = "/home/peter/dev/nix/nixpkgs";
+    #unstablepkgs.url = "/home/peter/dev/nix/nixpkgs";
     unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
 
