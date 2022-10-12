@@ -39,8 +39,8 @@
       inheritParentConfig = true;
       configuration = {
         # revert to when it (5.19) is compatible with zfs again
-        #boot.kernelPackages = pkgs.linuxPackages_latest;
-        boot.kernelPackages = pkgs.linuxPackages_5_18;
+        boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+        #boot.kernelPackages = pkgs.linuxPackages_5_18;
       };
     };
     upstream-lts = {
