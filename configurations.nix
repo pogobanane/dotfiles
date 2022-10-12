@@ -22,7 +22,20 @@
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
+            chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+            #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
+            cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
           })
+          #(self: super: { 
+            #cider = super.cider.overrideAttrs (old: rec {
+              #name = "cider-mine-${version}";
+              #version = "1.5.6";
+              #src = super.fetchurl rec {
+                #url = "https://github.com/ciderapp/cider-releases/releases/download/v${version}/Cider-${version}.AppImage";
+                #sha256 = "sha256-gn0dRoPPolujZ1ukuo/esSLwbhiPdcknIe9+W6iRaYw=";
+              #};
+            #});
+          #})
         ];
       }
       ({ pkgs, ... }: {

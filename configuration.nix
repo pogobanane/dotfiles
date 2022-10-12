@@ -16,6 +16,7 @@
       ./modules/remote-builder.nix
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
+      ./modules/make-linux-fast.nix
     ];
 
   sops.defaultSopsFile = ./secrets.yaml;
@@ -177,6 +178,11 @@
   #   enableSSHSupport = true;
   # };
   programs.zsh.enable = true;
+
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+  };
 
   # List services that you want to enable:
  

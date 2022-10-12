@@ -9,9 +9,25 @@
     XDG_SESSION_TYPE = "wayland";
     MOZ_ENABLE_WAYLAND = "1"; # mozillas wayland backend is experimental and disabled by default
   };
-  nixpkgs.overlays = [ (self: super: { chromium = super.chromium.override {
-    commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
-  }; } ) ];
+  nixpkgs.overlays = [ 
+    (self: super: { 
+      chromium = super.chromium.override {
+        commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
+      };
+    } )
+    #(self: super: { 
+      #gnome = super.gnome.overrideScope' (gself: gsuper: {
+        #gnome-keyring = gsuper.gnome-keyring.override {
+          #doCheck = true;
+          #dontPatch = true;
+          #prePatch = ''
+            #substituteInPlace $out/pkcs11/ssh-store/gkm-ssh-module.c
+              #--replace "~/.ssh" "~/.ssh/gnome-autoload"
+          #'';
+        #};
+      #});
+    #} ) 
+  ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
   # opening chrome://flags/#enable-webrtc-pipewire-capturer in chrome and change "WebRTC PipeWire support" to "Enabled" makes screen sharing work
   # not there yet: flatpak run --env=XDG_SESSION_TYPE=wayland --env=QT_QPA_PLATFORM=wayland --socket=wayland --enable-features=UseOzonePlatform --ozone-platform=wayland io.typora.Typora
@@ -23,6 +39,7 @@
     nextcloud-client
     gnome.gnome-terminal
     gnome.gedit
+    gnome.seahorse
     ctile
     gnomeExtensions.appindicator
     gnomeExtensions.gesture-improvements
@@ -47,6 +64,7 @@
     obs-studio
     libreoffice
     gimp
+    inkscape
     thunderbird
     pdfarranger
     hexchat
@@ -58,6 +76,7 @@
     marktext
     dbeaver
     pavucontrol
+    libheif # for apple media codecs
     cider
 
     # teamspeak
