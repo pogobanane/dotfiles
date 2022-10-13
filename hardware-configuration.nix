@@ -22,9 +22,9 @@
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
   boot.kernelPackages = let
-      linux_ioregionfd = pkgs.callPackage ./linux-ioregionfd.nix {};
+      linux = pkgs.linuxPackages;
     in
-      pkgs.lib.mkDefault (pkgs.recurseIntoAttrs (pkgs.linuxPackagesFor linux_ioregionfd));
+      pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =

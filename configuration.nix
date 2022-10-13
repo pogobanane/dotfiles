@@ -43,12 +43,12 @@
         #boot.kernelPackages = pkgs.linuxPackages_5_18;
       };
     };
-    upstream-lts = {
-      inheritParentConfig = true;
-      configuration = {
-        boot.kernelPackages = pkgs.linuxPackages;
-      };
-    };
+    #iorefd = {
+      #inheritParentConfig = true;
+      #configuration = {
+        #boot.kernelPackages = pkgs.callPackage ./linux-ioregionfd.nix {};
+      #};
+    #};
   };
 
   networking.hostName = "aenderpad"; # Define your hostname.
