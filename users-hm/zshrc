@@ -165,7 +165,7 @@ antigen apply
 ###############################################################
 
 if [[ -n ${commands[lsd]} ]]; then
-  alias ls="lsd --classify --date=relative"
+  alias ls="lsd --classify"
 fi
 
 
