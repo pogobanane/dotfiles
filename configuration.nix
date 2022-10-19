@@ -64,6 +64,7 @@
   networking.networkmanager.enable = true;
   systemd.network.enable = true;
   services.resolved.enable = true;
+  services.resolved.dnssec = "false";
 
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
