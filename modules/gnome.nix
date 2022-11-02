@@ -40,7 +40,7 @@
     gnome.gnome-terminal
     gnome.gedit
     gnome.seahorse
-    gnome.gnome-remote-desktop
+    remmina # rdp/vnc client
     ctile
     gnomeExtensions.appindicator
     gnomeExtensions.gesture-improvements
