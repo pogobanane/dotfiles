@@ -20,5 +20,6 @@ pkgs.mkShell {
   RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
   buildInputs = with pkgs; [
     rustToolchain
+    fenixPkgs.rust-analyzer
   ];
 }

@@ -40,6 +40,7 @@
     gnome.gnome-terminal
     gnome.gedit
     gnome.seahorse
+    gnome.gnome-remote-desktop
     ctile
     gnomeExtensions.appindicator
     gnomeExtensions.gesture-improvements
@@ -87,6 +88,7 @@
 
     # for iphone
     libimobiledevice
+    idevicerestore
     ifuse
     libheif
   ];

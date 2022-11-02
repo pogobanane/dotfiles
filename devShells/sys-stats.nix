@@ -17,5 +17,14 @@
 
       # network state
       ethtool
+
+      # power monitoring
+      powertop
+
+      # available hardware exploration
+      dmidecode # -t {bios, chassis, cache, slot}
+      pciutils # lspci -vmm
+      inxi # aggregates hw infos
+      lstopo # generates text or image hw layouts/trees
     ];
   }

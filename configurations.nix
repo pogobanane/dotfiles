@@ -23,8 +23,8 @@
             ctile = ctile.packages.x86_64-linux.ctile;
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
             chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
-            #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
-            cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
+            cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
+            #cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {
