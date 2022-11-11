@@ -27,6 +27,9 @@
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
+  # page compression because swap on zfs partitions is a bit dangerous
+  zramSwap.enable = true;
+
   fileSystems."/" =
     { device = "zroot/root/nixos";
       fsType = "zfs";
