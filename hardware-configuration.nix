@@ -27,8 +27,9 @@
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
-  # page compression because swap on zfs partitions is a bit dangerous
-  zramSwap.enable = true;
+  # page compression because swap on zfs partitions is a bit dangerous.
+  # disable, because it still leads to an unresponsive system, once many gigabyte are swapped.
+  #zramSwap.enable = true;
 
   fileSystems."/" =
     { device = "zroot/root/nixos";

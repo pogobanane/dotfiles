@@ -66,6 +66,7 @@
     libreoffice
     gimp
     inkscape
+    drawio
     thunderbird
     pdfarranger
     hexchat
