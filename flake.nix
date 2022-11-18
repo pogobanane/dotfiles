@@ -65,6 +65,7 @@
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
         nixosSystem = nixpkgs.lib.nixosSystem;
+        flakepkgs = self.packages;
       };
       devShells.x86_64-linux = { 
         clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
@@ -84,6 +85,8 @@
       packages = {
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
         nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+        #webcord = if "${system}" == "x86_64_linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else { };
+        webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       };
     }));
 }

@@ -1,4 +1,4 @@
-{ nixpkgs, nur, unstablepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile }: {
+{ nixpkgs, nur, unstablepkgs, flakepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
@@ -24,8 +24,9 @@
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
             #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
             chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
-            cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
-            #cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
+            #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
+            cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
+            webcord = flakepkgs.x86_64-linux.webcord;
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {
