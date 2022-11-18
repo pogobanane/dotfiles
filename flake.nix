@@ -67,6 +67,7 @@
         nixosSystem = nixpkgs.lib.nixosSystem;
       };
       devShells.x86_64-linux = { 
+        clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
         containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
         latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; inherit tex2nixPkgs; };
         networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
