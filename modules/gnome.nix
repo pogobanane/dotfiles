@@ -8,13 +8,9 @@
     QT_QPA_PLATFORM = "wayland"; # qt apps disable wayland by default
     XDG_SESSION_TYPE = "wayland";
     MOZ_ENABLE_WAYLAND = "1"; # mozillas wayland backend is experimental and disabled by default
+    NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
   nixpkgs.overlays = [ 
-    (self: super: { 
-      chromium = super.chromium.override {
-        commandLineArgs = "--enable-features=UseOzonePlatform --ozone-platform=wayland";
-      };
-    } )
     #(self: super: { 
       #gnome = super.gnome.overrideScope' (gself: gsuper: {
         #gnome-keyring = gsuper.gnome-keyring.override {
@@ -81,6 +77,7 @@
     libheif # for apple media codecs
     cider
     webcord
+    slack
 
     # teamspeak
     #teamspeak_client

@@ -23,7 +23,8 @@
             ctile = ctile.packages.x86_64-linux.ctile;
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
             #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
-            chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+            #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+            #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
             cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
             webcord = flakepkgs.x86_64-linux.webcord;
