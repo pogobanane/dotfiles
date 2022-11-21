@@ -80,6 +80,7 @@
     pavucontrol
     libheif # for apple media codecs
     cider
+    webcord
 
     # teamspeak
     #teamspeak_client
