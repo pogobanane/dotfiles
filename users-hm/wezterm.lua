@@ -22,23 +22,24 @@ return {
     -- my choice
     'Monospace',
 
-    -- /nix/store/8cf5drzf1gswmcz9hh6jnw2ffxxxwy06-dejavu-fonts-2.37/share/fonts/truetype/DejaVuSansMono.ttf, FontConfigMatch("Monospace")
+    -- /nix/store/zp1maa72qgf4s9smdkvn0zrf0a2cyy2q-dejavu-fonts-2.37/share/fonts/truetype/DejaVuSansMono.ttf, FontConfigMatch("Monospace")
+    "DejaVu Sans Mono",
+
+    -- /nix/store/zp1maa72qgf4s9smdkvn0zrf0a2cyy2q-dejavu-fonts-2.37/share/fonts/truetype/DejaVuSansMono.ttf, FontConfig
     "DejaVu Sans Mono",
 
     -- <built-in>, BuiltIn
     "JetBrains Mono",
 
-    -- /nix/store/wca64hcxc578q0gsx4bga519kc2rrwid-noto-fonts-emoji-2.034/share/fonts/noto/NotoColorEmoji.ttf, FontConfig
+    -- /nix/store/mmcqcfxyz7cdi0qsnarmd9jw2z4sj7bq-noto-fonts-emoji-2.038/share/fonts/noto/NotoColorEmoji.ttf, FontConfig
     -- Assumed to have Emoji Presentation
     -- Pixel sizes: [128]
     "Noto Color Emoji",
 
     -- <built-in>, BuiltIn
     "Symbols Nerd Font Mono",
-
-    -- <built-in>, BuiltIn
-    "Last Resort High-Efficiency",
   },
+  warn_about_missing_glyphs = false,
   hide_tab_bar_if_only_one_tab = true,
   --color_scheme = "GitHub Dark",
   --color_scheme = "Molokai",
