@@ -22,6 +22,7 @@
           (final: prev: {
             ctile = ctile.packages.x86_64-linux.ctile;
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
+            wezterm = unstablepkgs.legacyPackages.x86_64-linux.wezterm;
             #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
             #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
             #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;

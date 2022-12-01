@@ -57,6 +57,7 @@
     keepassxc
     bitwarden
     alacritty
+    wezterm
     vlc
     obs-studio
     libreoffice
@@ -78,6 +79,7 @@
     cider
     webcord
     slack
+    signal-desktop
 
     # teamspeak
     #teamspeak_client

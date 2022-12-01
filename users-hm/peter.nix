@@ -149,6 +149,8 @@ in
   home.file.".gitconfig".source = ./gitconfig;
   home.file.".gitignore".source = ./gitignore;
 
+  home.file.".wezterm.lua".source = ./wezterm.lua;
+
   home.file.".emacs.d/init.el".text = ''
     (load "default.el")
   '';
