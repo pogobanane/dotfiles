@@ -78,16 +78,22 @@
         sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
       };
     }
-    // (flake-utils.lib.eachDefaultSystem (system: let
+    // nixpkgs.lib.attrsets.recursiveUpdate
+    (flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
       fenixPkgs = fenix.packages.${system};
     in {
       packages = {
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
         nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
-        #webcord = if "${system}" == "x86_64_linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else { };
-        webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+        #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
+        #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       };
-    }));
+    }))
+    (let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    in {
+      packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+    });
 }
 
