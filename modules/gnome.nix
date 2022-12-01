@@ -23,6 +23,17 @@
         #};
       #});
     #} ) 
+    (self: super: { 
+      gnomeExtensions = super.gnomeExtensions // rec {
+        #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
+        switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (finalAttrs: previousAttrs: rec {
+          postPatch = ''
+            substituteInPlace metadata.json \
+              --replace '"42"' '"43", "42"'
+          '';
+        });
+      };
+    } ) 
   ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
   # opening chrome://flags/#enable-webrtc-pipewire-capturer in chrome and change "WebRTC PipeWire support" to "Enabled" makes screen sharing work
@@ -39,10 +50,10 @@
     remmina # rdp/vnc client
     ctile
     gnomeExtensions.appindicator
-    gnomeExtensions.gesture-improvements
-    gnomeExtensions.bluetooth-quick-connect
-    gnomeExtensions.switcher
-    gnomeExtensions.sound-output-device-chooser
+    gnomeExtensions.gesture-improvements # disabled
+    gnomeExtensions.bluetooth-quick-connect # disabled
+    gnomeExtensions.switcher-patched
+    gnomeExtensions.sound-output-device-chooser # disabled
     # gnomeExtensions.tactile
     gnomeExtensions.noannoyance-2
     gnomeExtensions.forge
