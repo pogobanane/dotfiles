@@ -16,7 +16,8 @@
       bottom    # better htop
 
       # network state
-      ethtool
+      ethtool # link status
+      unixtools.netstat # netstat -tunlp to list open ports
 
       # power monitoring
       powertop
@@ -25,6 +26,6 @@
       dmidecode # -t {bios, chassis, cache, slot}
       pciutils # lspci -vmm
       inxi # aggregates hw infos
-      lstopo # generates text or image hw layouts/trees
+      hwloc # lstopo: generates text or image hw layouts/trees
     ];
   }
