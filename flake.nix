@@ -6,7 +6,7 @@
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
 
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.05";
+    nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.11";
     #unstablepkgs.url = "/home/peter/dev/nix/nixpkgs";
     unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     nur.url = github:nix-community/NUR;
@@ -17,7 +17,7 @@
     ctile.url = "git+https://gitlab.com/pogobanane/gnome-ctile.git";
     ctile.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-22.05";
+    home-manager.url = "github:nix-community/home-manager/release-22.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
