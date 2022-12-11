@@ -67,7 +67,13 @@
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
       };
-      devShells.x86_64-linux = { 
+      devShells.x86_64-linux = {
+        default = pkgs.mkShell {
+          buildInputs = with pkgs; [
+            just
+            nix-output-monitor
+          ];
+        };
         clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
         containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
         latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; inherit tex2nixPkgs; };

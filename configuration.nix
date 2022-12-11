@@ -139,6 +139,11 @@
   };
 
   virtualisation.docker.enable = true;
+  virtualisation.docker.daemon.settings = {
+    # default ip range for docker bridges seems to be 172.18.0.1.
+    # This collides with ip addresses of wifis in DB ICEs trains.
+    bip = "172.19.0.1/16"; 
+  };
 
   security.sudo.extraConfig = ''
     Defaults timestamp_timeout=15

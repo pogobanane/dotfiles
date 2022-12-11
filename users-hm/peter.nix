@@ -21,6 +21,10 @@ let
     [[ $(curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" | ${pkgs.jq}/bin/jq .ok) = "true" ]]
   '';
 
+  tmuxenv-update = pkgs.writeScriptBin "tmuxenv-update" ''
+    eval $(tmux showenv)
+  '';
+
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
   
   vim-submode = pkgs.callPackage ../pkgs/vim-submode.nix { };
@@ -180,12 +184,13 @@ in
     bottom # btm
     #doom-emacs
     sendtelegram
-    nix-index
+    nix-index # nix-locate
     sops
     sopspw
     age
     nscan
     nixos-generations
+    nix-output-monitor # nom
     (
       vim_configurable.customize {
         name = "vim";
