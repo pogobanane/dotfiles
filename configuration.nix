@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/self.nix
       ./modules/nix-daemon.nix
       ./modules/gnome.nix
       ./modules/logger.nix
