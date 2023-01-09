@@ -20,6 +20,18 @@
         "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
       }
     },
+    "discord-tar": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-eQ8iBAeykA7QNKC5cU0GORKISC/Mcqgj8qz8FsuK0g4=",
+        "type": "file",
+        "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -279,6 +291,7 @@
     "root": {
       "inputs": {
         "ctile": "ctile",
+        "discord-tar": "discord-tar",
         "fenix": "fenix",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",

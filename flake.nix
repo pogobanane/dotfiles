@@ -35,6 +35,9 @@
     tex2nix.url = "github:Mic92/tex2nix";
     tex2nix.inputs.utils.follows = "nixpkgs";
 
+    discord-tar.url = "https://discord.com/api/download?platform=linux&format=tar.gz";
+    discord-tar.flake = false;
+
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
@@ -57,13 +60,14 @@
     fenix,
     ctile,
     tex2nix,
+    discord-tar
   }: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = fenix.packages.x86_64-linux;
     tex2nixPkgs = tex2nix.packages.x86_64-linux;
   in {
       nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile;
+        inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile discord-tar;
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
       };

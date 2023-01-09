@@ -1,4 +1,4 @@
-{ nixpkgs, nur, unstablepkgs, flakepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile }: {
+{ nixpkgs, nur, unstablepkgs, flakepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile, discord-tar }: {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [
@@ -30,7 +30,10 @@
             cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
             webcord = flakepkgs.x86_64-linux.webcord;
             #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
-            discord = prev.discord.overrideAttrs (_: { src = builtins.fetchTarball "https://discord.com/api/download?platform=linux&format=tar.gz"; });
+            discord = prev.discord.overrideAttrs (_: { 
+              src = discord-tar; 
+              unpackCmd = "tar -xzf $curSrc";
+            });
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {
