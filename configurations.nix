@@ -29,6 +29,8 @@
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
             cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
             webcord = flakepkgs.x86_64-linux.webcord;
+            #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
+            discord = prev.discord.overrideAttrs (_: { src = builtins.fetchTarball "https://discord.com/api/download?platform=linux&format=tar.gz"; });
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {

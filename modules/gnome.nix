@@ -89,6 +89,7 @@
     libheif # for apple media codecs
     cider
     webcord
+    discord
     slack
     signal-desktop
 
