@@ -1,5 +1,5 @@
 { nixpkgs, nur, unstablepkgs, flakepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile, 
-#discord-tar 
+discord-tar 
 }: {
   aendernix = nixosSystem {
     system = "x86_64-linux";
@@ -32,10 +32,10 @@
             cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
             webcord = flakepkgs.x86_64-linux.webcord;
             #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
-            #discord = prev.discord.overrideAttrs (_: { 
-              #src = discord-tar; 
-              #unpackCmd = "tar -xzf $curSrc";
-            #});
+            discord = prev.discord.overrideAttrs (_: { 
+              src = discord-tar; 
+              unpackCmd = "tar -xzf $curSrc";
+            });
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {

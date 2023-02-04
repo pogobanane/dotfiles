@@ -27,7 +27,7 @@
     #doom-emacs.flake = false;
 
     #sops-nix.url = github:Mic92/sops-nix/feat/home-manager;
-    sops-nix.url = github:pogobanane/sops-nix/feat/home-manager-darwin;
+    sops-nix.url = github:pogobanane/sops-nix/feat/home-manager-rebased;
     #sops-nix.url = git+file:///home/peter/dev/nix/sops-nix;
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -36,8 +36,8 @@
     tex2nix.url = "github:Mic92/tex2nix";
     tex2nix.inputs.utils.follows = "nixpkgs";
 
-    #discord-tar.url = "tarball+https://discord.com/api/download\?platform=linux\&format=tar.gz";
-    #discord-tar.flake = false;
+    discord-tar.url = "tarball+https://discord.com/api/download?platform=linux&format=tar.gz";
+    discord-tar.flake = false;
 
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
@@ -61,7 +61,7 @@
     fenix,
     ctile,
     tex2nix,
-    #discord-tar
+    discord-tar
   }: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = fenix.packages.x86_64-linux;
@@ -69,7 +69,7 @@
   in {
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile 
-        #discord-tar
+        discord-tar
         ;
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;

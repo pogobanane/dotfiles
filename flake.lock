@@ -20,6 +20,18 @@
         "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
       }
     },
+    "discord-tar": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-qPK+A3zvmoemWF+FL0VJSZO+s/zbkgZvUs4zNMpH9yA=",
+        "type": "tarball",
+        "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
+      },
+      "original": {
+        "type": "tarball",
+        "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
+      }
+    },
     "fenix": {
       "inputs": {
         "nixpkgs": "nixpkgs",
@@ -183,18 +195,18 @@
         "type": "github"
       }
     },
-    "nixpkgs-22_05": {
+    "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1656955776,
-        "narHash": "sha256-1aMu67m+orlGxVwfiX3RxTEVFoq/RmKa/L5u9zU3UNQ=",
+        "lastModified": 1675546052,
+        "narHash": "sha256-se6/J+etJ0eyVue4kJLM44RXnzAkoV//7lCQEGh6pjM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cc16da2c92041cbe817c40f62aac87c99104e9c2",
+        "rev": "b372d5f424a71860caa386e5229c6d643d92c71a",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "release-22.05",
+        "ref": "release-22.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -263,6 +275,7 @@
     "root": {
       "inputs": {
         "ctile": "ctile",
+        "discord-tar": "discord-tar",
         "fenix": "fenix",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
@@ -315,19 +328,19 @@
         "nixpkgs": [
           "nixpkgs"
         ],
-        "nixpkgs-22_05": "nixpkgs-22_05"
+        "nixpkgs-stable": "nixpkgs-stable"
       },
       "locked": {
-        "lastModified": 1675282777,
-        "narHash": "sha256-WiPrPf2vsUsHRmfkuPDgHLA2Hdv8rO0HtkeX5ITNo0I=",
+        "lastModified": 1675416630,
+        "narHash": "sha256-JDoAi4ceoddcIIZLoswfzsJeEHDe1ZIbAJcn4Zy6N3U=",
         "owner": "pogobanane",
         "repo": "sops-nix",
-        "rev": "ab0024f035e0d1df5bbfc8ccc9e16add6060b9cc",
+        "rev": "e4b99135e5581fc37548fd00d802c817e5f66b69",
         "type": "github"
       },
       "original": {
         "owner": "pogobanane",
-        "ref": "feat/home-manager-darwin",
+        "ref": "feat/home-manager-rebased",
         "repo": "sops-nix",
         "type": "github"
       }
