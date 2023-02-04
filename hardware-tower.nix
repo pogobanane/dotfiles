@@ -24,10 +24,14 @@
   boot.kernelParams = [
     "zfs.zfs_arc_sys_free=3221225472"
     "zfs.zfs_arc_max=3221225472"
+    "vfio-pci.ids=1002:67df,1002:aaf0"
+    "add_efi_memmap" 
+    "kvm.ignore_msrs=1"
+    "kvm.report_ignored_msrs=0"
   ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ "dm-snapshot" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" "vfio_pci" "vfio" "vfio_iommu_type1" ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 

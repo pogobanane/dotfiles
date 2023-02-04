@@ -3,6 +3,9 @@ hostname := `hostname`
 nixos-build HOST=`hostname`:
   nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --log-format internal-json -v |& nom --json
 
+nixos-switch HOST=`hostname`:
+  sudo nixos-rebuild switch --flake .#{{HOST}}
+
 # repl into current system
 nixos-repl:
   # use `:lf .` to load the underlying flake

@@ -13,7 +13,7 @@ let
     set -e
     echo "Sending \$1 as message to me: $1"
 
-    TOKEN=$(cat /home/peter/.ssh/telegram_bot_token)
+    TOKEN=$(cat $XDG_RUNTIME_DIR/telegram_bot_token)
     CHAT_ID="272730663"
     URL="https://api.telegram.org/bot$TOKEN/sendMessage"
     MESSAGE="$1"
@@ -75,14 +75,14 @@ in
   ];
 
   # Configuration of secrets
-  #sops = {
-  #  #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
-  #  defaultSopsFile = ./secrets.yaml;
-  #  age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
-  #  secrets.te_bo_to = {
-  #    path = "%r/te_bo_to.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
-  #  };
-  #};
+  sops = {
+    #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
+    defaultSopsFile = ./secrets.yaml;
+    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
+    secrets.telegram_bot_token = {
+      path = "%r/telegram_bot_token"; # %r gets replaced with your $XDG_RUNTIME_DIR
+    };
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
