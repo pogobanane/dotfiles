@@ -1,4 +1,21 @@
 { nixpkgs, nur, unstablepkgs, flakepkgs, lambda-pirate, nixosSystem, retiolum, home-manager, nixos-hardware, sops-nix, ctile, discord-tar }: {
+  aendernix = nixosSystem {
+    system = "x86_64-linux";
+    modules = [
+      ./configuration.nix
+      ./hardware-tower.nix
+      home-manager.nixosModules.home-manager {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit sops-nix;
+          inherit nur;
+          inherit nixpkgs;
+        };
+        home-manager.users.peter = import ./users-hm/peter.nix;
+      }
+    ];
+  };
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = [

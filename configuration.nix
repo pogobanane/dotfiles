@@ -7,7 +7,6 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
       ./modules/self.nix
       ./modules/nix-daemon.nix
       ./modules/gnome.nix
@@ -25,15 +24,6 @@
     path = "/home/peter/.ssh/telegram_bot_token";
     owner = "peter";
   };
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "ntfs" ];
-  # changing this seems to require reboot twice:
-  boot.kernelParams = [
-    "zfs.zfs_arc_sys_free=3221225472"
-    "zfs.zfs_arc_max=3221225472"
-  ];
 
   specialisation = {
     upstream = {
