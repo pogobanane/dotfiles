@@ -12,6 +12,7 @@
 , discord-tar 
 }: let 
   common-modules = [
+      ./config-common.nix
       sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
@@ -73,7 +74,6 @@ in {
   aendernix = nixosSystem {
     system = "x86_64-linux";
     modules = common-modules ++ [
-      ./config-common.nix
       ./hardware-aendernix.nix
       ./aendernix.nix
     ];
@@ -81,8 +81,8 @@ in {
   aenderpad = nixosSystem {
     system = "x86_64-linux";
     modules = common-modules ++ [
-      ./config-common.nix
       ./hardware-aenderpad.nix
+      ./aenderpad.nix
       nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
     ];
   };

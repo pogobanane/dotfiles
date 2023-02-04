@@ -37,13 +37,6 @@
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
-  networking.hostName = "aenderpad"; # Define your hostname.
-  networking.hostId = "faae4fe2"; # for zfs
-  networking.retiolum = {
-    ipv4 = "10.243.29.201";
-    ipv6 = "42:0:3c46:2aad:ed1e:33cf:aece:d216";
-  };
-
   # page compression because swap on zfs partitions is a bit dangerous.
   # disable, because it still leads to an unresponsive system, once many gigabyte are swapped.
   #zramSwap.enable = true;
