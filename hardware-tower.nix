@@ -18,7 +18,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  #boot.loader.efi.canTouchEfiVariables = true; // TODO
   boot.supportedFilesystems = [ "ntfs" ];
   # changing this seems to require reboot twice:
   boot.kernelParams = [
@@ -26,8 +26,8 @@
     "zfs.zfs_arc_max=3221225472"
   ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" "sr_mod" ];
+  boot.initrd.kernelModules = [ "dm-snapshot" ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
@@ -37,29 +37,30 @@
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
+  networking.hostName = "aendernix"; # Define your hostname.
+  networking.hostId = "faae4fe4"; # for zfs
+  #networking.retiolum = {
+    #ipv4 = "10.243.29.201";
+    #ipv6 = "42:0:3c46:2aad:ed1e:33cf:aece:d216";
+  #};
+
   # page compression because swap on zfs partitions is a bit dangerous.
   # disable, because it still leads to an unresponsive system, once many gigabyte are swapped.
   #zramSwap.enable = true;
 
-  fileSystems."/" =
-    { device = "zroot/root/nixos";
-      fsType = "zfs";
+  boot.initrd.luks.devices = {
+    "nixos-lukscrypt" = {
+      device = "/dev/disk/by-uuid/0ffded4d-83e3-4110-9386-6a679de1a461";
     };
-
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/3E25-330D";
-      fsType = "vfat";
-    };
-
-  fileSystems."/home" =
-    { device = "zroot/root/home";
-      fsType = "zfs";
-    };
-
-  fileSystems."/tmp" =
-    { device = "zroot/root/tmp";
-      fsType = "zfs";
-    };
+  };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/22be79a6-98a6-4a0f-b687-c803a02f60d9";
+    fsType = "btrfs";
+  };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/405E-B882";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 

@@ -75,14 +75,14 @@ in
   ];
 
   # Configuration of secrets
-  sops = {
-    #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
-    defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
-    secrets.te_bo_to = {
-      path = "%r/te_bo_to.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
-    };
-  };
+  #sops = {
+  #  #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
+  #  defaultSopsFile = ./secrets.yaml;
+  #  age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
+  #  secrets.te_bo_to = {
+  #    path = "%r/te_bo_to.txt"; # %r gets replaced with your $XDG_RUNTIME_DIR
+  #  };
+  #};
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

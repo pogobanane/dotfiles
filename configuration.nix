@@ -19,11 +19,11 @@
       ./modules/make-linux-fast.nix
     ];
 
-  sops.defaultSopsFile = ./secrets.yaml;
-  sops.secrets.telegram_bot_token = {
-    path = "/home/peter/.ssh/telegram_bot_token";
-    owner = "peter";
-  };
+  #sops.defaultSopsFile = ./secrets.yaml;
+  #sops.secrets.telegram_bot_token = {
+    #path = "/home/peter/.ssh/telegram_bot_token";
+    #owner = "peter";
+  #};
 
   specialisation = {
     upstream = {
@@ -44,9 +44,7 @@
     #};
   };
 
-  networking.hostName = "aenderpad"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.hostId = "faae4fe2"; # for zfs
 
   networking.libreweb = true;
 
@@ -77,11 +75,6 @@
     text = "allow all";
   };
   
-  networking.retiolum = {
-    ipv4 = "10.243.29.201";
-    ipv6 = "42:0:3c46:2aad:ed1e:33cf:aece:d216";
-  };
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
