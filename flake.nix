@@ -37,6 +37,9 @@
     discord-tar.url = "tarball+https://discord.com/api/download?platform=linux&format=tar.gz";
     discord-tar.flake = false;
 
+    loc-src.url = "github:cgag/loc";
+    loc-src.flake = false;
+
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
@@ -59,7 +62,8 @@
     fenix,
     ctile,
     tex2nix,
-    discord-tar
+    discord-tar,
+    loc-src
   }: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = fenix.packages.x86_64-linux;
@@ -96,6 +100,7 @@
     in {
       packages = {
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
+        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit loc-src; };
         nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
         #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
         #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };

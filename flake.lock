@@ -163,6 +163,22 @@
         "type": "github"
       }
     },
+    "loc-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1645399124,
+        "narHash": "sha256-GYnXoiYAePf6paExmeDF3XDZ8mSF5hmmXkTvxSpOj+U=",
+        "owner": "cgag",
+        "repo": "loc",
+        "rev": "1e0c7f434ddfd51439e1d4eb126f31b7a04229d9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "cgag",
+        "repo": "loc",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1675785029,
@@ -280,6 +296,7 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
         "lambda-pirate": "lambda-pirate",
+        "loc-src": "loc-src",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nur": "nur",

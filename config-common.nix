@@ -143,6 +143,7 @@
     htop
     iotop
     lsd
+    loc
     (pkgs.nerdfonts.override {
         fonts = ["FiraCode"];
     })

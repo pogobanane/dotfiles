@@ -51,6 +51,7 @@
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
             cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
             webcord = flakepkgs.x86_64-linux.webcord;
+            #loc = flakepkgs.x86_64-linux.loc;
             #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
             discord = prev.discord.overrideAttrs (_: { 
               src = discord-tar; 
