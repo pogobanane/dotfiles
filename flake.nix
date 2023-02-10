@@ -68,7 +68,24 @@
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = fenix.packages.x86_64-linux;
     tex2nixPkgs = tex2nix.packages.x86_64-linux;
-  in {
+  in nixpkgs.lib.attrsets.recursiveUpdate
+    (flake-utils.lib.eachDefaultSystem (system: let
+      pkgs = nixpkgs.legacyPackages.${system};
+      fenixPkgs = fenix.packages.${system};
+    in {
+      packages = {
+        map-cmd = pkgs.callPackage ./pkgs/map.nix { };
+        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit loc-src; };
+        nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+        #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
+        #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+      };
+    }))
+    (let
+      pkgs = nixpkgs.legacyPackages.x86_64-linux;
+    in {
+      packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+      packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
       nixosConfigurations = import ./configurations.nix {
         inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile 
         discord-tar
@@ -92,24 +109,6 @@
         rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
         sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
       };
-    }
-    // nixpkgs.lib.attrsets.recursiveUpdate
-    (flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      fenixPkgs = fenix.packages.${system};
-    in {
-      packages = {
-        map-cmd = pkgs.callPackage ./pkgs/map.nix { };
-        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit loc-src; };
-        nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
-        #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
-        #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
-      };
-    }))
-    (let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in {
-      packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
     });
 }
 

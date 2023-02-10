@@ -49,9 +49,9 @@
             #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
             #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
-            cider = nixpkgs.legacyPackages.x86_64-linux.callPackage pkgs/cider.nix {};
+            cider = flakepkgs.x86_64-linux.cider;
             webcord = flakepkgs.x86_64-linux.webcord;
-            #loc = flakepkgs.x86_64-linux.loc;
+            loc = flakepkgs.x86_64-linux.loc-git;
             #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
             discord = prev.discord.overrideAttrs (_: { 
               src = discord-tar; 
