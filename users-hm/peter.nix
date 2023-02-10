@@ -213,7 +213,8 @@ in
           vim-tmux-navigator
           vim-bufkill
           ack-vim
-          vim-osc52
+          #vim-osc52
+          vim-oscyank
           tabular
           vim-LanguageTool
           vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S

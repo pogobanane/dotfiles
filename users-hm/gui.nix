@@ -21,6 +21,9 @@
     #})
   ];
 
+  home.file.".config/alacritty/alacritty.colors.yml".source = ./alacritty.colors.yml;
+  home.file.".config/alacritty/alacritty.yml".source = ./alacritty.yml;
+
   # a tutorial on declarative gnome configuration
   # https://determinate.systems/posts/declarative-gnome-configuration-with-nixos
 
