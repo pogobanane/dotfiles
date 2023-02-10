@@ -10,6 +10,7 @@
 , sops-nix
 , ctile
 , discord-tar 
+, ...
 }: let 
   common-modules = [
       ./config-common.nix

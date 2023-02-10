@@ -50,32 +50,20 @@
   outputs = {
     self,
     nixpkgs,
-    nur,
-    unstablepkgs,
-    retiolum,
-    home-manager,
-    lambda-pirate,
-    nixos-hardware,
-    #doom-emacs,
-    sops-nix,
     flake-utils,
-    fenix,
-    ctile,
-    tex2nix,
-    discord-tar,
-    loc-src
-  }: let 
+    ...
+  } @ args: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    fenixPkgs = fenix.packages.x86_64-linux;
-    tex2nixPkgs = tex2nix.packages.x86_64-linux;
+    fenixPkgs = args.fenix.packages.x86_64-linux;
+    tex2nixPkgs = args.tex2nix.packages.x86_64-linux;
   in nixpkgs.lib.attrsets.recursiveUpdate
     (flake-utils.lib.eachDefaultSystem (system: let
       pkgs = nixpkgs.legacyPackages.${system};
-      fenixPkgs = fenix.packages.${system};
+      fenixPkgs = args.fenix.packages.${system};
     in {
       packages = {
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
-        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit loc-src; };
+        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (args) loc-src; };
         nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
         #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
         #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
@@ -86,13 +74,10 @@
     in {
       packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
-      nixosConfigurations = import ./configurations.nix {
-        inherit nixpkgs nur unstablepkgs lambda-pirate home-manager retiolum nixos-hardware sops-nix ctile 
-        discord-tar
-        ;
+      nixosConfigurations = import ./configurations.nix ({
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
-      };
+      } // args);
       devShells.x86_64-linux = {
         default = pkgs.mkShell {
           buildInputs = with pkgs; [
