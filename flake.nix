@@ -79,10 +79,19 @@
         modules = [
           ./users-hm/peter.nix
         ];
-        #useGlobalPkgs = true;
-        #useUserPackages = true;
         extraSpecialArgs = {
           inherit (args) sops-nix nur nixpkgs;
+        };
+      };
+      homeConfigurations.peter-doctor-cluster = args.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./users-hm/peter.nix
+        ];
+        extraSpecialArgs = {
+          inherit (args) sops-nix nur nixpkgs;
+          username = "okelmann";
+          homeDirectory = "/home/okelmann";
         };
       };
       nixosConfigurations = import ./configurations.nix ({

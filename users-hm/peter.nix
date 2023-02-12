@@ -1,7 +1,16 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
-{ config, lib, nixpkgs, pkgs, sops-nix, nur, ... }:
-let 
+{ 
+  config, 
+  lib, 
+  nixpkgs, 
+  pkgs, 
+  sops-nix, 
+  nur, 
+  username ? "peter", 
+  homeDirectory ? "/home/peter", 
+  ... 
+}: let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
     url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
     sha256 = "sha256:1jz8mxh143a4470mq303ng6dh3bxi6mcppqli4z0m13qhqssh4fx";
@@ -97,8 +106,8 @@ in
 
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "peter";
-  home.homeDirectory = "/home/peter";
+  home.username = username;
+  home.homeDirectory = homeDirectory;
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage
