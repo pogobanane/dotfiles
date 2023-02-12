@@ -82,6 +82,8 @@
         ];
         extraSpecialArgs = {
           inherit (args) sops-nix nur nixpkgs;
+          username = "peter";
+          homeDirectory = "/home/peter";
         };
       };
       homeConfigurations.peter-doctor-cluster = args.home-manager.lib.homeManagerConfiguration {

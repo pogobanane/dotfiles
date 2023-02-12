@@ -7,8 +7,8 @@
   pkgs, 
   sops-nix, 
   nur, 
-  username ? "peter", 
-  homeDirectory ? "/home/peter", 
+  username, 
+  homeDirectory, 
   ... 
 }: let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {

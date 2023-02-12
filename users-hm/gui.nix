@@ -82,7 +82,7 @@
     };
     "org/gnome/shell/extensions/switcher" = {
       on-active-display = true;
-      matching = mkUint32 1; # 0: strict, 1: fuzzy
+      matching = mkUint32 0; # 0: strict, 1: fuzzy
       # make it a bit smaller
       font-size = mkUint32 28;
       max-width-percentage = mkUint32 69;
