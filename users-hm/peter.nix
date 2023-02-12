@@ -9,6 +9,7 @@
   nur, 
   username, 
   homeDirectory, 
+  my-gui,
   ... 
 }: let 
   doom-emacs = pkgs.callPackage (builtins.fetchTarball {
@@ -76,7 +77,10 @@ in
 {
   imports = [ 
     "${sops-nix}/modules/home-manager/sops.nix"
+    ./gui.nix
   ];
+
+  my-gui.enable = my-gui;
 
   # Configuration of secrets
   sops = {

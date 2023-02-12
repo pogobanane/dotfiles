@@ -18,6 +18,13 @@ font:
   # Point size
   size: 10.0
 
+window:
+  # try to make thee borders bigger
+  padding:
+    x: 5
+    y: 0
+  dynamic_padding: true
+
 import:
   - ./.config/alacritty/alacritty.colors.yml
     ## Colors: Space Duck

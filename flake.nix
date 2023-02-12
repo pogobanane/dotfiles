@@ -84,6 +84,7 @@
           inherit (args) sops-nix nur nixpkgs;
           username = "peter";
           homeDirectory = "/home/peter";
+          my-gui = true;
         };
       };
       homeConfigurations.peter-doctor-cluster = args.home-manager.lib.homeManagerConfiguration {
@@ -95,6 +96,7 @@
           inherit (args) sops-nix nur nixpkgs;
           username = "okelmann";
           homeDirectory = "/home/okelmann";
+          my-gui = false;
         };
       };
       nixosConfigurations = import ./configurations.nix ({

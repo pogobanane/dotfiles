@@ -24,6 +24,7 @@
           inherit nixpkgs;
           username = "peter";
           homeDirectory = "/home/peter";
+          my-gui = true;
         };
         home-manager.users.peter = import ./users-hm/peter.nix;
       }
