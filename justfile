@@ -1,4 +1,5 @@
 hostname := `hostname`
+proot := `pwd`
 
 nixos-build HOST=`hostname`:
   nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --log-format internal-json -v |& nom --json
@@ -18,6 +19,6 @@ nixos-repl-git HOST=`hostname`:
 # install/update home-manager config on doctor cluster
 doctor-home:
   # only for use on the doctor cluster
-  nix-shell '<home-manager>' -A install
-  home-manager switch
+  # without flake: nix-shell '<home-manager>' -A install
+  nix run {{proot}}#homeConfigurations.peter-doctor-cluster.activationPackage
 
