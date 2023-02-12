@@ -74,6 +74,17 @@
     in {
       packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
+      homeConfigurations.peter = args.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./users-hm/peter.nix
+        ];
+        #useGlobalPkgs = true;
+        #useUserPackages = true;
+        extraSpecialArgs = {
+          inherit (args) sops-nix nur nixpkgs;
+        };
+      };
       nixosConfigurations = import ./configurations.nix ({
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
