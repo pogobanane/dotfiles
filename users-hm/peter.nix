@@ -30,10 +30,6 @@
     [[ $(curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" | ${pkgs.jq}/bin/jq .ok) = "true" ]]
   '';
 
-  tmuxenv-update = pkgs.writeScriptBin "tmuxenv-update" ''
-    eval $(tmux showenv)
-  '';
-
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
   
   vim-submode = pkgs.callPackage ../pkgs/vim-submode.nix { };

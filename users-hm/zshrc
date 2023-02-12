@@ -5,7 +5,7 @@
 #[ -z "$SSH_CONNECTION" ] && ZSH_TMUX_AUTOSTART="true"
 # [ -z $TMUX ] && ZSH_TMUX_AUTOSTART="true"
 # vim starts terminals as xterm even if running in tmux
-[[ ! $TERM = *screen* ]] && [ ! $TERM = 'xterm' ] && tmux new -t default
+[[ ! $TERM = *screen* ]] && [ ! $TERM = 'xterm' ] && tmux at || tmux new -t default
 
 # ssh_auth_sock_static=/tmp/ssh-static-ccnoiewa
 # echo "ssh-auth-sock was $SSH_AUTH_SOCK"
@@ -70,6 +70,11 @@ nix-unpack() {
     nix-shell \
       -E "with import <nixpkgs> {}; mkShell { buildInputs = [ (srcOnly pkgs.\"$pkg\") ]; }" \
       --run "cp -r \$buildInputs $pkg; chmod -R +w $pkg"
+}
+
+tmux-ssh() {
+    # fix things like SSH_AUTH_SOCK after ssh timeouts
+    eval $(tmux show-env -s)
 }
 
 killp() {
