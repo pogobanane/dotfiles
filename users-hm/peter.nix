@@ -79,7 +79,6 @@
 in
 {
   imports = [ 
-    ./gui.nix
     "${sops-nix}/modules/home-manager/sops.nix"
   ];
 

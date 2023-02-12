@@ -37,6 +37,15 @@
         (mkTuple ["xkb" "de"])
       ]);
     };
+    "org/gnome/desktop/wm/keybindings" = {
+      # alt tab should switch windows not applications
+      switch-applications = [];
+      switch-applications-backward = [];
+      #switch-group = [ "<Super>`" "<Alt>`" ];
+      #switch-group-backward = [ "<Shift><Super>`" "<Shift><Alt>`" ];
+      switch-windows = [ "<Super>Tab" "<Alt>Tab" ];
+      switch-windows-backward = [ "<Shift><Super>Tab" "<Shift><Alt>Tab" ];
+    };
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
     };
@@ -70,6 +79,13 @@
         "workspace-indicator@gnome-shell-extensions.gcampax.github.com"
       ];
       #disable-user-extensions = false;
+    };
+    "org/gnome/shell/extensions/switcher" = {
+      on-active-display = true;
+      matching = mkUint32 1; # 0: strict, 1: fuzzy
+      # make it a bit smaller
+      font-size = mkUint32 28;
+      max-width-percentage = mkUint32 69;
     };
   };
 }

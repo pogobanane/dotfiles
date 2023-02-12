@@ -78,6 +78,7 @@
         inherit pkgs;
         modules = [
           ./users-hm/peter.nix
+          ./users-hm/gui.nix
         ];
         extraSpecialArgs = {
           inherit (args) sops-nix nur nixpkgs;
