@@ -150,6 +150,7 @@ set nomodeline
 
 " vmap y :w !xclip -se c -i<CR><CR>
 " vmap p :r!xclip -se c -o<CR>
-vmap <C-c> y:Oscyank<cr>
+let g:oscyank_term = 'default' " see https://github.com/ojroques/vim-oscyank/issues/26
+vmap <C-c> y:OSCYank<cr>
 " override (themes?) bracket highlighting []
 autocmd ColorScheme * hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
