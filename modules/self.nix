@@ -3,6 +3,6 @@
 in {
 
   systemd.tmpfiles.rules = [
-    "L+ /run/current-system-flake - - - - ${self-flake}"
+    "L+ /etc/nixos - - - - ${self-flake}"
   ];
 }
