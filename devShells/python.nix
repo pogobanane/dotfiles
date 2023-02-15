@@ -4,6 +4,6 @@
       black # auto formatting
       flake8 # annoying "good practice" annotations
       mypy # static typing
-      #ruff # language server ("linting") # doesnt exist
+      pkgs.ruff # language server ("linting")
     ];
   }

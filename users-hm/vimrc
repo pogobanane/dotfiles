@@ -43,7 +43,7 @@ noremap k gk
 " rustup component add rls
 " rustup component add rust-analysis
 " rustup component add rust-src
-let g:ale_linters = { 'rust': ['analyzer', 'rls'], 'go': ['golangserver'] }
+let g:ale_linters = { 'rust': ['analyzer', 'rls'], 'go': ['golangserver'], 'python' = ['ruff'] }
 
 " ddollar/nerdcommentar
 map C <leader>ci

@@ -22,3 +22,22 @@ doctor-home:
   # without flake: nix-shell '<home-manager>' -A install
   nix run {{proot}}#homeConfigurations.peter-doctor-cluster.activationPackage
 
+# same as doctor-home, but runs it remotely on all hosts
+all-doctor-homes:
+  ssh astrid.dse.in.tum.de     -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh dan.dse.in.tum.de        -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh mickey.dse.in.tum.de     -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  # ssh bill.dse.in.tum.de       -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  # ssh nardole.dse.in.tum.de    -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  # ssh yasmin.dse.in.tum.de     -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh graham.dse.in.tum.de     -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  # ssh ryan.dse.in.tum.de       -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh christina.dse.in.tum.de  -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh jackson.dse.in.tum.de    -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh adelaide.dse.in.tum.de   -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh wilfred.dse.in.tum.de    -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh river.dse.in.tum.de      -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh jack.dse.in.tum.de       -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh clara.dse.in.tum.de      -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh amy.dse.in.tum.de        -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+  ssh rose.dse.in.tum.de       -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
