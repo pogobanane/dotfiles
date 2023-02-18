@@ -24,7 +24,6 @@
     vim-sensible 
     # detenctindent
     nerdcommenter
-    ale
     molokai
     nerdtree
     rainbow_parentheses-vim
@@ -69,8 +68,11 @@ in {
     (
       vim_configurable.customize {
         name = "vim";
-        vimrcConfig.customRC = builtins.readFile ./vimrc;
-        vimrcConfig.packages.nixbundle.start = vimplugins;
+        vimrcConfig.customRC = builtins.readFile ./vimrc + ''
+        '';
+        vimrcConfig.packages.nixbundle.start = with pkgs.vimPlugins; vimplugins ++ [
+          ale
+        ];
       }
     )
     (
@@ -78,9 +80,55 @@ in {
         #vimAlias = true;
         configure = {
           customRC = builtins.readFile ./vimrc + ''
+            " activate nvim builtin lsc
+            lua << EOF
+               require('lspconfig').bashls.setup{}
+               require('lspconfig').ccls.setup{}
+               require('lspconfig').pyright.setup{}
+               require('lspconfig').clangd.setup{}
+               -- require('lspconfig').ruff_lsp.setup{}
+               require('lspconfig').rust_analyzer.setup{}
+
+               -- Mappings.
+               -- See `:help vim.lsp.*` for documentation on any of the below functions
+               local bufopts = { noremap=true, silent=true, buffer=bufnr }
+            EOF
+            command ALEHoverThisisnotaleanymoredumbass lua vim.lsp.buf.hover()
+            command ALEGoToImplementationThisisnotaleanymoredumbass lua vim.lsp.buf.implementation()
+            command ALEGoToDefinitionThisisnotaleanymoredumbass lua vim.lsp.buf.definition()
+            command ALEFindReferencesThisisnotaleanymoredumbass lua vim.lsp.buf.references()
+            command ALERenameThisisnotaleanymoredumbass lua vim.lsp.buf.rename()
+            " vim.lsp.buf.signature_help
+            " vim.lsp.buf.declaration
+            " vim.lsp.buf.type_definition
+            " vim.lsp.buf.code_action
+
+            " set completeopt=menu,preview
+            " no helpdoc window (preview)
+            set completeopt=menu
+
+            " cancel autocomplete with C-c
+            inoremap <C-c> <C-e>
+
+            " " configure nvim autocompletion with deoplete
+            " call deoplete#custom#option('auto_complete_popup', 'manual')
+            " inoremap <expr><C-n>     deoplete#complete()
+            " inoremap <expr><C-g>     deoplete#undo_completion()
+
+            " " configure nvim autocompletion with cmp
+            " lua << EOF
+            "    local cmp = require('cmp')
+            "    cmp.setup({
+            "      mapping = cmp.mapping.preset.insert({
+            "        ['<C-c>'] = cmp.mapping.abort(),
+            "        ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+            "      }),
+            "    })
+            " EOF
+
             " let bufferline manage tabline
             let g:airline#extensions#tabline#enabled = 0
-            let g:airline_theme='night_owl'
+            let g:airline_theme='base16_material_darker'
 
             set termguicolors
             lua << EOF
@@ -136,6 +184,10 @@ in {
               bufferline-nvim
               nvim-treesitter
               nvim-treesitter.withAllGrammars
+              nvim-lspconfig
+              telescope-nvim
+              #deoplete-nvim
+              #nvim-cmp # provides shortcuts for us
             ]; 
             opt = [];
           };
