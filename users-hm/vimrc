@@ -123,15 +123,16 @@ set mouse=a
 "set clipboard=unamedplus
 
 " :tabnew to open new tab
-map <C-p> :tabnext<CR>
+" map <C-p> :tabnext<CR> no thats already move buffer
 " map <C-u> :tabprevious<CR> no thats already scroll up
+
 " :e to open new buffer in current window
 " :bd to close current buffer
 " :ls to list all buffers
 map <C-i> :bp<CR>
 map <C-o> :bn<CR>
-map <C-I> :BufferLineMovePrev<CR>
-map <C-O> :BufferLineMoveNext<CR>
+map <C-u> :BufferLineMovePrev<CR>
+map <C-p> :BufferLineMoveNext<CR>
 
 " bindings knom  
 map <s-bs> <b>
