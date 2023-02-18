@@ -32,6 +32,9 @@ nnoremap K <C-y>
 noremap j gj
 noremap k gk
 
+" rust does not need C-n autocomplete, but only ale complete
+autocmd FileType rust inoremap <C-n> <C-x><C-o>
+
 " detectindent
 " augroup DetectIndent
 "    autocmd!
@@ -43,10 +46,14 @@ noremap k gk
 " rustup component add rls
 " rustup component add rust-analysis
 " rustup component add rust-src
-let g:ale_linters = { 'rust': ['analyzer', 'rls'], 'go': ['golangserver'], 'python' = ['ruff'] }
+let g:ale_linters = { 'rust': ['analyzer', 'rls'], 'go': ['golangserver'], 'python': ['ruff'] }
 
 " ddollar/nerdcommentar
 map C <leader>ci
+
+" override (themes?) bracket highlighting []
+autocmd ColorScheme * hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000
+" now, after we defined hooks, nvim can load colorscheme
 
 " tomasr/molokai
 colorscheme molokai
@@ -152,5 +159,3 @@ set nomodeline
 " vmap p :r!xclip -se c -o<CR>
 let g:oscyank_term = 'default' " see https://github.com/ojroques/vim-oscyank/issues/26
 vmap <C-c> y:OSCYank<cr>
-" override (themes?) bracket highlighting []
-autocmd ColorScheme * hi MatchParen term=reverse cterm=bold,underline ctermfg=208 ctermbg=233 gui=bold guifg=#FD971F guibg=#000000

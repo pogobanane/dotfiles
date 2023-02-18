@@ -33,8 +33,6 @@
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
   
-  vim-submode = pkgs.callPackage ../pkgs/vim-submode.nix { };
-
   ls1vpn = pkgs.writeShellApplication {
     name = "ls1vpn";
     runtimeInputs = [ pkgs.libsecret pkgs.openvpn pkgs.gnome.seahorse ];
@@ -53,31 +51,12 @@
     runtimeInputs = [ pkgs.nmap ];
     text = "${pkgs.nmap}/bin/nmap -sP \"$@\"";
   };
-
-  my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
-    name = "vim-paste-easy";
-    src = pkgs.fetchFromGitHub {
-      owner = "roxma";
-      repo = "vim-paste-easy";
-      rev = "c28c2e4fc7b2d57efb54787bc6d67120b523d42c";
-      sha256 = "sha256-DbVyfr9uH3o1GSvWv06/5HO2S5JXVYZvudPN2RemOY0=";
-    };
-  };
-
-  p4-syntax-highlighter-collection = pkgs.vimUtils.buildVimPlugin {
-    name = "p4-syntax-highlighter-collection";
-    src = pkgs.fetchFromGitHub {
-      owner = "c3m3gyanesh";
-      repo = "p4-syntax-highlighter-collection";
-      rev = "e6525b5ea5eb31148dcc7957cb49985de6e582c3";
-      sha256 = "sha256-exZ89Q30OwpIl00SG8KhRxA8vbnRNdJhZVGNZMDYLVQ=";
-    };
-  };
 in
 {
   imports = [ 
     "${sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
+    ./editors.nix
   ];
 
   my-gui.enable = my-gui;
@@ -199,57 +178,6 @@ in
     nscan
     nixos-generations
     nix-output-monitor # nom
-    (
-      vim_configurable.customize {
-        name = "vim";
-        vimrcConfig.customRC = builtins.readFile ./vimrc;
-        vimrcConfig.packages.nixbundle.start = with pkgs.vimPlugins; [ 
-          my-vim-paste-easy
-          vim-sensible 
-          # detenctindent
-          nerdcommenter
-          ale
-          molokai
-          nerdtree
-          rainbow_parentheses-vim
-          fzf-vim
-          gitgutter
-          vim-airline
-          vim-airline-themes
-          indentLine
-          zoomwintab-vim # <C-w>o to zoom a buffer to whole screen size
-          vim-tmux-navigator
-          vim-bufkill
-          ack-vim
-          #vim-osc52
-          vim-oscyank
-          tabular
-          vim-LanguageTool
-          vim-obsession # start recording vim sessions for a directory with :Obsess and restore it with vim -S
-          vim-submode
-          vim-cpp-enhanced-highlight
-          p4-syntax-highlighter-collection
-        ];
-#          tpope/vim-sensible
-#          roryokane/detectindent
-#          ddollar/nerdcommenter
-#          dense-analysis/ale
-#          tomasr/molokai
-#          scrooloose/nerdtree
-#          junegunn/rainbow_parentheses.vim
-#          junegunn/fzf
-#          ctrlpvim/ctrlp.vim # vimscript only fuzzy search
-#          airblade/vim-gitgutter
-#          vim-airline/vim-airline
-#          vim-airline/vim-airline-themes
-#
-#          Yggdroot/indentLine # mark levels of line indentation |
-#          troydm/zoomwintab.vim
-#          christoomey/vim-tmux-navigator
-#          qpkorr/vim-bufkill # :BD is :bdelete without closing windows
-#        ];
-      }
-    )
     # rustup
   ];
 }
