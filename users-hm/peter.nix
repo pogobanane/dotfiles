@@ -109,9 +109,6 @@ in
     }
   '';
 
-  # home.environment.variables = { EDITOR = "rvim"; };
-  xdg.configFile."nvim/init.vim".source = ./nvimrc;
-
   #systemd.user.services.ls1vpn = {
   #  Unit = {
   #    Description = "foobar desc";
