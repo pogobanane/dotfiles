@@ -23,6 +23,9 @@ set spellfile=~/.config/spellfile.utf-8.add
 set expandtab
 set tabstop=2
 set shiftwidth=2
+" after linewrap, indent 2 more than parent
+set breakindent
+set breakindentopt=shift:2
 
 " leader key defined somewhere else
 let mapleader = "\<space>"
@@ -131,8 +134,6 @@ set mouse=a
 " :ls to list all buffers
 map <C-i> :bp<CR>
 map <C-o> :bn<CR>
-map <C-u> :BufferLineMovePrev<CR>
-map <C-p> :BufferLineMoveNext<CR>
 
 " bindings knom  
 map <s-bs> <b>

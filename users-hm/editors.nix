@@ -18,6 +18,17 @@
       sha256 = "sha256-exZ89Q30OwpIl00SG8KhRxA8vbnRNdJhZVGNZMDYLVQ=";
     };
   };
+  nvim-lspconfig = pkgs.vimUtils.buildVimPluginFrom2Nix {
+    pname = "nvim-lspconfig";
+    version = "git-master";
+    src = pkgs.fetchFromGitHub {
+      owner = "neovim";
+      repo = "nvim-lspconfig";
+      rev = "649137cbc53a044bffde36294ce3160cb18f32c7";
+      sha256 = "sha256-DnvQ8gDqvkYcDwxQzQiIlLpiBI7xmVJ8J9VYCeWXwfc=";
+    };
+    meta.homepage = "https://github.com/neovim/nvim-lspconfig/";
+  };
 
   vimplugins = with pkgs.vimPlugins; [ 
     my-vim-paste-easy
@@ -85,13 +96,18 @@ in {
                require('lspconfig').bashls.setup{}
                require('lspconfig').ccls.setup{}
                require('lspconfig').pyright.setup{}
-               require('lspconfig').clangd.setup{}
-               -- require('lspconfig').ruff_lsp.setup{}
+               -- require('lspconfig').clangd.setup{}
+               require('lspconfig').ruff_lsp.setup{}
                require('lspconfig').rust_analyzer.setup{}
 
                -- Mappings.
                -- See `:help vim.lsp.*` for documentation on any of the below functions
                local bufopts = { noremap=true, silent=true, buffer=bufnr }
+
+               -- UI
+               vim.diagnostic.config({ 
+                 virtual_text = false -- dont clutter everything with error descriptions
+               })
             EOF
             command ALEHoverThisisnotaleanymoredumbass lua vim.lsp.buf.hover()
             command ALEGoToImplementationThisisnotaleanymoredumbass lua vim.lsp.buf.implementation()
@@ -129,6 +145,10 @@ in {
             " let bufferline manage tabline
             let g:airline#extensions#tabline#enabled = 0
             let g:airline_theme='base16_material_darker'
+            map <C-i> :BufferLineCyclePrev<CR>
+            map <C-o> :BufferLineCycleNext<CR>
+            map <C-p> :BufferLineMovePrev<CR>
+            map <C-[> :BufferLineMoveNext<CR>
 
             set termguicolors
             lua << EOF
