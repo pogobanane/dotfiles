@@ -50,6 +50,8 @@
       device = "/dev/disk/by-uuid/0ffded4d-83e3-4110-9386-6a679de1a461";
     };
   };
+  # remember to set your console keyboard layout for how to input the disk password at boot
+  console.keyMap = "de";
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/22be79a6-98a6-4a0f-b687-c803a02f60d9";
     fsType = "btrfs";
