@@ -57,6 +57,7 @@
     # gnomeExtensions.tactile
     gnomeExtensions.noannoyance-2
     gnomeExtensions.forge
+    gnomeExtensions.ssh-search-provider-reborn
     # not as well wtf it should be
     # gnomeExtensions.noannoyance
     # gnomeExtensions.application-volume-mixer
@@ -114,6 +115,7 @@
   # fix for many rust based guis on wayland/gnome/nixos
   # https://github.com/alacritty/alacritty/issues/4780#issuecomment-890408502
   # https://github.com/NixOS/nixpkgs/issues/22652#issuecomment-890512607
+  # TODO this does not arrive yet inside the gnome session
   environment.variables.XCURSOR_THEME = "Adwaita";
 
   # for iphone
