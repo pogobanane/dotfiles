@@ -41,24 +41,19 @@
   # disable, because it still leads to an unresponsive system, once many gigabyte are swapped.
   #zramSwap.enable = true;
 
+  boot.initrd.luks.devices = {
+    "nixos-lukscrypt" = {
+      device = "/dev/disk/by-uuid/72c8bfad-f3e6-4852-b0d0-48142cfd78d9";
+    };
+  };
   fileSystems."/" =
-    { device = "zroot/root/nixos";
-      fsType = "zfs";
+    { device = "/dev/disk/by-uuid/f79d0ce3-c94e-41d5-80b6-148b982fcbdf";
+      fsType = "btrfs";
     };
 
   fileSystems."/boot" =
     { device = "/dev/disk/by-uuid/3E25-330D";
       fsType = "vfat";
-    };
-
-  fileSystems."/home" =
-    { device = "zroot/root/home";
-      fsType = "zfs";
-    };
-
-  fileSystems."/tmp" =
-    { device = "zroot/root/tmp";
-      fsType = "zfs";
     };
 
   swapDevices = [ ];
