@@ -11,6 +11,12 @@
   virtualisation.libvirtd = {
     enable = true;
   };
+  boot.kernelParams = [
+    # spdk/dpdk hugepages
+    "default_hugepagesz=1G"
+    "hugepagesz=1G"
+    "hugepages=16"
+  ];
   users.groups.libvirtd.members = [ "peter" ];
   #users.groups.input.members = [ "peter" ];
 
