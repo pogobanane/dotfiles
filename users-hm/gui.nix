@@ -40,6 +40,9 @@
     # Use `dconf watch /` to track stateful changes you are doing, then set them
     # here.
     dconf.settings = with lib.hm.gvariant; {
+      "system/locale" = {
+        region = "en_GB.UTF-8";
+      };
       "org/gnome/desktop/input-sources" = {
         per-window = true;
         sources = (mkArray (type.tupleOf [ type.string type.string ]) [
