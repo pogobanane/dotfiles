@@ -87,16 +87,18 @@ in {
       }
     )
     (
-      neovim.override {
+      neovim.override (let 
+        use-ale = true;
+      in {
         #vimAlias = true;
         configure = {
-          customRC = builtins.readFile ./vimrc + ''
+          customRC = builtins.readFile ./vimrc + lib.optionalString (!use-ale) ''
             " activate nvim builtin lsc
             lua << EOF
                require('lspconfig').bashls.setup{}
-               require('lspconfig').ccls.setup{}
+               -- require('lspconfig').ccls.setup{}
                require('lspconfig').pyright.setup{}
-               -- require('lspconfig').clangd.setup{}
+               require('lspconfig').clangd.setup{}
                require('lspconfig').ruff_lsp.setup{}
                require('lspconfig').rust_analyzer.setup{}
 
@@ -141,6 +143,9 @@ in {
             "      }),
             "    })
             " EOF
+            '' 
+            +
+            ''
 
             " let bufferline manage tabline
             let g:airline#extensions#tabline#enabled = 0
@@ -204,15 +209,16 @@ in {
               bufferline-nvim
               nvim-treesitter
               nvim-treesitter.withAllGrammars
-              nvim-lspconfig
               telescope-nvim
               #deoplete-nvim
               #nvim-cmp # provides shortcuts for us
-            ]; 
+            ] ++ 
+            (lib.optional (!use-ale) nvim-lspconfig) ++
+            (lib.optional use-ale ale); 
             opt = [];
           };
         };
-      }
+      })
     )
   ];
 }
