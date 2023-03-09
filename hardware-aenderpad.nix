@@ -20,21 +20,17 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
-  # changing this seems to require reboot twice:
-  boot.kernelParams = [
-    "zfs.zfs_arc_sys_free=3221225472"
-    "zfs.zfs_arc_max=3221225472"
-  ];
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
   boot.initrd.kernelModules = [ ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
-  boot.kernelPackages = let
-      linux = pkgs.linuxPackages;
-    in
-      pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
+  #boot.kernelPackages = pkgs.lib.mkDefault config.boot.zfs.package.latestCompatibleLinuxPackages;
+  #boot.kernelPackages = let
+  #    linux = pkgs.linuxPackages;
+  #  in
+  #    pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
   # page compression because swap on zfs partitions is a bit dangerous.

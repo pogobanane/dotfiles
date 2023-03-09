@@ -31,9 +31,9 @@
       configuration = {
         # revert to when it (5.19) is compatible with zfs again
         # see linuxPackages_latest.zfs.meta.broken
-        boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
+        #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
         #boot.kernelPackages = pkgs.linuxPackages_5_18;
-        #boot.kernelPackages = pkgs.linuxPackages_latest;
+        boot.kernelPackages = pkgs.linuxPackages_latest;
       };
     };
     #iorefd = {

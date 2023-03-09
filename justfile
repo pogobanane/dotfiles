@@ -17,6 +17,10 @@ nixos-diff:
   diff -r --color=always -x .direnv -x .envrc -x .git -x result -x archlinux -x async-term-askpass {{proot}} /etc/nixos \
   && echo "The running nixos system configuration matches the one defined here." \
   || echo "The running nixos system DOES NOT match the one configured here."
+  diff {{proot}} /etc/tinc/retiolum/*.priv
+  diff {{proot}} /etc/tinc/retiolum/*.pub
+  diff {{proot}} /etc/ssh
+  diff {{proot}} /etc/NetworkManager
 
 # repl into systems defined in this git
 nixos-repl-git HOST=`hostname`:
