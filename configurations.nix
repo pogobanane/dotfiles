@@ -46,6 +46,9 @@
         nixpkgs.overlays = [
           nur.overlay
           (final: prev: {
+            linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: {
+              sysdig = unstablepkgs.legacyPackages.x86_64-linux.linuxPackages_latest.sysdig; # sysdig 0.29 is incompatible with linxu >=6.2
+            });
             ctile = ctile.packages.x86_64-linux.ctile;
             nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
             wezterm = unstablepkgs.legacyPackages.x86_64-linux.wezterm;

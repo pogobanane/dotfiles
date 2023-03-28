@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ config, pkgs, unstablepkgs, lib, ... }:
 
 {
   imports =
@@ -25,6 +25,16 @@
     #owner = "peter";
   #};
 
+  nixpkgs.overlays = [
+    (final: prev: {
+            #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
+            #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
+            #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
+            #  });
+            #});
+    })
+  ];
+
   specialisation = {
     upstream = {
       inheritParentConfig = true;
@@ -32,7 +42,7 @@
         # revert to when it (5.19) is compatible with zfs again
         # see linuxPackages_latest.zfs.meta.broken
         #boot.kernelPackages = pkgs.zfs.latestCompatibleLinuxPackages;
-        #boot.kernelPackages = pkgs.linuxPackages_5_18;
+        #boot.kernelPackages = pkgs.linuxPackages_6_1;
         boot.kernelPackages = pkgs.linuxPackages_latest;
       };
     };
