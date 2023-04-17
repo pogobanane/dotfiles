@@ -1,51 +1,6 @@
-{ lib
-, stdenv
-, fetchurl
-, pkg-config
-, gtk3
-, vala
-, enchant2
-, wrapGAppsHook
-, meson
-, ninja
-, desktop-file-utils
-, gnome-online-accounts
-, gsettings-desktop-schemas
-, adwaita-icon-theme
-, libpeas
-, libsecret
-, gmime3
-, isocodes
-, icu
-, libxml2
-, gettext
-, sqlite
-, gcr
-, json-glib
-, itstool
-, libgee
-, gnome
-, webkitgtk_4_1
-, python3
-, gnutls
-, cacert
-, xvfb-run
-, glibcLocales
-, dbus
-, shared-mime-info
-, libunwind
-, folks
-, glib-networking
-, gobject-introspection
-, gspell
-, appstream-glib
-, libstemmer
-, libytnef
-, libhandy
-, gsound
-}:
+{ pkgs, ... }:
 
-stdenv.mkDerivation rec {
+with pkgs; stdenv.mkDerivation rec {
   pname = "geary";
   version = "43.0";
 
@@ -69,7 +24,7 @@ stdenv.mkDerivation rec {
     wrapGAppsHook
   ];
 
-  buildInputs = [
+  buildInputs = with gnome; [
     adwaita-icon-theme
     enchant2
     folks
@@ -104,9 +59,10 @@ stdenv.mkDerivation rec {
   ];
 
   mesonFlags = [
-    "-Dprofile=release"
+    "-Dprofile=development"
     "-Dcontractor=enabled" # install the contractor file (Pantheon specific)
   ];
+  dontStrip = true;
 
   # NOTE: Remove `build-auxyaml_to_json.py` when no longer needed, see:
   # https://gitlab.gnome.org/GNOME/geary/commit/f7f72143e0f00ca5e0e6a798691805c53976ae31#0cc1139e3347f573ae1feee5b73dbc8a8a21fcfa
@@ -134,6 +90,7 @@ stdenv.mkDerivation rec {
   preFixup = ''
     # Add geary to path for geary-attach
     gappsWrapperArgs+=(--prefix PATH : "$out/bin")
+    exit 1
   '';
 
   passthru = {

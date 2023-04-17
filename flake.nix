@@ -75,6 +75,11 @@
     in {
       packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
+      packages.x86_64-linux.geary = pkgs.callPackage pkgs/geary.nix { };
+      #packages.x86_64-linux.geary = pkgs.gnome.geary.overrideAttrs (finalAttrs: previousAttrs: {
+        #mesonFlags = [ "-Dprofile=development" "-Dcontractor=enabled" ];
+        #dontStrip = true;
+      #});
       homeConfigurations.peter = args.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
