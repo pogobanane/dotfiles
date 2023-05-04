@@ -17,6 +17,7 @@
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
+      ./modules/jack.nix
     ];
 
   #sops.defaultSopsFile = ./secrets.yaml;
