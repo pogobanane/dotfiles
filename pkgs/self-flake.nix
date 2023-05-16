@@ -1,6 +1,6 @@
 { stdenv, ... }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation {
   name = "self-flake";
 
   src = ../.;

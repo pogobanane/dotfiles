@@ -21,6 +21,8 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
 
+  services.hardware.bolt.enable = true;
+
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
   boot.initrd.kernelModules = [ ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.

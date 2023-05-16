@@ -176,5 +176,7 @@ in
     nixos-generations
     nix-output-monitor # nom
     # rustup
+    ranger # command line file manager
+    comma # package containing command and run it
   ];
 }

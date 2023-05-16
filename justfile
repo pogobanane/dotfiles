@@ -12,6 +12,9 @@ nixos-repl:
   # use `:lf .` to load the underlying flake
   cd /run/current-system-flake && nix repl ./repl.nix --argstr hostname {{hostname}}
 
+nixos-nix SELECTOR WHAT="shell":
+  nix {{WHAT}} $(realpath /etc/nixos)#nixosConfigurations.{{hostname}}.{{SELECTOR}}
+
 nixos-diff:
   # requires nixos module modules/self.nix
   diff -r --color=always -x .direnv -x .envrc -x .git -x result -x archlinux -x async-term-askpass {{proot}} /etc/nixos \

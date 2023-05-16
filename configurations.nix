@@ -64,6 +64,7 @@
               src = discord-tar; 
               unpackCmd = "tar -xzf $curSrc";
             });
+            alacritty = unstablepkgs.legacyPackages.x86_64-linux.alacritty;
           })
           #(self: super: { 
             #cider = super.cider.overrideAttrs (old: rec {
