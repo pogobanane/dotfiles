@@ -41,6 +41,12 @@
     loc-src.url = "github:cgag/loc";
     loc-src.flake = false;
 
+    nix-index-database.url = "github:Mic92/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    astro-nvim.url = "github:AstroNvim/AstroNvim";
+    astro-nvim.flake = false;
+
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild

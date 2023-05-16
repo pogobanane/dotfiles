@@ -8,6 +8,8 @@
 , home-manager
 , nixos-hardware
 , sops-nix
+, nix-index-database
+, astro-nvim
 , ctile
 , discord-tar 
 , ...
@@ -20,8 +22,10 @@
         home-manager.useUserPackages = true;
         home-manager.extraSpecialArgs = {
           inherit sops-nix;
+          inherit nix-index-database;
           inherit nur;
           inherit nixpkgs;
+          inherit astro-nvim;
           username = "peter";
           homeDirectory = "/home/peter";
           my-gui = true;
@@ -54,6 +58,7 @@
             wezterm = unstablepkgs.legacyPackages.x86_64-linux.wezterm;
             #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
             #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+            nerdfonts = unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
             #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
             cider = flakepkgs.x86_64-linux.cider;

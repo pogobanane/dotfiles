@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, unstablepkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -25,6 +25,8 @@
     #path = "/home/peter/.ssh/testsecret";
     #owner = "peter";
   #};
+
+  fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
 
   nixpkgs.overlays = [
     (final: prev: {
@@ -155,9 +157,9 @@
     iotop
     lsd
     loc
-    (pkgs.nerdfonts.override {
-        fonts = ["FiraCode"];
-    })
+    #(pkgs.nerdfonts.override {
+    #    fonts = ["FiraCode"];
+    #})
   ];
 
   # Since git version 2.33.3, it fails when operating on a repo of
@@ -172,7 +174,7 @@
   # not flake ready
   programs.command-not-found.enable = false;
 
-  programs.sysdig.enable = true;
+  #programs.sysdig.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
