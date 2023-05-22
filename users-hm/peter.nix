@@ -145,6 +145,14 @@ in
 
   home.file.".zshrc_actual".source = ./zshrc;
   home.file.".zshrc".text = ''
+    # zsh caches compiled code in *.zwc. But its updating is broken because it
+    # follows symlinks and our link target is nix store seconds since epoch 0.
+    # Thus we have to force an update manually here. Note that simple
+    # comparison with -nt does not work as it will always dereference the
+    # symlink as well. Funnily this works of course only once the .zwc has been
+    # removed manually once to bootstrap this line in. Also that file is write
+    # protected (-> -f).
+    [[ $(stat ~/.zshrc -c '%021Y') < $(stat ~/.zshrc.zwc -c '%021Y') ]] || rm -f ~/.zshrc.zwc
     source ${pkgs.antigen}/share/antigen/antigen.zsh
     source ~/.zshrc_actual
   '';
