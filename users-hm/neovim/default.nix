@@ -66,6 +66,8 @@ in
     #dejavu_fonts
     #ubuntu_font_family
     #unifont
+    vimPlugins.molokai
+    tree-sitter
 
     nodejs # copilot
     vale
