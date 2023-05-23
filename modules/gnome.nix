@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }: with lib; {
+{ lib, config, pkgs, inputs, ... }: with lib; {
 
   imports = [
     ./pipewire-audio.nix
@@ -82,7 +82,6 @@
     zoom-us
     element-desktop
     languagetool
-    calibre
     mumble
     marktext
     dbeaver
@@ -93,6 +92,10 @@
     discord
     slack
     signal-desktop
+    # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
+    foliate
+
+    inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
 
     # teamspeak
     #teamspeak_client
@@ -162,4 +165,3 @@
     6003
   ];
 }
-

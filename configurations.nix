@@ -12,10 +12,15 @@
 , astro-nvim
 , ctile
 , discord-tar 
+, inputs
 , ...
 }: let 
   common-modules = [
       ./config-common.nix
+      ({ config._module.args = {
+        # This is the new, hip extraArgs.
+        inherit inputs;
+      };})
       sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
@@ -26,6 +31,7 @@
           inherit nur;
           inherit nixpkgs;
           inherit astro-nvim;
+          inherit inputs;
           username = "peter";
           homeDirectory = "/home/peter";
           my-gui = true;
@@ -50,20 +56,14 @@
         nixpkgs.overlays = [
           nur.overlay
           (final: prev: {
-            linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: {
-              sysdig = unstablepkgs.legacyPackages.x86_64-linux.linuxPackages_latest.sysdig; # sysdig 0.29 is incompatible with linxu >=6.2
-            });
             ctile = ctile.packages.x86_64-linux.ctile;
-            nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
-            wezterm = unstablepkgs.legacyPackages.x86_64-linux.wezterm;
-            #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
-            #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
             nerdfonts = unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
+            nextcloud-client = unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; wezterm = unstablepkgs.legacyPackages.x86_64-linux.wezterm; #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { }; #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
             #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
             #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
             cider = flakepkgs.x86_64-linux.cider;
             webcord = flakepkgs.x86_64-linux.webcord;
-            loc = flakepkgs.x86_64-linux.loc-git;
+            #loc = flakepkgs.x86_64-linux.loc-git;
             #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
             discord = prev.discord.overrideAttrs (_: { 
               src = discord-tar; 

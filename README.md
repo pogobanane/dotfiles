@@ -1,4 +1,11 @@
-# H1
+# My dotfiles for NixOS
+
+- builds around nix-flakes
+- very quick and dirty
+- defies any consistency
+
+
+# Notes
 
 ## The secrets of the undocumented nix-command flags
 
@@ -16,3 +23,9 @@ Due to gnome we are using gnome-keyring-deamon which spawns an `openssh-9.0p1/bi
 
 Additionally, for some reason, we have `systemctl --user status ssh-agent` running (`openssh-9.0p1/bin/ssh-agent -a /run/user/1000/ssh-agent`), which works as expected, given that some `ssh-askpass` (such as from seahorse) is available. 
 
+## Security to implement some day
+
+- secure boot
+- protect processes from being traced/debugged from other ones from the same user: https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
+- prevent general kernel tracing (/dev/mem): https://man7.org/linux/man-pages/man7/kernel_lockdown.7.html
+- enable stack protectors, kernel patches etc: use -hardened kernel

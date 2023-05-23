@@ -6,6 +6,7 @@
   nixpkgs, 
   pkgs, 
   sops-nix, 
+  nix-index-database,
   nur, 
   username, 
   homeDirectory, 
@@ -57,9 +58,12 @@ in
     "${sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
     ./editors.nix
+    #./neovim
+    nix-index-database.hmModules.nix-index
   ];
 
   my-gui.enable = my-gui;
+  programs.nix-index-database.comma.enable = true;
 
   # Configuration of secrets
   sops = {
@@ -153,6 +157,7 @@ in
     # removed manually once to bootstrap this line in. Also that file is write
     # protected (-> -f).
     [[ $(stat ~/.zshrc -c '%021Y') < $(stat ~/.zshrc.zwc -c '%021Y') ]] || rm -f ~/.zshrc.zwc
+
     source ${pkgs.antigen}/share/antigen/antigen.zsh
     source ~/.zshrc_actual
   '';
@@ -176,7 +181,8 @@ in
     bottom # btm
     #doom-emacs
     sendtelegram
-    nix-index # nix-locate
+    #nix-index # nix-locate
+    #comma # package containing command and run it
     sops
     sopspw
     age
@@ -185,6 +191,5 @@ in
     nix-output-monitor # nom
     # rustup
     ranger # command line file manager
-    comma # package containing command and run it
   ];
 }

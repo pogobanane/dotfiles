@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs, nur, sops-nix, lib, username, homeDirectory, my-gui, config, options, specialArgs, modulesPath, nixosConfig, osConfig}: let 
+{ pkgs, nixpkgs, nur, sops-nix, lib, username, homeDirectory, my-gui, config, options, specialArgs, modulesPath, nixosConfig, osConfig, ...}: let 
   vim-submode = pkgs.callPackage ../pkgs/vim-submode.nix { };
   my-vim-paste-easy = pkgs.vimUtils.buildVimPlugin {
     name = "vim-paste-easy";

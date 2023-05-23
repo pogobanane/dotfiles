@@ -1,7 +1,8 @@
 # https://github.com/alacritty/alacritty/blob/master/alacritty.yml
 
 title: "Term/Alacritty"
-alt_send_esc: false
+# the following option has been remove
+#alt_send_esc: false
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -16,9 +17,16 @@ scrolling:
 # Font configuration
 font:
   normal:
-    family: Monospace
-    #family: Hack Nerd Font Mono
+    family: "FiraCode Nerd Font"
+    #family: Monospace
+    #family: "Hack Nerd Font Mono"
   # Point size
+  bold:
+    family: "FiraCode Nerd Font Mono"
+    style: Bold
+  italic:
+    family: "FiraCode Nerd Font Mono"
+    style: Italic
   size: 10.0
 
 window:

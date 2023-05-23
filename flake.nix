@@ -1,6 +1,11 @@
 {
   description = "NixOS configuration with flakes";
 
+  nixConfig = {
+    extra-substituters = ["https://nix-gaming.cachix.org"];
+    extra-trusted-public-keys = ["nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
+  };
+
   # To update all inputs:
   # $ nix flake update .
   inputs = {
@@ -47,6 +52,8 @@
     astro-nvim.url = "github:AstroNvim/AstroNvim";
     astro-nvim.flake = false;
 
+    nix-gaming.url = "github:fufexan/nix-gaming";
+
     fenix = {
       url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
@@ -72,6 +79,7 @@
         map-cmd = pkgs.callPackage ./pkgs/map.nix { };
         loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (args) loc-src; };
         nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+        #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
         #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
         #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       };
@@ -93,6 +101,7 @@
           ./users-hm/gui.nix
         ];
         extraSpecialArgs = {
+          inputs = args;
           inherit (args) sops-nix nur nixpkgs;
           username = "peter";
           homeDirectory = "/home/peter";
@@ -105,6 +114,7 @@
           ./users-hm/peter.nix
         ];
         extraSpecialArgs = {
+          inputs = args;
           inherit (args) sops-nix nur nixpkgs;
           username = "okelmann";
           homeDirectory = "/home/okelmann";
@@ -114,6 +124,7 @@
       nixosConfigurations = import ./configurations.nix ({
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
+        inputs = args;
       } // args);
       devShells.x86_64-linux = {
         default = pkgs.mkShell {
