@@ -9,7 +9,9 @@
   # To update all inputs:
   # $ nix flake update .
   inputs = {
-    flake-utils.url = "github:numtide/flake-utils";
+    #flake-utils.url = "github:numtide/flake-utils";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-22.11";
     #nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
@@ -65,25 +67,29 @@
     self,
     nixpkgs,
     flake-utils,
+    flake-parts,
     ...
-  } @ args: let 
+  } @ inputs: let 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    fenixPkgs = args.fenix.packages.x86_64-linux;
-    tex2nixPkgs = args.tex2nix.packages.x86_64-linux;
+    fenixPkgs = inputs.fenix.packages.x86_64-linux;
+    tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
   in nixpkgs.lib.attrsets.recursiveUpdate
-    (flake-utils.lib.eachDefaultSystem (system: let
-      pkgs = nixpkgs.legacyPackages.${system};
-      fenixPkgs = args.fenix.packages.${system};
-    in {
-      packages = {
-        map-cmd = pkgs.callPackage ./pkgs/map.nix { };
-        loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (args) loc-src; };
-        nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
-        #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
-        #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
-        #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
-      };
-    }))
+    (flake-parts.lib.mkFlake
+      { inherit inputs; }
+      { 
+        systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+        perSystem = { config, self', inputs', pkgs, system, ... }: {
+          packages = {
+            map-cmd = pkgs.callPackage ./pkgs/map.nix { };
+            loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };
+            nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+            #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
+            #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
+            #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+          };
+        };
+      }
+    )
     (let
       pkgs = nixpkgs.legacyPackages.x86_64-linux;
     in {
@@ -94,28 +100,28 @@
         #mesonFlags = [ "-Dprofile=development" "-Dcontractor=enabled" ];
         #dontStrip = true;
       #});
-      homeConfigurations.peter = args.home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           ./users-hm/peter.nix
           ./users-hm/gui.nix
         ];
         extraSpecialArgs = {
-          inputs = args;
-          inherit (args) sops-nix nur nixpkgs;
+          inputs = inputs;
+          inherit (inputs) sops-nix nur nixpkgs;
           username = "peter";
           homeDirectory = "/home/peter";
           my-gui = true;
         };
       };
-      homeConfigurations.peter-doctor-cluster = args.home-manager.lib.homeManagerConfiguration {
+      homeConfigurations.peter-doctor-cluster = inputs.home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           ./users-hm/peter.nix
         ];
         extraSpecialArgs = {
-          inputs = args;
-          inherit (args) sops-nix nur nixpkgs;
+          inputs = inputs;
+          inherit (inputs) sops-nix nur nixpkgs;
           username = "okelmann";
           homeDirectory = "/home/okelmann";
           my-gui = false;
@@ -124,8 +130,8 @@
       nixosConfigurations = import ./configurations.nix ({
         nixosSystem = nixpkgs.lib.nixosSystem;
         flakepkgs = self.packages;
-        inputs = args;
-      } // args);
+        inputs = inputs;
+      } // inputs);
       devShells.x86_64-linux = {
         default = pkgs.mkShell {
           buildInputs = with pkgs; [
