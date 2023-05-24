@@ -73,81 +73,86 @@
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
     fenixPkgs = inputs.fenix.packages.x86_64-linux;
     tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
-  in nixpkgs.lib.attrsets.recursiveUpdate
-    (flake-parts.lib.mkFlake
-      { inherit inputs; }
-      { 
-        systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-        perSystem = { config, self', inputs', pkgs, system, ... }: {
-          packages = {
-            map-cmd = pkgs.callPackage ./pkgs/map.nix { };
-            loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };
-            nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
-            #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
-            #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
-            #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+  in flake-parts.lib.mkFlake
+    { inherit inputs; }
+    { 
+      imports = [
+        ({...}: {
+          perSystem = {...}: {
+            packages = {
+              #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+            };
+          };
+        })
+      ];
+      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
+      perSystem = { config, self', inputs', pkgs, system, ... }: {
+        packages = {
+          map-cmd = pkgs.callPackage ./pkgs/map.nix { };
+          loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };
+          nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+          #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
+          #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
+          #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+        };
+      };
+      flake = {
+        packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+        packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
+        packages.x86_64-linux.geary = pkgs.callPackage pkgs/geary.nix { };
+        #packages.x86_64-linux.geary = pkgs.gnome.geary.overrideAttrs (finalAttrs: previousAttrs: {
+          #mesonFlags = [ "-Dprofile=development" "-Dcontractor=enabled" ];
+          #dontStrip = true;
+        #});
+        homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./users-hm/peter.nix
+            ./users-hm/gui.nix
+          ];
+          extraSpecialArgs = {
+            inputs = inputs;
+            inherit (inputs) sops-nix nur nixpkgs;
+            username = "peter";
+            homeDirectory = "/home/peter";
+            my-gui = true;
           };
         };
-      }
-    )
-    (let
-      pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    in {
-      packages.x86_64-linux.webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
-      packages.x86_64-linux.cider = pkgs.callPackage pkgs/cider.nix { };
-      packages.x86_64-linux.geary = pkgs.callPackage pkgs/geary.nix { };
-      #packages.x86_64-linux.geary = pkgs.gnome.geary.overrideAttrs (finalAttrs: previousAttrs: {
-        #mesonFlags = [ "-Dprofile=development" "-Dcontractor=enabled" ];
-        #dontStrip = true;
-      #});
-      homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./users-hm/peter.nix
-          ./users-hm/gui.nix
-        ];
-        extraSpecialArgs = {
-          inputs = inputs;
-          inherit (inputs) sops-nix nur nixpkgs;
-          username = "peter";
-          homeDirectory = "/home/peter";
-          my-gui = true;
-        };
-      };
-      homeConfigurations.peter-doctor-cluster = inputs.home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./users-hm/peter.nix
-        ];
-        extraSpecialArgs = {
-          inputs = inputs;
-          inherit (inputs) sops-nix nur nixpkgs;
-          username = "okelmann";
-          homeDirectory = "/home/okelmann";
-          my-gui = false;
-        };
-      };
-      nixosConfigurations = import ./configurations.nix ({
-        nixosSystem = nixpkgs.lib.nixosSystem;
-        flakepkgs = self.packages;
-        inputs = inputs;
-      } // inputs);
-      devShells.x86_64-linux = {
-        default = pkgs.mkShell {
-          buildInputs = with pkgs; [
-            just
-            nix-output-monitor
+        homeConfigurations.peter-doctor-cluster = inputs.home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./users-hm/peter.nix
           ];
+          extraSpecialArgs = {
+            inputs = inputs;
+            inherit (inputs) sops-nix nur nixpkgs;
+            username = "okelmann";
+            homeDirectory = "/home/okelmann";
+            my-gui = false;
+          };
         };
-        clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
-        containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
-        latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; inherit tex2nixPkgs; };
-        networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
-        node = pkgs.callPackage ./devShells/node.nix { inherit pkgs; };
-        python = pkgs.callPackage ./devShells/python.nix { inherit pkgs; };
-        rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
-        sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+        nixosConfigurations = import ./configurations.nix ({
+          nixosSystem = nixpkgs.lib.nixosSystem;
+          flakepkgs = self.packages;
+          inputs = inputs;
+        } // inputs);
+        devShells.x86_64-linux = {
+          default = pkgs.mkShell {
+            buildInputs = with pkgs; [
+              just
+              nix-output-monitor
+            ];
+          };
+          clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
+          containers = pkgs.callPackage ./devShells/containers.nix { inherit pkgs; };
+          latex = pkgs.callPackage ./devShells/latex.nix { inherit pkgs; inherit tex2nixPkgs; };
+          networking = pkgs.callPackage ./devShells/networking.nix { inherit pkgs; };
+          node = pkgs.callPackage ./devShells/node.nix { inherit pkgs; };
+          python = pkgs.callPackage ./devShells/python.nix { inherit pkgs; };
+          rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; inherit fenixPkgs; };
+          sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+        };
       };
-    });
+    };
 }
 
