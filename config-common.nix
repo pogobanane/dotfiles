@@ -49,6 +49,14 @@
         boot.kernelPackages = pkgs.linuxPackages_latest;
       };
     };
+    hideR7240 = {
+      inheritParentConfig = true;
+      configuration = {
+        boot.kernelParams = [
+          "vfio-pci.ids=1002:699f" # TODO nixify this parameter so that it gets properly merged with other definitions
+        ];
+      };
+    };
     #iorefd = {
       #inheritParentConfig = true;
       #configuration = {
