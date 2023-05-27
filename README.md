@@ -29,3 +29,23 @@ Additionally, for some reason, we have `systemctl --user status ssh-agent` runni
 - protect processes from being traced/debugged from other ones from the same user: https://www.kernel.org/doc/html/latest/admin-guide/LSM/Yama.html
 - prevent general kernel tracing (/dev/mem): https://man7.org/linux/man-pages/man7/kernel_lockdown.7.html
 - enable stack protectors, kernel patches etc: use -hardened kernel
+
+
+# Formatting d
+
+follow essentially: `https://wiki.archlinux.org/title/Dm-crypt/Encrypting_an_entire_system#LVM_on_LUKS`
+
+- set up some boot partition
+- create luks partition, `cryptsetup open` it
+- create LVM on luks partition `pvcreate /dev/mapper/luks*`
+
+
+How to mount an encrypted zfs image:
+
+- nix-shell -p util-linux
+- sudo losetup
+- sudo losetup /dev/loop${n+1} ./zfs.img
+- sudo zpool import -o readonly -f -d /dev/loop${n+1} ${partitin label as of lsblk -f: e.g. zroot} -R /mnt
+- sudo zfs list
+- sudo zfs load-key ${encrypted zpool partition: e.g. zroot/root}
+- for legacy mountpoints: sudo mount -t zfs 

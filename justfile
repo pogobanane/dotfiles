@@ -25,6 +25,9 @@ nixos-diff:
   diff {{proot}} /etc/ssh
   diff {{proot}} /etc/NetworkManager
 
+libvirt-diff:
+  diff <(sudo virsh dumpxml win11) {{proot}}/libvirt/win11.libvirt.xml
+
 # repl into systems defined in this git
 nixos-repl-git HOST=`hostname`:
   nix repl ./repl.nix --argstr hostname {{HOST}}
