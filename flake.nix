@@ -61,6 +61,9 @@
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
       #inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    impurity.url = "path:./modules/empty";
+    impurity.flake = false;
   };
 
   outputs = {
@@ -91,6 +94,7 @@
           map-cmd = pkgs.callPackage ./pkgs/map.nix { };
           loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };
           nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+          self-flake = pkgs.callPackage ./pkgs/self-flake.nix { impure-debug-info = inputs.impurity; };
           #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
           #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
           #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };

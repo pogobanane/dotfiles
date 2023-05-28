@@ -197,6 +197,19 @@
         "type": "github"
       }
     },
+    "impurity": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-X1rrJlYl0RM82FlY3M0T0/VoHri4yjPZYZWCLnuwqwk=",
+        "path": "./modules/empty",
+        "type": "path"
+      },
+      "original": {
+        "path": "./modules/empty",
+        "type": "path"
+      }
+    },
     "lambda-pirate": {
       "inputs": {
         "fenix": "fenix_2",
@@ -426,6 +439,7 @@
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",
         "home-manager": "home-manager",
+        "impurity": "impurity",
         "lambda-pirate": "lambda-pirate",
         "loc-src": "loc-src",
         "nix-gaming": "nix-gaming",
