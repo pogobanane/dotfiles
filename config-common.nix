@@ -202,8 +202,8 @@
  
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-  services.openssh.passwordAuthentication = false;
-  services.openssh.permitRootLogin = "no";
+  services.openssh.settings.PasswordAuthentication = false;
+  services.openssh.settings.PermitRootLogin = "no";
   programs.ssh = { 
     startAgent = true;
   };
@@ -214,7 +214,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = lib.mkDefault true;
-  systemd.services.systemd-networkd-wait-online.enable = false;
+  systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
   # This value determines the NixOS release from which the default
