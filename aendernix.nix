@@ -23,5 +23,12 @@
   environment.systemPackages = with pkgs; [
     virt-manager
     pciutils
+    heroic # epic and gog launcher
+
+    # do i really need these?
+    wine
+    winetricks
+    dxvk
+    lutris
   ];
 }

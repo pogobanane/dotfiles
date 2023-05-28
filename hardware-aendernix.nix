@@ -22,8 +22,6 @@
   boot.supportedFilesystems = [ "ntfs" ];
   # changing this seems to require reboot twice:
   boot.kernelParams = [
-    "zfs.zfs_arc_sys_free=3221225472"
-    "zfs.zfs_arc_max=3221225472"
     "vfio-pci.ids=1002:67df,1002:aaf0"
     "add_efi_memmap" 
     "kvm.ignore_msrs=1"
@@ -59,6 +57,10 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/405E-B882";
     fsType = "vfat";
+  };
+  fileSystems."/hdd" = {
+    device = "/dev/disk/by-uuid/6fe4e745-aee4-4a70-a9b9-03cd4f1894f5";
+    fsType = "ext4";
   };
 
   swapDevices = [ ];
