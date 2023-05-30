@@ -81,6 +81,7 @@
     { 
       imports = [
       ./flake-packages.nix
+      ./flake-configurations.nix
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {
@@ -88,38 +89,6 @@
         };
       };
       flake = {
-        homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./users-hm/peter.nix
-            ./users-hm/gui.nix
-          ];
-          extraSpecialArgs = {
-            inputs = inputs;
-            inherit (inputs) sops-nix nur nixpkgs;
-            username = "peter";
-            homeDirectory = "/home/peter";
-            my-gui = true;
-          };
-        };
-        homeConfigurations.peter-doctor-cluster = inputs.home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./users-hm/peter.nix
-          ];
-          extraSpecialArgs = {
-            inputs = inputs;
-            inherit (inputs) sops-nix nur nixpkgs;
-            username = "okelmann";
-            homeDirectory = "/home/okelmann";
-            my-gui = false;
-          };
-        };
-        nixosConfigurations = import ./configurations.nix ({
-          nixosSystem = nixpkgs.lib.nixosSystem;
-          flakepkgs = self.packages;
-          inputs = inputs;
-        } // inputs);
         devShells.x86_64-linux = {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
