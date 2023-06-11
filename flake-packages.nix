@@ -16,6 +16,8 @@
     packages.x86_64-linux = {
       webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       cider = pkgs.callPackage pkgs/cider.nix { };
+      # broken/in development:
+      # apple-music = pkgs.callPackage pkgs/apple-music.nix { };
     };
 
     #packages.x86_64-linux.geary = pkgs.callPackage pkgs/geary.nix { };
