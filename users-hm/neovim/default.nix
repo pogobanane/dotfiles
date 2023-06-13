@@ -96,6 +96,13 @@ in
     black
     ruff
 
+    clang-tools
+    nixpkgs-fmt
+    shfmt
+    terraform-ls
+    ouch
+
+
     nodePackages.prettier
     stylua
     # does not build yet on aarch64
