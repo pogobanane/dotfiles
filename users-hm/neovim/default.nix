@@ -98,10 +98,7 @@ in
 
     clang-tools
     nixpkgs-fmt
-    shfmt
     terraform-ls
-    ouch
-
 
     nodePackages.prettier
     stylua
