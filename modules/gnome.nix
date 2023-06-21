@@ -3,27 +3,27 @@
   imports = [
     ./pipewire-audio.nix
   ];
-  
+
   environment.sessionVariables = {
     QT_QPA_PLATFORM = "wayland"; # qt apps disable wayland by default
     XDG_SESSION_TYPE = "wayland";
     MOZ_ENABLE_WAYLAND = "1"; # mozillas wayland backend is experimental and disabled by default
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
-  nixpkgs.overlays = [ 
+  nixpkgs.overlays = [
     #(self: super: { 
-      #gnome = super.gnome.overrideScope' (gself: gsuper: {
-        #gnome-keyring = gsuper.gnome-keyring.override {
-          #doCheck = true;
-          #dontPatch = true;
-          #prePatch = ''
-            #substituteInPlace $out/pkcs11/ssh-store/gkm-ssh-module.c
-              #--replace "~/.ssh" "~/.ssh/gnome-autoload"
-          #'';
-        #};
-      #});
+    #gnome = super.gnome.overrideScope' (gself: gsuper: {
+    #gnome-keyring = gsuper.gnome-keyring.override {
+    #doCheck = true;
+    #dontPatch = true;
+    #prePatch = ''
+    #substituteInPlace $out/pkcs11/ssh-store/gkm-ssh-module.c
+    #--replace "~/.ssh" "~/.ssh/gnome-autoload"
+    #'';
+    #};
+    #});
     #} ) 
-    (self: super: { 
+    (self: super: {
       gnomeExtensions = super.gnomeExtensions // rec {
         #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
         switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (finalAttrs: previousAttrs: rec {
@@ -33,7 +33,7 @@
           '';
         });
       };
-    } ) 
+    })
   ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
   # opening chrome://flags/#enable-webrtc-pipewire-capturer in chrome and change "WebRTC PipeWire support" to "Enabled" makes screen sharing work
@@ -94,6 +94,7 @@
     signal-desktop
     # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
     foliate
+    AusweisApp2
 
     inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
 
@@ -146,19 +147,19 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 
+  networking.firewall.allowedTCPPorts = [
     5353 # avahi
     # shairport-sync
-    5000 
+    5000
     6000
     6001
     6002
     6003
   ];
-  networking.firewall.allowedUDPPorts = [ 
+  networking.firewall.allowedUDPPorts = [
     5353 # avahi
     # shairport-sync
-    5000 
+    5000
     6000
     6001
     6002
