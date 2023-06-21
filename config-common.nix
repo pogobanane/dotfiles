@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./modules/self.nix
       ./modules/nix-daemon.nix
       ./modules/gnome.nix
@@ -22,19 +23,19 @@
 
   #sops.defaultSopsFile = ./secrets.yaml;
   #sops.secrets.testsecret = {
-    #path = "/home/peter/.ssh/testsecret";
-    #owner = "peter";
+  #path = "/home/peter/.ssh/testsecret";
+  #owner = "peter";
   #};
 
   fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
 
   nixpkgs.overlays = [
     (final: prev: {
-            #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
-            #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
-            #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
-            #  });
-            #});
+      #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
+      #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
+      #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
+      #  });
+      #});
     })
   ];
 
@@ -58,10 +59,10 @@
       };
     };
     #iorefd = {
-      #inheritParentConfig = true;
-      #configuration = {
-        #boot.kernelPackages = pkgs.callPackage ./linux-ioregionfd.nix {};
-      #};
+    #inheritParentConfig = true;
+    #configuration = {
+    #boot.kernelPackages = pkgs.callPackage ./linux-ioregionfd.nix {};
+    #};
     #};
   };
 
@@ -95,7 +96,7 @@
     mode = "640";
     text = "allow all";
   };
-  
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -112,7 +113,7 @@
   # services.xserver.enable = true;
 
 
-  
+
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -138,7 +139,7 @@
     home = "/home/peter";
     shell = pkgs.zsh;
     extraGroups = [ "wheel" "docker" ];
-    openssh.authorizedKeys.keys = [ 
+    openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDITBcN9iw5Fn7yyfgiWFet3QWDoMcUNtzLi+PNoYS7jksvcKZy5pLOjE6wCpkbYx+Tcb4MyvoWPXvwdo5FfL4XdhZRO+JlZ66p/rGssq/wEr2BBUwohP7o39JLtiyXGXSsK6MO2aceOFLQr4KAdaeD8ST0XumGcV6bGqIbjFsK5FCxFhO8NkCFtavBjDwKUm3uyOnVCWMp12abUphzxrVtWhcsnw5GapohATP03mCNxmrn/L7x393HutxgjyduScX7++MjwVE6J7wCnztPUtJbh9jYemr/K9fBMBbLhQagOjrlQYGU5frgmLrPCRZusyg5HjWx6gJIxs/DskfgmW+V peter@aenderarch" # gitpogobanane
     ];
   };
@@ -147,7 +148,7 @@
   virtualisation.docker.daemon.settings = {
     # default ip range for docker bridges seems to be 172.18.0.1.
     # This collides with ip addresses of wifis in DB ICEs trains.
-    bip = "172.19.0.1/16"; 
+    bip = "172.19.0.1/16";
   };
 
   security.sudo.extraConfig = ''
@@ -199,12 +200,12 @@
   };
 
   # List services that you want to enable:
- 
+
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.openssh.settings.PasswordAuthentication = false;
   services.openssh.settings.PermitRootLogin = "no";
-  programs.ssh = { 
+  programs.ssh = {
     startAgent = true;
   };
 
@@ -226,4 +227,3 @@
   system.stateVersion = "21.11"; # Did you read the comment?
 
 }
-

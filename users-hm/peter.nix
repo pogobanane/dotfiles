@@ -160,6 +160,9 @@ in
 
     source ${pkgs.antigen}/share/antigen/antigen.zsh
     source ~/.zshrc_actual
+
+    # add justfile autocompletion for zsh
+    export FPATH=$FPATH:${pkgs.just}/share/zsh/site-functions
   '';
 
   home.file.".tmate.conf".source = ./tmate.conf;

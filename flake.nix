@@ -73,9 +73,6 @@
     flake-parts,
     ...
   } @ inputs: let 
-    pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    fenixPkgs = inputs.fenix.packages.x86_64-linux;
-    tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
   in flake-parts.lib.mkFlake
     { inherit inputs; }
     { 
@@ -89,7 +86,11 @@
         };
       };
       flake = {
-        devShells.x86_64-linux = {
+        devShells.x86_64-linux = let 
+          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          fenixPkgs = inputs.fenix.packages.x86_64-linux;
+          tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
+        in {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               just
