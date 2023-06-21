@@ -1,24 +1,26 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
-{ 
-  config, 
-  lib, 
-  nixpkgs, 
-  pkgs, 
-  sops-nix, 
-  nix-index-database,
-  nur, 
-  username, 
-  homeDirectory, 
-  my-gui,
-  ... 
-}: let 
-  doom-emacs = pkgs.callPackage (builtins.fetchTarball {
-    url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
-    sha256 = "sha256:1jz8mxh143a4470mq303ng6dh3bxi6mcppqli4z0m13qhqssh4fx";
-  }) {
-    doomPrivateDir = ./doom.d;
-  };
+{ config
+, lib
+, nixpkgs
+, pkgs
+, sops-nix
+, nix-index-database
+, nur
+, username
+, homeDirectory
+, my-gui
+, ...
+}:
+let
+  doom-emacs = pkgs.callPackage
+    (builtins.fetchTarball {
+      url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
+      sha256 = "sha256:1jz8mxh143a4470mq303ng6dh3bxi6mcppqli4z0m13qhqssh4fx";
+    })
+    {
+      doomPrivateDir = ./doom.d;
+    };
 
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
     set -e
@@ -33,7 +35,7 @@
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
-  
+
   ls1vpn = pkgs.writeShellApplication {
     name = "ls1vpn";
     runtimeInputs = [ pkgs.libsecret pkgs.openvpn pkgs.gnome.seahorse ];
@@ -54,7 +56,7 @@
   };
 in
 {
-  imports = [ 
+  imports = [
     "${sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
     ./editors.nix
@@ -80,10 +82,10 @@ in
   systemd.user.startServices = "sd-switch"; # experimental way to automatically restart systemd.user services
 
   #programs.doom-emacs = {
-    #enable = true;
-    #doomPrivateDir = builtins.path {
-      #name = "doom";
-      #path = kjk
+  #enable = true;
+  #doomPrivateDir = builtins.path {
+  #name = "doom";
+  #path = kjk
   #};
 
   # Home Manager needs a bit of information about you and the
@@ -135,7 +137,7 @@ in
       tmuxPlugins.sensible # general sanity
     ];
   };
-  
+
   # config.programs.ssh.startAgent = true;
 
   home.file.".gitconfig".source = ./gitconfig;
