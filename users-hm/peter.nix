@@ -59,8 +59,8 @@ in
   imports = [
     "${sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
-    ./editors.nix
-    #./neovim
+    #./editors.nix
+    ./neovim
     nix-index-database.hmModules.nix-index
   ];
 
