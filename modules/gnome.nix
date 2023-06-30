@@ -1,4 +1,4 @@
-{ lib, config, pkgs, inputs, ... }: with lib; {
+{ lib, config, pkgs, unstablepkgs, inputs, ... }: with lib; {
 
   imports = [
     ./pipewire-audio.nix
@@ -95,6 +95,7 @@
     # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
     foliate
     AusweisApp2
+    via # for qmk keyboard flashing
 
     inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
 

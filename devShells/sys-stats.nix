@@ -27,5 +27,10 @@
       pciutils # lspci -vmm
       inxi # aggregates hw infos
       hwloc # lstopo: generates text or image hw layouts/trees
+
+      # investigate hardware errors
+      edac-utils # edac-util: memory/pci errors
+      smartmontools # smartctl
+      nvme-cli # tool: nvme
     ];
   }
