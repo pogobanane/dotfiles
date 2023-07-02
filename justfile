@@ -15,7 +15,8 @@ nixos-repl:
 nixos-nix SELECTOR WHAT="shell":
   nix {{WHAT}} $(realpath /etc/nixos)#nixosConfigurations.{{hostname}}.{{SELECTOR}}
 
-nixos-diff:
+# diff nixos config sources
+nixos-diff-src:
   # requires nixos module modules/self.nix
   diff -r --color=always -x .direnv -x .envrc -x .git -x result -x archlinux -x async-term-askpass {{proot}} /etc/nixos \
   && echo "The running nixos system configuration matches the one defined here." \
@@ -24,6 +25,20 @@ nixos-diff:
   diff {{proot}} /etc/tinc/retiolum/*.pub
   diff {{proot}} /etc/ssh
   diff {{proot}} /etc/NetworkManager
+
+# diff packages. Baseline: current system. Compare to: .#nixosConfigurations.{{HOST}}.
+nixos-diff-closures:
+  #!/bin/sh
+  baseline="/nix/var/nix/profiles/system"
+  compare=$(nix build .#nixosConfigurations.{{hostname}}.config.system.build.toplevel --print-out-paths)
+  nix store diff-closures $baseline $compare
+
+# diff evaluated nixos config
+nixos-diff-config:
+  echo wip
+  # https://discourse.nixos.org/t/print-flake-system-configuration-as-json/14199/4
+  # lib.mapAttrsRecursive (path: value: let result = builtins.tryEval value; in (if result.success then result.value else "error")) nixosConfigurations.aendernix.config
+  nix eval --json .\#nixosConfigurations.aendernix.config.console
 
 libvirt-diff:
   diff <(sudo virsh dumpxml win11) {{proot}}/libvirt/win11.libvirt.xml
