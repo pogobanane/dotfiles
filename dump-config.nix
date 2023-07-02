@@ -199,7 +199,7 @@ let
       inherit children;
     };
   in 
-    trace msg 
+    # trace msg 
     ([parent] ++ childrenPathsFlat)
   );
   sanitizerList = (config: 
@@ -209,14 +209,21 @@ let
       )
       config
   );
+  nodes = listRecAttrsRec2 configBadRec [] [];
+  result' = builtins.map (node:
+    if node.mytype == "attrset" then
+      builtins.removeAttrs node ["value"]
+    else
+      node
+  ) nodes;
 in
+  result'
 # sanitizerFn1 nixosConfig
 # (sanitizerAttrsetRec configBadRec).config.hostname
 # (mapRecAttrsRec configGood [] [])
 # sanitizerAttrset hostConfig.networking
 # listRecAttrsRec2 configGood [] []
-listRecAttrsRec2 configGood [] []
-# listRecAttrsRec2 configBadRec [] []
+# listRecAttrsRec2 configGood [] []
 # builtins.toJSON configBadRec 
 
 # This currently doesnt work on recursive configurations:
