@@ -1,6 +1,11 @@
 let
   pkgs = import <nixpkgs> { };
   lib = pkgs.lib;
+
+  currentHostname = builtins.head (builtins.match "([a-zA-Z0-9]+)\n" (builtins.readFile "/etc/hostname"));
+  flake = (builtins.getFlake (toString ./.));
+  hostConfig = flake.nixosConfigurations.${currentHostname}.config;
+
   configGood = {
     config = {
       hostname = "foo";
@@ -28,6 +33,17 @@ let
       (throw "fizz")
       ({ buzz = { fizz = "fizz"; buzz = throw "buzz"; }; })
     ];
+  };
+  configBadRec = rec {
+    config = {
+      hostname = "foo";
+      networking = {
+        ip = "1.1.1.1";
+        # firewall = throw "foo";
+        hostConfig = config;
+      };
+    };
+    pkgs = "some pkgs";
   };
   e = { x = throw ""; };
   sanitizerFn1 = (config:
@@ -85,6 +101,64 @@ let
       )
       config
   );
+  # recursively map attributes of recursive attrsets
+  mapRecAttrsRec = (config: path: visited:
+    lib.mapAttrs
+      (name: value: let
+        type = builtins.typeOf value;
+        isAttrset = type == "set";
+        currentPath = path ++ [name];
+      in
+        if isAttrset then 
+          mapRecAttrsRec value currentPath (visited ++ [currentPath])
+        else 
+          "${currentPath}" # terminate recursion (return)
+      )
+      config
+  );
+  # recursively list all attribute paths of a recursive (infinite) attrset
+  listRecAttrsRec = (attrset: path:
+    lib.mapAttrsToList
+    (name: value: let 
+        currentPath = path ++ [name];
+        type = builtins.typeOf value;
+        isAttrset = type == "set";
+        childrenPaths = (
+          if isAttrset then 
+            listRecAttrsRec value currentPath 
+         else 
+            []
+        );
+      in (lib.trace (childrenPaths) (
+        [currentPath]
+        ++ childrenPaths
+      ))
+    )
+    attrset
+  );
+  # recursively list all attribute paths of a recursive (infinite) attrset
+  listRecAttrsRec2 = (attrset: path: let
+    getChildren = attrset: lib.mapAttrsToList (name: value: { inherit value; path = path ++ [name]; }) attrset;
+    children = getChildren attrset;
+
+    childrenPaths = builtins.map 
+      (child: let
+        type = builtins.typeOf child.value;
+        isAttrset = type == "set";
+      in
+        (if isAttrset then
+          listRecAttrsRec2 child.value child.path
+        else
+          [ child.path ]
+        )
+      )
+      children
+    ;
+
+    childrenPathsFlat = lib.foldl (a: b: a ++ b) [] childrenPaths;
+  in 
+    ([path] ++ childrenPathsFlat)
+  );
   sanitizerList = (config: 
     builtins.map
       (value:
@@ -94,4 +168,22 @@ let
   );
 in
 # sanitizerFn1 nixosConfig
-sanitizerAttrset configBadList
+# (sanitizerAttrsetRec configBadRec).config.hostname
+# (mapRecAttrsRec configGood [] [])
+# sanitizerAttrset hostConfig.networking
+# listRecAttrsRec2 configGood [] []
+listRecAttrsRec2 configGood []
+# builtins.toJSON configBadRec 
+
+# This currently doesnt work on recursive configurations:
+# works: nix-repl> :p rec { a = { b = 1; c= a; }; }
+# but we cannot work on it without infinite recursion: :p lib.mapAttrsRecursive (name: value: if name == "b" then 2 else value) rec { a = { b = 1; c= a; }; }
+# we could just set b, that requires knowledge of the name "b" at evaluation time. 
+# Instead we want to (1) filter for values matching a criterion (throws) 
+# and then (2) apply a map operation on them
+#
+# Simplification:
+# Given a recursive attrset, we want to find all attrs, that fulfill a condition (say `value == "needle"`)
+# `:p` in `nix repl` does this, but i need it as a nix function. 
+# `lib.mapAttrsRecursiveCond` has no path/key-name available to `cond`. Hence we cannot use it to avoid recursion.
+# Should we just build the list of visited paths ourselves?
