@@ -137,9 +137,25 @@ let
     )
     attrset
   );
+
+  # constructor so that i can add checks or documentation if i want to
+  mkValue = (args:
+    # mytype: { attrset | leaf }
+    { inherit (args) mytype path value; }
+  );
+
+  trace = (expr: ret: lib.trace (builtins.deepSeq expr expr) ret);
+
   # recursively list all attribute paths of a recursive (infinite) attrset
   listRecAttrsRec2 = (attrset: path: seen: let
-    getChildren = attrset: lib.mapAttrsToList (name: value: { inherit value; path = path ++ [name]; }) attrset;
+    parent = mkValue {
+      mytype = "attrset";
+      inherit path;
+      value = attrset;
+    };
+    getChildren = attrset: lib.mapAttrsToList (name: value: 
+      { inherit value; path = path ++ [name]; }
+      ) attrset;
     children = getChildren attrset;
 
     childPaths = (seen: child: let
@@ -147,27 +163,30 @@ let
         isAttrset = type == "set";
       in
         (if isAttrset then
-          listRecAttrsRec2 child.value child.path seen
+          (listRecAttrsRec2 child.value child.path seen)
         else
-          [ child.path ]
+          [(mkValue {
+            inherit (child) value path;
+            mytype = "leaf";
+          })]
         )
     );
 
     childrenPathsFlat = lib.foldl 
       (list: child: let
-          seen' = seen ++ list ++ [path];
+          seen' = seen ++ list ++ [parent];
         in 
-          list ++ (childPaths seen' child)
+          (list ++ (childPaths seen' child))
       ) 
       []
       children
     ;
     msg = {
-      inherit path seen;
+      inherit children;
     };
   in 
-    lib.trace (builtins.deepSeq msg msg)
-    ([path] ++ childrenPathsFlat)
+    trace msg 
+    ([parent] ++ childrenPathsFlat)
   );
   sanitizerList = (config: 
     builtins.map
