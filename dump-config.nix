@@ -184,6 +184,7 @@ let
         childValue = sanitizeLeaf child.value;
         type = builtins.typeOf childValue;
         isAttrset = type == "set";
+        isDerivation = lib.isDerivation childValue;
         firstSeenFn = (expr:
           lib.findFirst (node: node.value == expr) null seen
         );
@@ -197,8 +198,15 @@ let
               value = firstSeen.path; 
               inherit (child) path;
             })]
+          else (if isDerivation then
+            [(mkValue {
+              inherit (child) path;
+              value = "isDerivation TODO";
+              mytype = "leaf";
+            })]
           else
             (listRecAttrsRec2 childValue child.path seen)
+          )
           )
         else
           [(mkValue {
@@ -219,10 +227,10 @@ let
       children
     ;
     msg = {
-      inherit children;
+      inherit path;
     };
   in 
-    # trace msg 
+    trace msg 
     ([parent] ++ childrenPathsFlat)
   );
   sanitizerList = (config: 
@@ -232,7 +240,8 @@ let
       )
       config
   );
-  nodes = listRecAttrsRec2 configBadRec [] [];
+  # nodes = listRecAttrsRec2 configBadRec [] [];
+  nodes = listRecAttrsRec2 hostConfig [] [];
   path2String = path: builtins.concatStringsSep "." path;
   attrsetUpdates = builtins.map (node:
     if node.mytype == "attrset" then
