@@ -11,6 +11,7 @@ let
       hostname = "foo";
       networking = {
         ip = "1.1.1.1";
+        # port = { dev = "/dev/eth0"; gateway = "1.1.1.1"; };
         # firewall = throw "foo";
       };
     };
@@ -137,29 +138,35 @@ let
     attrset
   );
   # recursively list all attribute paths of a recursive (infinite) attrset
-  listRecAttrsRec2 = (attrset: path: let
+  listRecAttrsRec2 = (attrset: path: seen: let
     getChildren = attrset: lib.mapAttrsToList (name: value: { inherit value; path = path ++ [name]; }) attrset;
     children = getChildren attrset;
 
-    childPaths = (child: let
+    childPaths = (seen: child: let
         type = builtins.typeOf child.value;
         isAttrset = type == "set";
       in
         (if isAttrset then
-          listRecAttrsRec2 child.value child.path
+          listRecAttrsRec2 child.value child.path seen
         else
           [ child.path ]
         )
     );
 
     childrenPathsFlat = lib.foldl 
-      (list: child: 
-        list ++ (childPaths child)
+      (list: child: let
+          seen' = seen ++ list ++ [path];
+        in 
+          list ++ (childPaths seen' child)
       ) 
       []
       children
     ;
+    msg = {
+      inherit path seen;
+    };
   in 
+    lib.trace (builtins.deepSeq msg msg)
     ([path] ++ childrenPathsFlat)
   );
   sanitizerList = (config: 
@@ -175,7 +182,7 @@ in
 # (mapRecAttrsRec configGood [] [])
 # sanitizerAttrset hostConfig.networking
 # listRecAttrsRec2 configGood [] []
-listRecAttrsRec2 configGood []
+listRecAttrsRec2 configGood [] []
 # builtins.toJSON configBadRec 
 
 # This currently doesnt work on recursive configurations:
