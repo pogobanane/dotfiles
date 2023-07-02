@@ -40,7 +40,7 @@ let
       hostname = "foo";
       networking = {
         ip = "1.1.1.1";
-        # firewall = throw "foo";
+        firewall = throw "foo";
         hostConfig = config;
       };
     };
@@ -81,11 +81,18 @@ let
   );
   sanitize = (value: 
         let
-          resultDeep = tryEvalRecursive value;
           resultShallow = builtins.tryEval value;
           valueType = builtins.typeOf resultShallow.value;
         in
-        (if resultDeep.success then resultDeep.value else
+        (if resultShallow.success then 
+          (if (valueType == "set") then 
+              (sanitizerAttrset value) 
+            else (if (valueType == "list") then
+              (sanitizerList value)
+            else
+              resultShallow.value
+          ))
+        else
           (if (valueType == "set") then 
               (sanitizerAttrset value) 
             else (if (valueType == "list") then
@@ -93,6 +100,18 @@ let
             else
               (sanitizingError resultShallow)
           ))
+        )
+  );
+  # leaf can be any type except containers (set, list)
+  sanitizeLeaf = (leaf: 
+        let
+          resultShallow = builtins.tryEval leaf;
+          valueType = builtins.typeOf resultShallow.value;
+        in
+        (if resultShallow.success then 
+              resultShallow.value
+        else
+              (sanitizingError resultShallow)
         )
   );
   sanitizerAttrset = (config:
@@ -155,18 +174,20 @@ let
       inherit path;
       value = attrset;
     };
+    # TODO i guess we can also throw in attrsets when it contains a name like "${throw foo}"
     getChildren = attrset: lib.mapAttrsToList (name: value: 
       { inherit value; path = path ++ [name]; }
       ) attrset;
     children = getChildren attrset;
 
     childPaths = (seen: child: let
-        type = builtins.typeOf child.value;
+        childValue = sanitizeLeaf child.value;
+        type = builtins.typeOf childValue;
         isAttrset = type == "set";
         firstSeenFn = (expr:
           lib.findFirst (node: node.value == expr) null seen
         );
-        firstSeen = firstSeenFn child.value;
+        firstSeen = firstSeenFn childValue;
         isSeen = firstSeen != null;
       in
         (if isAttrset then
@@ -177,11 +198,12 @@ let
               inherit (child) path;
             })]
           else
-            (listRecAttrsRec2 child.value child.path seen)
+            (listRecAttrsRec2 childValue child.path seen)
           )
         else
           [(mkValue {
-            inherit (child) value path;
+            inherit (child) path;
+            value = childValue;
             mytype = "leaf";
           })]
         )
@@ -240,6 +262,7 @@ in
 # (sanitizerAttrsetRec configBadRec).config.hostname
 # (mapRecAttrsRec configGood [] [])
 # sanitizerAttrset hostConfig.networking
+# sanitizerAttrset configBad
 # listRecAttrsRec2 configGood [] []
 # listRecAttrsRec2 configGood [] []
 # builtins.toJSON configBadRec 
