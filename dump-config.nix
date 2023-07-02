@@ -201,7 +201,7 @@ let
           else (if isDerivation then
             [(mkValue {
               inherit (child) path;
-              value = "isDerivation TODO";
+              value = "Error: isDerivation TODO (just refer derivation hash here)";
               mytype = "leaf";
             })]
           else
@@ -288,3 +288,7 @@ in
 # `:p` in `nix repl` does this, but i need it as a nix function. 
 # `lib.mapAttrsRecursiveCond` has no path/key-name available to `cond`. Hence we cannot use it to avoid recursion.
 # Should we just build the list of visited paths ourselves?
+
+# Next issue: nixos config is refusing to evalute because of internal errors like `attribute missing`. 
+# Discussed solutions: https://github.com/NixOS/nix/issues/356
+# https://github.com/NixOS/nix/pull/5564 use this patch for a project-custom nix
