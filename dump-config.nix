@@ -139,6 +139,7 @@ let
   );
 
   # constructor so that i can add checks or documentation if i want to
+  # TODO rename to mkNode
   mkValue = (args:
     # mytype: { attrset | leaf }
     { inherit (args) mytype path value; }
@@ -161,9 +162,22 @@ let
     childPaths = (seen: child: let
         type = builtins.typeOf child.value;
         isAttrset = type == "set";
+        firstSeenFn = (expr:
+          lib.findFirst (node: node.value == expr) null seen
+        );
+        firstSeen = firstSeenFn child.value;
+        isSeen = firstSeen != null;
       in
         (if isAttrset then
-          (listRecAttrsRec2 child.value child.path seen)
+          (if isSeen then
+            [(mkValue { 
+              mytype = "reference"; 
+              value = firstSeen.path; 
+              inherit (child) path;
+            })]
+          else
+            (listRecAttrsRec2 child.value child.path seen)
+          )
         else
           [(mkValue {
             inherit (child) value path;
@@ -202,6 +216,7 @@ in
 # sanitizerAttrset hostConfig.networking
 # listRecAttrsRec2 configGood [] []
 listRecAttrsRec2 configGood [] []
+# listRecAttrsRec2 configBadRec [] []
 # builtins.toJSON configBadRec 
 
 # This currently doesnt work on recursive configurations:
