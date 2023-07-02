@@ -141,7 +141,8 @@ let
   # constructor so that i can add checks or documentation if i want to
   # TODO rename to mkNode
   mkValue = (args:
-    # mytype: { attrset | leaf }
+    # mytype: { attrset | leaf | reference}
+    # value: the value of this node. If mytype==reference, then the referencing path.
     { inherit (args) mytype path value; }
   );
 
@@ -210,14 +211,31 @@ let
       config
   );
   nodes = listRecAttrsRec2 configBadRec [] [];
-  result' = builtins.map (node:
+  path2String = path: builtins.concatStringsSep "." path;
+  attrsetUpdates = builtins.map (node:
     if node.mytype == "attrset" then
-      builtins.removeAttrs node ["value"]
+      {
+        # TODO not sure how to create an empty attrset here. If there is already something in the attrset, it is just replaced with an empty one. 
+        path = [ "TODO" ];
+        update = old: true;
+      }
+    else (if node.mytype == "reference" then
+      # use references to break recursion
+      {
+        path = node.path;
+        update = old: "reference#${path2String node.value}";
+      }
     else
-      node
+      # actual values
+      {
+        path = node.path;
+        update = old: node.value;
+      }
+    )
   ) nodes;
+  result = lib.updateManyAttrsByPath attrsetUpdates {};
 in
-  result'
+  result
 # sanitizerFn1 nixosConfig
 # (sanitizerAttrsetRec configBadRec).config.hostname
 # (mapRecAttrsRec configGood [] [])
