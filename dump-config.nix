@@ -20,6 +20,15 @@ let
     };
     pkgs = "some pkgs";
   };
+  configBadList = lib.recursiveUpdate configBad {
+    config.packages = [
+      "foo"
+      "bar"
+      3
+      (throw "fizz")
+      ({ buzz = { fizz = "fizz"; buzz = throw "buzz"; }; })
+    ];
+  };
   e = { x = throw ""; };
   sanitizerFn1 = (config:
     lib.mapAttrsRecursive
@@ -53,9 +62,7 @@ let
   sanitizingError = (tryEvalResult:
     "Error: value of type ${builtins.typeOf tryEvalResult.value} cannot be evaluated due to an error (throw or assert)"
   );
-  sanitizerAttrset = (config:
-    lib.mapAttrs
-      (name: value:
+  sanitize = (value: 
         let
           resultDeep = tryEvalRecursive value;
           resultShallow = builtins.tryEval value;
@@ -70,10 +77,21 @@ let
               (sanitizingError resultShallow)
           ))
         )
+  );
+  sanitizerAttrset = (config:
+    lib.mapAttrs
+      (name: value:
+        (sanitize value)
       )
       config
   );
-  sanitizerList = (config: throw "unimpl");
+  sanitizerList = (config: 
+    builtins.map
+      (value:
+        (sanitize value)
+      )
+      config
+  );
 in
 # sanitizerFn1 nixosConfig
-sanitizerAttrset configBad
+sanitizerAttrset configBadList
