@@ -141,8 +141,7 @@ let
     getChildren = attrset: lib.mapAttrsToList (name: value: { inherit value; path = path ++ [name]; }) attrset;
     children = getChildren attrset;
 
-    childrenPaths = builtins.map 
-      (child: let
+    childPaths = (child: let
         type = builtins.typeOf child.value;
         isAttrset = type == "set";
       in
@@ -151,11 +150,15 @@ let
         else
           [ child.path ]
         )
-      )
+    );
+
+    childrenPathsFlat = lib.foldl 
+      (list: child: 
+        list ++ (childPaths child)
+      ) 
+      []
       children
     ;
-
-    childrenPathsFlat = lib.foldl (a: b: a ++ b) [] childrenPaths;
   in 
     ([path] ++ childrenPathsFlat)
   );
