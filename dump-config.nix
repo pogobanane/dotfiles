@@ -42,6 +42,22 @@ let
         ip = "1.1.1.1";
         firewall = throw "foo";
         hostConfig = config;
+        foo = someFn "bar";
+        bar = okFn config.networking.bar;
+      };
+    };
+    pkgs = "some pkgs";
+    someFn = (str: throw "someFn" "some ${str}");
+    okFn = (str: "some ${str}");
+    errInSeen = throw "foo";
+  };
+  configEvilRec = rec {
+    config = {
+      hostname = "foo";
+      networking = {
+        ip = "1.1.1.1";
+        # firewall = thisVariableDoesNotExist;
+        hostConfig = config;
       };
     };
     pkgs = "some pkgs";
@@ -103,15 +119,21 @@ let
         )
   );
   # leaf can be any type except containers (set, list)
-  sanitizeLeaf = (leaf: 
+  sanitizeLeaf = (leaf: path:
         let
           resultShallow = builtins.tryEval leaf;
           valueType = builtins.typeOf resultShallow.value;
+          isAttrset = valueType == "set";
+          hasFunctor = builtins.hasAttr "__functor" resultShallow.value;
         in
         (if resultShallow.success then 
-              resultShallow.value
+          (if (isAttrset && hasFunctor) then
+            (lib.trace "Error found in ${path2String path}" (sanitizingError resultShallow))
+          else
+            resultShallow.value
+          )
         else
-              (sanitizingError resultShallow)
+              (lib.trace "Error found in ${path2String path}" (sanitizingError resultShallow))
         )
   );
   sanitizerAttrset = (config:
@@ -181,12 +203,12 @@ let
     children = getChildren attrset;
 
     childPaths = (seen: child: let
-        childValue = sanitizeLeaf child.value;
+        childValue = sanitizeLeaf child.value child.path;
         type = builtins.typeOf childValue;
         isAttrset = type == "set";
         isDerivation = lib.isDerivation childValue;
         firstSeenFn = (expr:
-          lib.findFirst (node: node.value == expr) null seen
+          lib.findFirst (node: (sanitizeLeaf node.value node.path) == expr) null seen
         );
         firstSeen = firstSeenFn childValue;
         isSeen = firstSeen != null;
@@ -240,8 +262,8 @@ let
       )
       config
   );
-  # nodes = listRecAttrsRec2 configBadRec [] [];
-  nodes = listRecAttrsRec2 hostConfig [] [];
+  nodes = listRecAttrsRec2 configBadRec [] [];
+  # nodes = listRecAttrsRec2 hostConfig.networking [] [];
   path2String = path: builtins.concatStringsSep "." path;
   attrsetUpdates = builtins.map (node:
     if node.mytype == "attrset" then
@@ -267,6 +289,7 @@ let
   result = lib.updateManyAttrsByPath attrsetUpdates {};
 in
   result
+  # nodes
 # sanitizerFn1 nixosConfig
 # (sanitizerAttrsetRec configBadRec).config.hostname
 # (mapRecAttrsRec configGood [] [])
