@@ -14,6 +14,8 @@ https://github.com/seyahdoo/k3-v2-optical-qmk
 
 https://github.com/SonixQMK/qmk_firmware/tree/96d0671481abb3b9c751a1e35b558a86c55d9d92/keyboards/keychron/k3
 
+needs udev rule and (json)[via_ansi.json] as "design" in via to be configurable via via.
+
 bugs:
 
 - no bluetooth
