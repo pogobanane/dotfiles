@@ -200,6 +200,9 @@
   };
 
   hardware.keyboard.qmk.enable = true;
+  services.udev.extraRules = ''
+  SUBSYSTEMS=="usb", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="fe04", TAG+="uaccess"
+  '';
 
   # List services that you want to enable:
 
