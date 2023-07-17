@@ -9,7 +9,9 @@
   systemd.services.logger.path = [ pkgs.bash pkgs.coreutils pkgs.procps pkgs.gawk ];
   systemd.services.logger.serviceConfig = {
     # Restart = "never";
-    ExecStart = ''${pkgs.bash}/bin/bash -c "echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log" '';
+    ExecStart = ''${pkgs.bash}/bin/bash -c "echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log
+    echo \"$(ps aux --sort=-%mem | head -n4 | tail -n3)\" >> /root/log
+    " '';
   };
   
 #  environment.sessionVariables = {

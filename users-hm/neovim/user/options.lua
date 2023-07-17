@@ -6,7 +6,10 @@ return {
     number = true, -- sets vim.opt.number
     spell = false, -- sets vim.opt.spell
     signcolumn = "auto", -- sets vim.opt.signcolumn to auto
-    wrap = false, -- sets vim.opt.wrap
+    wrap = true, -- sets vim.opt.wrap
+    -- after linewrap, indent 2 more than parent
+    breakindent = true,
+    breakindentopt = "shift:2",
   },
   g = {
     mapleader = " ", -- sets vim.g.mapleader

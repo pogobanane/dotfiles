@@ -2,6 +2,7 @@
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
 in {
+  # TODO: merge this file somehow with the home config as stated in configuration.nix
   systems = [ system ];
   perSystem = { config, self', inputs', pkgs, system, ... }: {
       apps = {

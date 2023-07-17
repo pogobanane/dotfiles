@@ -73,3 +73,8 @@ nix-store gc facilities (--gc, --delete) dont work, because they have to little 
 
 So list all gc-roots for all requisites to simulate garbage collection ourselves?
 Or just extend nix-store?
+
+
+Firefox preferences to expose timezone while suppressing fingerprinting:
+privacy.resistFingerprinting	true	
+privacy.resistFingerprinting.testing.setTZtoUTC	true
