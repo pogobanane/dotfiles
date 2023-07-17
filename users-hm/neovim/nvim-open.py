@@ -2,6 +2,7 @@
 
 import hashlib
 import os
+import socket
 import sys
 from pathlib import Path
 
@@ -37,7 +38,8 @@ def main() -> None:
     if len(sys.argv) >= 2:
         path = Path(sys.argv[1])
         args = path.name.split(":")
-        if len(args) == 2:
+        # len == 2: file:line, len == 3: file:line:column
+        if len(args) == 2 or len(args) == 3:
             path = path.parent.joinpath(args[0])
             if path.exists():
                 line = args[1]
@@ -49,6 +51,14 @@ def main() -> None:
 
     sock_hash = hashlib.md5(str(project_root).encode("utf-8")).hexdigest()
     sock = Path.home().joinpath(".data/nvim/").joinpath(f"sock-{sock_hash}")
+
+    if os.path.exists(sock):
+        # cleanup stale socket
+        try:
+            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
+                s.connect(str(sock))
+        except ConnectionRefusedError:
+            os.remove(sock)
 
     os.environ["TTY"] = str(os.ttyname(sys.stdout.fileno()))
     os.environ["NVIM_LISTEN_ADDRESS"] = str(sock)

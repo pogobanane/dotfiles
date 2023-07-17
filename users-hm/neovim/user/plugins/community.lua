@@ -3,7 +3,7 @@ return {
   "AstroNvim/astrocommunity",
   -- example of imporing a plugin, comment out to use it or add your own
   -- available plugins can be found at https://github.com/AstroNvim/astrocommunity
- { import = "astrocommunity.colorscheme.gruvbox" },
+ { import = "astrocommunity.colorscheme.gruvbox-nvim" },
  { import = "astrocommunity.completion.copilot-lua" },
  { import = "astrocommunity.completion.copilot-lua-cmp" },
  { import = "astrocommunity.project.project-nvim" },
@@ -16,6 +16,7 @@ return {
  { import = "astrocommunity.pack.rust" },
  { import = "astrocommunity.pack.yaml" },
  { import = "astrocommunity.pack.nix" },
+ { import = "astrocommunity.terminal-integration.vim-tpipeline" },
  { import = "astrocommunity.editing-support.nvim-ts-rainbow2" },
  { import = "astrocommunity.editing-support.auto-save-nvim" },
 }
