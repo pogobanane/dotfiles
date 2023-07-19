@@ -20,7 +20,6 @@ return {
     -- customize lsp formatting options
     formatting = {
       format_on_save = false, -- enable or disable automatic formatting on save
-      },
       timeout_ms = 1000, -- default format timeout
     },
     -- enable servers that you already have installed without mason
