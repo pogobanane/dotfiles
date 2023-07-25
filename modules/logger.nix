@@ -6,12 +6,16 @@
   };
   systemd.timers.logger.wantedBy = [ "timers.target" ];
   systemd.timers.logger.enable = true;
+  systemd.services.logger.description = "Logger for RAM";
   systemd.services.logger.path = [ pkgs.bash pkgs.coreutils pkgs.procps pkgs.gawk ];
   systemd.services.logger.serviceConfig = {
     # Restart = "never";
-    ExecStart = ''${pkgs.bash}/bin/bash -c "echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log
-    echo \"$(ps aux --sort=-%mem | head -n4 | tail -n3)\" >> /root/log
-    " '';
+    # ExecStart = ''${pkgs.bash}/bin/bash -c "echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log; echo ""$(ps aux --sort=-%mem | head -n4 | tail -n3)"" >> /root/log"'';
+    ExecStart = pkgs.writeScript "logger.sh" ''
+      #!${pkgs.bash}/bin/bash
+      echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log
+      echo "$(ps -e -o pid,user,%cpu,%mem,comm --sort=-%mem | head -n4 | tail -n3)" >> /root/log
+      '';
   };
   
 #  environment.sessionVariables = {
