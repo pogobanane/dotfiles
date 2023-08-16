@@ -24,6 +24,7 @@
     #  ];
     #}
     {
+      # note that this only works in the university network (jumphost missing)
       speedFactor = 0;
       hostName = "graham.dse.in.tum.de";
       protocol = "ssh-ng";

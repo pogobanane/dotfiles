@@ -83,7 +83,8 @@
     element-desktop
     languagetool
     mumble
-    marktext
+    marktext # markdown editor
+    logseq # markdown editor
     dbeaver
     pavucontrol
     libheif # for apple media codecs

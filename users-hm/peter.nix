@@ -196,5 +196,6 @@ in
     nix-output-monitor # nom
     # rustup
     ranger # command line file manager
+    man-pages
   ];
 }

@@ -14,7 +14,7 @@
     ExecStart = pkgs.writeScript "logger.sh" ''
       #!${pkgs.bash}/bin/bash
       echo $(date) $(awk '/^size/ { print $3 / 1048576 }' < /proc/spl/kstat/zfs/arcstats) $(free -h | head -n 2 | tail -n 1) >> /root/log
-      echo "$(ps -e -o pid,user,%cpu,%mem,comm --sort=-%mem | head -n4 | tail -n3)" >> /root/log
+      echo "$(ps aux --sort=-%mem | head -n6 | tail -n5)" >> /root/log
       '';
   };
   
