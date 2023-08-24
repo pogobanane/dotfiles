@@ -13,6 +13,7 @@
 , ctile
 , discord-tar 
 , inputs
+, dotfiles
 , ...
 }: let 
   common-modules = [
@@ -46,11 +47,25 @@
           #lambda-pirate.nixosModules.vhive
         ];
 
+        # for legacy:
         nix.nixPath = [
           "nixpkgs=${pkgs.path}"
           "home-manager=${home-manager}"
+          "dotfiles=${dotfiles}"
           # "nur=${nur}" #now managed by home-manager in ~/.config/nixpkgs/config.nix:
         ];
+        # for flakes:
+        nix.registry = {
+          dotfiles = {
+            from = { type = "indirect"; id = "dotfiles"; };
+            to = {
+              owner = "pogobanane";
+              repo = "dotfiles";
+              type = "github";
+            };
+            exact = false;
+          };
+        };
       })
       {
         nixpkgs.overlays = [
