@@ -18,7 +18,7 @@ Add impurities to self-flake/impure-debug-info via `nix build --override-inputs 
 
 `nix build --keep-failed`: keeps the worktree of the build and prints its directory
 
-`nix build --option substitute false`: dont use cache servers
+`nix build --option substitute false`: dont use cache servers (didnt work when i tried it today)
 
 ## The secrets of the ssh-agents
 

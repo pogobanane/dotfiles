@@ -4,7 +4,7 @@
 #  - untested: perms on ssh key?
 #  - untested: does nixos cache knowledge about unsuable remotes builders?
 {config, ...}: {
-  nix.distributedBuilds = true;
+  nix.distributedBuilds = false;
   nix.extraOptions = ''
     builders-use-substitutes = true
   '';
