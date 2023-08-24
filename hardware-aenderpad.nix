@@ -39,6 +39,26 @@
   # disable, because it still leads to an unresponsive system, once many gigabyte are swapped.
   #zramSwap.enable = true;
 
+  # only kills cgroups. So either systemd services marked for killing under OOM, or (disabled by default) the entire user slice.
+  systemd.oomd.extraConfig = { 
+    DefaultMemoryPressureDurationSec = "10s"; 
+  };
+
+  # configure /proc/sys/* values
+  # https://docs.kernel.org/admin-guide/sysrq.html?highlight=sysrq+trigger#how-do-i-use-the-magic-sysrq-key
+  boot.kernel.sysctl = {
+    # sysrq allows to trigger kernel actions via alt+printscr+char
+    "kernel.sysrq" = 64; # permit term e, kill i, oom-kill f
+    # "vm.swappiness" = 60;
+  };
+
+  # service to kill processes when memory is low
+  services.earlyoom = {
+    enable = true;
+    # freeMemThreshold = 10; # 10 is default
+    enableNotifications = true;
+  };
+
   boot.initrd.luks.devices = {
     "nixos-lukscrypt" = {
       device = "/dev/disk/by-uuid/72c8bfad-f3e6-4852-b0d0-48142cfd78d9";
