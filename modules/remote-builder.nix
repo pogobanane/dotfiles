@@ -4,10 +4,30 @@
 #  - untested: perms on ssh key?
 #  - untested: does nixos cache knowledge about unsuable remotes builders?
 {config, ...}: {
-  nix.distributedBuilds = false;
+  nix.distributedBuilds = true;
   nix.extraOptions = ''
     builders-use-substitutes = true
   '';
+  programs.ssh.extraConfig = ''
+    Host builder-jumphost
+      User tunnel
+      HostName login.dos.cit.tum.de
+      IdentityFile /home/peter/.ssh/doctorBuilder
+
+    Host graham-builder-via-jumphost
+      HostName graham.dse.in.tum.de
+      ProxyJump builder-jumphost
+  '';
+  programs.ssh.knownHosts = {
+    "login.dos.cit.tum.de" = {
+      hostNames = [ "login.dos.cit.tum.de" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOdlUylM9WIFfIYZDK8rjVYQzX+RYwIlLgsEh4j0pNx6";
+    };
+    "graham.dse.in.tum.de" = {
+      hostNames = [ "graham.dse.in.tum.de" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhxrYxHNgOvaLH6fVGNG3F8/TNDP1xqUXymQBykV4b0 root@nixos";
+    };
+  };
   nix.buildMachines = [
     #{
     #  speedFactor = 0;
@@ -24,13 +44,11 @@
     #  ];
     #}
     {
-      # note that this only works in the university network (jumphost missing)
       speedFactor = 0;
-      hostName = "graham.dse.in.tum.de";
-      protocol = "ssh-ng";
+      hostName = "graham-builder-via-jumphost";
+      protocol = "ssh";
       sshUser = "nix";
       sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops
-      publicHostKey = "c3NoLWVkMjU1MTkgQUFBQUMzTnphQzFsWkRJMU5URTVBQUFBSU1oeHJZeEhOZ092YUxINmZWR05HM0Y4L1RORFAxeHFVWHltUUJ5a1Y0YjAK";
       system = "x86_64-linux";
       maxJobs = 64;
       supportedFeatures = [
