@@ -1,3 +1,4 @@
+
 -- https://astronvim.com/Configuration/config_options
 return {
   -- Set colorscheme to use

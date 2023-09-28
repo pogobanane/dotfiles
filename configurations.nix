@@ -65,6 +65,14 @@
             };
             exact = false;
           };
+          dotfilesLocal = {
+            from = { type = "indirect"; id = "dotfilesLocal"; };
+            to = {
+              path = "/home/peter/dev/dotfiles";
+              type = "path";
+            };
+            exact = false;
+          };
         };
       })
       {

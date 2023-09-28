@@ -57,7 +57,7 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
 
     fenix = {
-      url = "github:nix-community/fenix/b3e5ce9985c380c8fe1b9d14879a14b749d1af51";
+      url = "github:nix-community/fenix";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
       #inputs.nixpkgs.follows = "nixpkgs";
     };

@@ -88,4 +88,5 @@ key_bindings:
   - { key: N,    mods: Control|Shift,                    action: CreateNewWindow  }
   - { key: W,    mods: Control|Shift,                    action: Quit             }
   - { key: Q,    mods: Control|Shift,                    action: Quit             }
+  - { key: F11, action: ToggleFullscreen }
 

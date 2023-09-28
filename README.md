@@ -78,3 +78,7 @@ Or just extend nix-store?
 Firefox preferences to expose timezone while suppressing fingerprinting:
 privacy.resistFingerprinting	true	
 privacy.resistFingerprinting.testing.setTZtoUTC	true
+
+potential tree-sitter fix: https://github.com/Mic92/dotfiles/pull/881/files
+
+rebase on upstream: nix run github:Mic92/dotfiles#nvim
