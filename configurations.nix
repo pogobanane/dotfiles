@@ -16,12 +16,15 @@
 , dotfiles
 , ...
 }: let 
-  common-modules = [
-      ./config-common.nix
+  extraArgs = (system: [
       ({ config._module.args = {
         # This is the new, hip extraArgs.
         inherit inputs;
+        flakepkgs = flakepkgs.${system};
       };})
+  ]);
+  common-modules = [
+      ./config-common.nix
       sops-nix.nixosModules.sops
       home-manager.nixosModules.home-manager {
         home-manager.useGlobalPkgs = true;
@@ -33,6 +36,7 @@
           inherit nixpkgs;
           inherit astro-nvim;
           inherit inputs;
+          # inherit flakepkgs;
           username = "peter";
           homeDirectory = "/home/peter";
           my-gui = true;
@@ -108,16 +112,16 @@
       }
   ];
 in {
-  aendernix = nixosSystem {
+  aendernix = nixosSystem rec {
     system = "x86_64-linux";
-    modules = common-modules ++ [
+    modules = (extraArgs system) ++ common-modules ++ [
       ./hardware-aendernix.nix
       ./aendernix.nix
     ];
   };
-  aenderpad = nixosSystem {
+  aenderpad = nixosSystem rec {
     system = "x86_64-linux";
-    modules = common-modules ++ [
+    modules = (extraArgs system) ++ common-modules ++ [
       ./hardware-aenderpad.nix
       ./aenderpad.nix
       nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd

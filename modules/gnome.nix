@@ -1,4 +1,4 @@
-{ lib, config, pkgs, unstablepkgs, inputs, ... }: with lib; {
+{ lib, config, pkgs, unstablepkgs, flakepkgs, inputs, ... }: with lib; {
 
   imports = [
     ./pipewire-audio.nix
@@ -95,6 +95,10 @@
     signal-desktop
     # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
     foliate
+    # big plugin ecosystem for ebooks. Has a plugin that supposedly works to read and back up Kobo (rakuten) and some amazon ebooks: https://github.com/apprenticeharper/DeDRM_tools
+    calibre
+    # cli tool to log in and back up Kobo (rakuten) ebooks:
+    flakepkgs.kobo-book-downloader
     AusweisApp2
     via # for qmk keyboard flashing
 
