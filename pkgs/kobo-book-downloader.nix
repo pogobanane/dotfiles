@@ -16,26 +16,27 @@ buildPythonApplication {
 
     from setuptools import setup, find_packages
 
-    setup(name='demo-flask-vuejs-rest',
+    setup(name='kobo-book-downloader',
           version='0.0.1',
           # Modules to import from other scripts:
-          packages=find_packages(where='kobo-book-downloader'),
-          # packages=find_packages(),
-          # provides=find_packages(),
+          # packages=find_packages(where='kobo-book-downloader'),
           # Executables
-          # scripts=['kobo-book-downloader/__main__.py'],
-          # package_dir={''': 'kobo-book-downloader'}
-          # packages=['kobo-book-downloader']
+          scripts=['kobo-book-downloader/__main__.py'],
          )
     " > setup.py
+
     sed -i "1i #!/usr/bin/env python3" kobo-book-downloader/__main__.py
-    sed -i "2i breakpoint()" kobo-book-downloader/__main__.py
-    mv kobo-book-downloader/__main__.py kobo-book-downloader/__init__.py
-    exit 1
   '';
 
-  # doCheck = false;
-  # doInstallCheck = false;
+  postInstall = ''
+    # setuptools fails to find any files imported by the script. Place them manually.
+    pushd $out/lib/python*/site-packages
+    cp $src/kobo-book-downloader/* .
+    popd
+
+    # rename binary
+    mv $out/bin/__main__.py $out/bin/kobo-book-downloader
+  '';
 
   src = pkgs.fetchFromGitHub {
     owner = "TnS-hun";
