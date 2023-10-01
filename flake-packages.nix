@@ -17,6 +17,7 @@
     packages.x86_64-linux = {
       webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
       cider = pkgs.callPackage pkgs/cider.nix { };
+      kobo-book-downloader = pkgs.callPackage pkgs/kobo-book-downloader.nix { };
       # broken/in development:
       # apple-music = pkgs.callPackage pkgs/apple-music.nix { };
     };
