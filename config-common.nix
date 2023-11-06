@@ -145,7 +145,7 @@
     isNormalUser = true;
     home = "/home/peter";
     shell = pkgs.zsh;
-    extraGroups = [ "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "input"];
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDITBcN9iw5Fn7yyfgiWFet3QWDoMcUNtzLi+PNoYS7jksvcKZy5pLOjE6wCpkbYx+Tcb4MyvoWPXvwdo5FfL4XdhZRO+JlZ66p/rGssq/wEr2BBUwohP7o39JLtiyXGXSsK6MO2aceOFLQr4KAdaeD8ST0XumGcV6bGqIbjFsK5FCxFhO8NkCFtavBjDwKUm3uyOnVCWMp12abUphzxrVtWhcsnw5GapohATP03mCNxmrn/L7x393HutxgjyduScX7++MjwVE6J7wCnztPUtJbh9jYemr/K9fBMBbLhQagOjrlQYGU5frgmLrPCRZusyg5HjWx6gJIxs/DskfgmW+V peter@aenderarch" # gitpogobanane
     ];
@@ -207,8 +207,11 @@
   };
 
   hardware.keyboard.qmk.enable = true;
+  # 1. qmk firmware
+  # 2. SN32F248 bootloader
   services.udev.extraRules = ''
-  SUBSYSTEMS=="usb", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="fe04", TAG+="uaccess"
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="fe04", TAG+="uaccess"
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="0C45", ATTRS{idProduct}=="7040", TAG+="uaccess"
   '';
 
   # List services that you want to enable:
