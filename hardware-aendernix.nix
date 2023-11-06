@@ -8,6 +8,10 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  environment.systemPackages = with pkgs; [
+    amdgpu_top # cool gui: amdgpu_top --gui
+    rgp # performance profiling for amdgpus (more detailed perf insights?)
+  ];
 
   # as soon as i upgrade 5.16
   # also: upstream it https://github.com/NixOS/nixos-hardware/pull/438
