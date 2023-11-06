@@ -40,8 +40,6 @@
   # not there yet: flatpak run --env=XDG_SESSION_TYPE=wayland --env=QT_QPA_PLATFORM=wayland --socket=wayland --enable-features=UseOzonePlatform --ozone-platform=wayland io.typora.Typora
 
   environment.systemPackages = with pkgs; [
-    firefox
-    chromium
     # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
     gnome.gnome-terminal
