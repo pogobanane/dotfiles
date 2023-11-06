@@ -24,11 +24,15 @@
     virt-manager
     pciutils
     heroic # epic and gog launcher
+    telegram-desktop
 
     # do i really need these?
     wine
     winetricks
     dxvk
     lutris
+
+    # libvirt
+    swtpm
   ];
 }
