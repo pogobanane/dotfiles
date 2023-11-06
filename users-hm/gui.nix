@@ -42,14 +42,15 @@
     programs.firefox = {
       enable = true;
       # Extra preferences to add to user.js: extraConfig = ""; 
-      profiles.default = {
-         # Note that it is necessary to manually enable these extensions inside Firefox after the first installation.
-        extensions = [
-          pkgs.nur.repos.rycee.firefox-addons.vimium
-        ];
-        search.default = "DuckDuckGo";
-        # settings = {  }; see about config
-      };
+      # After manually setting settings, this will fail to apply.
+      # profiles.default = {
+      #    # Note that it is necessary to manually enable these extensions inside Firefox after the first installation.
+      #   extensions = [
+      #     pkgs.nur.repos.rycee.firefox-addons.vimium
+      #   ];
+      #   search.default = "DuckDuckGo";
+      #   # settings = {  }; see about config
+      # };
     };
 
     home.file.".config/alacritty/alacritty.colors.yml".source = ./alacritty.colors.yml;
