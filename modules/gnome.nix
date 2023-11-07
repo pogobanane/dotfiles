@@ -93,6 +93,7 @@
     discord
     slack
     signal-desktop
+    ferdium # one electron to contain all messengers
     # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
     foliate
     # big plugin ecosystem for ebooks. Has a plugin that supposedly works to read and back up Kobo (rakuten) and some amazon ebooks: https://github.com/apprenticeharper/DeDRM_tools
