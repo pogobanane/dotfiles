@@ -50,7 +50,7 @@ in {
           nixosSystem = inputs.nixpkgs.lib.nixosSystem;
           flakepkgs = self.packages;
           inputs = inputs;
-          dotfiles = self;
+          inherit self;
         } // inputs);
 
 };

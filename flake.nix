@@ -77,8 +77,8 @@
     { inherit inputs; }
     { 
       imports = [
-      ./flake-packages.nix
-      ./flake-configurations.nix
+        ./flake-packages.nix
+        ./flake-configurations.nix
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
       perSystem = { config, self', inputs', pkgs, system, ... }: {

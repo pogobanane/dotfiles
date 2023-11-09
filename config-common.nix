@@ -2,9 +2,95 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, flakepkgs, self, ... }: let
+  common-modules = [
+      inputs.sops-nix.nixosModules.sops
+      inputs.home-manager.nixosModules.home-manager {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.extraSpecialArgs = {
+          inherit (inputs) sops-nix;
+          inherit (inputs) nix-index-database;
+          inherit (inputs) nur;
+          inherit (inputs) nixpkgs;
+          inherit (inputs) astro-nvim;
+          inherit inputs;
+          # inherit flakepkgs;
+          username = "peter";
+          homeDirectory = "/home/peter";
+          my-gui = true;
+        };
+        home-manager.users.peter = import ./users-hm/peter.nix;
+      }
+      ({ pkgs, ... }: {
+        imports = [
+          inputs.retiolum.nixosModules.retiolum
+          inputs.retiolum.nixosModules.ca
+          #lambda-pirate.nixosModules.knative
+          #lambda-pirate.nixosModules.vhive
+        ];
 
-{
+        # for legacy:
+        nix.nixPath = [
+          "nixpkgs=${pkgs.path}"
+          "home-manager=${inputs.home-manager}"
+          "dotfiles=${self}"
+          # "nur=${nur}" #now managed by home-manager in ~/.config/nixpkgs/config.nix:
+        ];
+        # for flakes:
+        nix.registry = {
+          dotfiles = {
+            from = { type = "indirect"; id = "dotfiles"; };
+            to = {
+              owner = "pogobanane";
+              repo = "dotfiles";
+              type = "github";
+            };
+            exact = false;
+          };
+          dotfilesLocal = {
+            from = { type = "indirect"; id = "dotfilesLocal"; };
+            to = {
+              path = "/home/peter/dev/dotfiles";
+              type = "path";
+            };
+            exact = false;
+          };
+        };
+      })
+      {
+        nixpkgs.overlays = [
+          inputs.nur.overlay
+          (final: prev: {
+            ctile = inputs.ctile.packages.x86_64-linux.ctile;
+            nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
+            nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm; #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { }; #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+            #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
+            #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
+            cider = flakepkgs.cider;
+            webcord = flakepkgs.webcord;
+            #loc = flakepkgs.x86_64-linux.loc-git;
+            #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
+            discord = prev.discord.overrideAttrs (_: { 
+              src = inputs.discord-tar; 
+              unpackCmd = "tar -xzf $curSrc";
+            });
+            alacritty = inputs.unstablepkgs.legacyPackages.x86_64-linux.alacritty;
+          })
+          #(self: super: { 
+            #cider = super.cider.overrideAttrs (old: rec {
+              #name = "cider-mine-${version}";
+              #version = "1.5.6";
+              #src = super.fetchurl rec {
+                #url = "https://github.com/ciderapp/cider-releases/releases/download/v${version}/Cider-${version}.AppImage";
+                #sha256 = "sha256-gn0dRoPPolujZ1ukuo/esSLwbhiPdcknIe9+W6iRaYw=";
+              #};
+            #});
+          #})
+        ];
+      }
+  ];
+  in {
   imports =
     [
       # Include the results of the hardware scan.
@@ -19,7 +105,7 @@
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
       ./modules/jack.nix
-    ];
+    ] ++ common-modules;
 
   #sops.defaultSopsFile = ./secrets.yaml;
   #sops.secrets.testsecret = {
@@ -42,7 +128,7 @@
 
   nixpkgs.config.permittedInsecurePackages = [
     # upstream bitwarden depends on this as of now
-    # upstream fixes should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
+    # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
     "electron-24.8.6"
   ];
 
