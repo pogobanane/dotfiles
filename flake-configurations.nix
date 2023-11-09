@@ -4,7 +4,7 @@
 in {
   # TODO: merge this file somehow with the home config as stated in configuration.nix
   systems = [ system ];
-  perSystem = { config, self', inputs', pkgs, system, ... }: {
+  perSystem = { self', pkgs, ... }: {
       apps = {
         doctor-home = {
           type = "app";

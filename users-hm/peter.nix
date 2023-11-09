@@ -1,7 +1,6 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
 { config
-, lib
 , nixpkgs
 , pkgs
 , sops-nix
@@ -13,14 +12,6 @@
 , ...
 }:
 let
-  doom-emacs = pkgs.callPackage
-    (builtins.fetchTarball {
-      url = https://github.com/vlaci/nix-doom-emacs/archive/master.tar.gz;
-      sha256 = "sha256:1jz8mxh143a4470mq303ng6dh3bxi6mcppqli4z0m13qhqssh4fx";
-    })
-    {
-      doomPrivateDir = ./doom.d;
-    };
 
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
     set -e
@@ -35,13 +26,6 @@ let
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
-
-  ls1vpn = pkgs.writeShellApplication {
-    name = "ls1vpn";
-    runtimeInputs = [ pkgs.libsecret pkgs.openvpn pkgs.gnome.seahorse ];
-    # text = "secret-tool store --label='foobar' setting-name foo";
-    text = "${pkgs.gnome.seahorse}libexec/seahorse/ssh-askpass";
-  };
 
   sopspw = pkgs.writeShellApplication {
     name = "sopspw";

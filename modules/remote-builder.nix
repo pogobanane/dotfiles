@@ -3,7 +3,7 @@
 #  - `sudo nixos-rebuild build` to use a clean ssh config.
 #  - untested: perms on ssh key?
 #  - untested: does nixos cache knowledge about unsuable remotes builders?
-{config, ...}: {
+{ ...}: {
   nix.distributedBuilds = true;
   nix.extraOptions = ''
     builders-use-substitutes = true

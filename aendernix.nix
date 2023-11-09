@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   networking.hostName = "aendernix"; # Define your hostname.
   networking.hostId = "faae4fe4"; # for zfs

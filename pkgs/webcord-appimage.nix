@@ -1,4 +1,4 @@
-{ lib, appimageTools, fetchurl, writeScript, makeWrapper }:
+{ lib, appimageTools, fetchurl, makeWrapper }:
 appimageTools.wrapType2 rec {
   pname = "webcord";
   version = "3.9.3";

@@ -67,13 +67,10 @@
   };
 
   outputs = {
-    self,
     nixpkgs,
-    flake-utils,
     flake-parts,
     ...
-  } @ inputs: let 
-  in flake-parts.lib.mkFlake
+  } @ inputs: flake-parts.lib.mkFlake
     { inherit inputs; }
     { 
       imports = [
@@ -81,7 +78,7 @@
         ./flake-configurations.nix
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-      perSystem = { config, self', inputs', pkgs, system, ... }: {
+      perSystem = { ... }: {
         packages = {
         };
       };

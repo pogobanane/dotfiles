@@ -1,4 +1,4 @@
-{ pkgs, lib, stdenv, fetchFromGitHub, ... }: let 
+{ pkgs, ... }: let 
   node2nix = import ./apple-music { inherit pkgs; };
 in node2nix.package
 # stdenv.mkDerivation rec {

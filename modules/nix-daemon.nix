@@ -1,4 +1,4 @@
-{ lib, config, pkgs, unstablepkgs, ... }: with lib; {
+{ lib, config, pkgs, ... }: with lib; {
   nix = {
     settings = {
       trusted-users = [ "peter" "root" ];

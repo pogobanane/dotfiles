@@ -1,5 +1,5 @@
-{inputs, lib, ...}: {
-  perSystem = { config, self', inputs', pkgs, system, ... }: {
+{inputs, ...}: {
+  perSystem = { pkgs, ... }: {
     packages = {
       map-cmd = pkgs.callPackage ./pkgs/map.nix { };
       loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };

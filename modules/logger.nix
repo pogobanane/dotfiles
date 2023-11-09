@@ -1,4 +1,4 @@
-{ lib, config, pkgs, ... }: with lib; {
+{ lib, pkgs, ... }: with lib; {
 
   systemd.timers.logger.timerConfig = {
     "OnCalendar"= "*-*-* *:*:00";

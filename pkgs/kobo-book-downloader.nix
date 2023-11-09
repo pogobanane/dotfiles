@@ -1,4 +1,4 @@
-{ lib, pkgs, python3Packages }:
+{ pkgs, python3Packages }:
 with python3Packages;
 buildPythonApplication {
   pname = "kobo-book-downloader";

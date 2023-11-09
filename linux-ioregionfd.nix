@@ -1,4 +1,4 @@
-{ buildLinux, fetchFromGitHub, pkgs, fetchurl, modDirVersionArg ? null, ... }@args:
+{ buildLinux, fetchFromGitHub, modDirVersionArg ? null, ... }@args:
 buildLinux (args // rec {
   version = "5.16.2";
   modDirVersion = if (modDirVersionArg == null) then

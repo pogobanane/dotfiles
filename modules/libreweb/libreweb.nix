@@ -1,4 +1,4 @@
-{ pkgs, lib, config, ... }: let 
+{ lib, config, ... }: let 
 
   hosts = {
     "188.114.97.3" = [ "kinox.to" "movie4k.to" "kinox.tv" "kinox.am"

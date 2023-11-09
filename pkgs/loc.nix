@@ -1,4 +1,4 @@
-{ loc-src, lib, fetchFromGitHub, rustPlatform }:
+{ loc-src, lib, rustPlatform }:
 
 with rustPlatform;
 
