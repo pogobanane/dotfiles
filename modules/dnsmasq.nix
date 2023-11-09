@@ -1,7 +1,12 @@
 {config, lib, ...}: let
   #external = "wlan0";
+  # external = "wlp3s0";
   external = "enp4s0f3u1u1"; # docking station home
 in {
+  systemd.network.netdevs.virbr.netdevConfig = {
+    Name = "virbr";
+    Kind = "bridge";
+  };
   systemd.network.netdevs.internal.netdevConfig = {
     Name = "internal";
     Kind = "bridge";
@@ -18,7 +23,7 @@ in {
     '';
   };
   networking.hosts = let 
-    tld = "example.org";
+    tld = "schreinerei-baumann.de";
   in {
     "192.168.32.32" = [
       "${tld}"
@@ -59,19 +64,20 @@ in {
     enable = true;
     externalInterface = external;
     internalInterfaces = ["internal"];
-    dmzHost = "192.168.32.32";
-    forwardPorts = [
-      #{
-        #destination = "192.168.32.32:80";
-        #proto = "tcp";
-        #sourcePort = 80;
-      #}
+    # dmzHost = "192.168.32.32";
+    # dmzHost = "192.168.178.147";
+    # forwardPorts = [
+      # {
+      #   destination = "192.168.178.147:80";
+      #   proto = "tcp";
+      #   sourcePort = 80;
+      # }
       #{
         #destination = "192.168.32.32:443";
         #proto = "tcp";
         #sourcePort = 443;
       #}
-    ];
+    # ];
   };
   networking.firewall.enable = false;
 
