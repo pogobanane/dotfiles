@@ -28,4 +28,6 @@
     };
   };
   # the following works on pipewire in userspace: shairport-sync -v -o pa
+
+  programs.noisetorch.enable = true;
 }
