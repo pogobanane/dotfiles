@@ -1,6 +1,19 @@
 { self, inputs, ...}: let
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
+  extraArgs = [
+    ({ pkgs, ... }: {
+      config._module.args = {
+        #   # This is the new, hip extraArgs.
+        flakepkgs = self.packages.${pkgs.hostPlatform.system};
+      };
+    })
+  ];
+  specialArgs = {
+    inherit inputs;
+    inherit self;
+  };
+  nixosSystem = inputs.nixpkgs.lib.nixosSystem;
 in {
   # TODO: merge this file somehow with the home config as stated in configuration.nix
   systems = [ system ];
@@ -46,12 +59,26 @@ in {
           };
         };
 
-        nixosConfigurations = import ./configurations.nix ({
-          nixosSystem = inputs.nixpkgs.lib.nixosSystem;
-          flakepkgs = self.packages;
-          inputs = inputs;
-          inherit self;
-        } // inputs);
+        nixosConfigurations.aendernix = nixosSystem {
+          system = "x86_64-linux";
+          modules = extraArgs ++ [
+            ./hardware-aendernix.nix
+            ./aendernix.nix
+            ./config-common.nix
+          ];
+          inherit specialArgs;
+        };
+
+        nixosConfigurations.aenderpad = nixosSystem {
+          system = "x86_64-linux";
+          modules = extraArgs ++ [
+            ./hardware-aenderpad.nix
+            ./aenderpad.nix
+            inputs.nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
+            ./config-common.nix
+          ];
+          inherit specialArgs;
+        };
 
 };
   }
