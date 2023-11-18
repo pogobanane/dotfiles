@@ -26,7 +26,6 @@
   boot.supportedFilesystems = [ "ntfs" ];
   # changing this seems to require reboot twice:
   boot.kernelParams = [
-    "vfio-pci.ids=1002:67df,1002:aaf0"
     "add_efi_memmap" 
     "kvm.ignore_msrs=1"
     "kvm.report_ignored_msrs=0"
