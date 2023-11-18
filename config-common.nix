@@ -2,8 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, inputs, flakepkgs, self, ... }: let
-  common-modules = [
+{ config, pkgs, lib, inputs, flakepkgs, self, ... }: {
+  imports =
+    [
       inputs.sops-nix.nixosModules.sops
       inputs.retiolum.nixosModules.retiolum
       inputs.retiolum.nixosModules.ca
@@ -26,18 +27,6 @@
         };
         home-manager.users.peter = import ./users-hm/peter.nix;
       }
-      ({ pkgs, ... }: {
-        imports = [
-        ];
-
-      })
-      {
-      }
-  ];
-  in {
-  imports =
-    [
-      # Include the results of the hardware scan.
       ./modules/self.nix
       ./modules/nix-pkgs.nix
       ./modules/gnome.nix
@@ -49,7 +38,7 @@
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
       ./modules/jack.nix
-    ] ++ common-modules;
+    ];
 
   #sops.defaultSopsFile = ./secrets.yaml;
   #sops.secrets.testsecret = {
@@ -59,22 +48,6 @@
 
   fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
 
-  nixpkgs.overlays = [
-    (_final: _prev: {
-      #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
-      #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
-      #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
-      #  });
-      #});
-    })
-  ];
-
-
-  nixpkgs.config.permittedInsecurePackages = [
-    # upstream bitwarden depends on this as of now
-    # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
-    "electron-24.8.6"
-  ];
 
   specialisation = {
     upstream = {

@@ -91,6 +91,20 @@
         #};
       #});
     #})
+    (_final: _prev: {
+      #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
+      #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
+      #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
+      #  });
+      #});
+    })
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [
+    # upstream bitwarden depends on this as of now
+    # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
+    "electron-24.8.6"
+  ];
+
 }
 
