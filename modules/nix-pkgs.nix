@@ -68,7 +68,10 @@
     (_final: prev: {
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
-      nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm; #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { }; #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
+      nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; 
+      wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
+      #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { }; 
+      #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
       #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
       cider = self.packages.x86_64-linux.cider;
@@ -91,13 +94,13 @@
         #};
       #});
     #})
-    (_final: _prev: {
+    # (_final: _prev: {
       #linuxPackages_latest = prev.linuxPackages_latest.extend (lpself: lpsuper: let kernel = config.boot.kernelPackages.kernel; in {
       #  sysdig = prev.linuxPackages_latest.sysdig.overrideAttrs (oldAttrs: {
       #    meta.broken = kernel != null && (pkgs.lib.versionOlder kernel.version "4.14" || pkgs.lib.versionAtLeast kernel.version "6.2"); # doesnt work here because kernel is not yet "upstream specialization" (6.2)
       #  });
       #});
-    })
+    # })
   ];
 
   nixpkgs.config.permittedInsecurePackages = [

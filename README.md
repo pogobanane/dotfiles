@@ -80,8 +80,6 @@ How to mount an encrypted zfs image:
 
 # TODO
 
-use deadnix to remove unused vars
-
 similar to nixos-generations:
 find gc roots like `./result` folders that are worth to be deleted
 https://github.com/NixOS/nix/issues/4633
