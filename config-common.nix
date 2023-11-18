@@ -25,7 +25,7 @@
           homeDirectory = "/home/peter";
           my-gui = true;
         };
-        home-manager.users.peter = import ./users-hm/peter.nix;
+        home-manager.users.peter = import ./homeManager/peter.nix;
       }
       ./modules/self.nix
       ./modules/nix-pkgs.nix

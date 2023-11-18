@@ -34,7 +34,7 @@ in {
         homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ./users-hm/peter.nix
+            ./homeManager/peter.nix
           ];
           extraSpecialArgs = {
             inputs = inputs;
@@ -48,7 +48,7 @@ in {
         homeConfigurations.peter-doctor-cluster = inputs.home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [
-            ./users-hm/peter.nix
+            ./homeManager/peter.nix
           ];
           extraSpecialArgs = {
             inputs = inputs;

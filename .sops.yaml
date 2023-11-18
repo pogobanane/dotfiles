@@ -13,7 +13,7 @@ creation_rules:
     - age:
       - *peter
       - *aenderpad
-  - path_regex: ^users-hm/secrets.yaml$
+  - path_regex: ^homeManager/secrets.yaml$
     key_groups:
     - age:
       - *peter

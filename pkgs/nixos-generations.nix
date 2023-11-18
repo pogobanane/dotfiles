@@ -14,5 +14,5 @@ stdenv.mkDerivation {
 # nixos-generations-broken = pkgs.writeShellApplication {
 #   name = "nixos-generations2";
 #   runtimeInputs = [ pkgs.perl pkgs.perlPackages.GetoptLong ];
-#   text = ./users-hm/nixos-generations;
+#   text = ./homeManager/nixos-generations;
 # };
