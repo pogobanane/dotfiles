@@ -56,6 +56,22 @@
     home.file.".config/alacritty/alacritty.colors.yml".source = ./alacritty.colors.yml;
     home.file.".config/alacritty/alacritty.yml".source = ./alacritty.yml;
 
+    # nah doesnt work. Rather just place according files in ~/.config/autostart like gnome-tweaks does
+    # systemd.user.services = {
+    #   calendar = {
+    #     Unit = {
+    #       Description = "Foobar";
+    #     };
+    #     Service = {
+    #       Type = "simple";
+    #       ExecStart = "${pkgs.gnome.gnome-calendar}/bin/gnome-calendar";
+    #     };
+    #     Install = {
+    #       WantedBy = ["graphical-session.target"];
+    #     };
+    #   };
+    # };
+
     # a tutorial on declarative gnome configuration
     # https://determinate.systems/posts/declarative-gnome-configuration-with-nixos
 

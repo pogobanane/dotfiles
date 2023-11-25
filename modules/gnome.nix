@@ -87,6 +87,7 @@
     pavucontrol
     libheif # for apple media codecs
     cider
+    audacity
     webcord
     discord
     slack
