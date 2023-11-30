@@ -13,11 +13,11 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-23.05";
+    nixpkgs.url = "github:Nixos/nixpkgs/nixos-23.11";
     #nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     #unstablepkgs.url = "/home/peter/dev/nix/nixpkgs";
     unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
-    nur.url = github:nix-community/NUR;
+    nur.url = "github:nix-community/NUR";
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
@@ -25,7 +25,7 @@
     ctile.url = "git+https://gitlab.com/pogobanane/gnome-ctile.git";
     ctile.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-23.05";
+    home-manager.url = "github:nix-community/home-manager/release-23.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -34,7 +34,7 @@
     #doom-emacs.url = "github:Mic92/doom-emacs/org-msg";
     #doom-emacs.flake = false;
 
-    sops-nix.url = github:Mic92/sops-nix;
+    sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
 
     retiolum.url = "github:Mic92/retiolum";
