@@ -46,7 +46,7 @@
   #owner = "peter";
   #};
 
-  fonts.fonts = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
+  fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
 
 
   specialisation = {
@@ -104,7 +104,13 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8"; # doesnt seem to fix the perl warnings during nixos-rebuild switch
+  i18n.defaultLocale = "en_DK.UTF-8"; # doesnt seem to fix the perl warnings during nixos-rebuild switch
+  i18n.supportedLocales = [
+    "en_US.UTF-8/UTF-8"
+    "en_GB.UTF-8/UTF-8"
+    "de_DE.UTF-8/UTF-8"
+    "en_DK.UTF-8/UTF-8"
+  ];
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
