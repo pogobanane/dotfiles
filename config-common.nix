@@ -23,21 +23,21 @@
           # inherit flakepkgs;
           username = "peter";
           homeDirectory = "/home/peter";
-          my-gui = true;
+          my-gui = false;
         };
         home-manager.users.peter = import ./homeManager/peter.nix;
       }
       ./modules/self.nix
       ./modules/nix-pkgs.nix
-      ./modules/gnome.nix
-      ./modules/logger.nix
+      # ./modules/gnome.nix
+      # ./modules/logger.nix
       ./modules/dnsmasq.nix
       ./modules/tor-ssh.nix
       ./modules/remote-builder.nix
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
-      ./modules/make-linux-fast.nix
-      ./modules/jack.nix
+      # ./modules/make-linux-fast.nix
+      # ./modules/jack.nix
     ];
 
   #sops.defaultSopsFile = ./secrets.yaml;

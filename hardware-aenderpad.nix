@@ -17,8 +17,9 @@
   #};
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  # boot.loader.systemd-boot.enable = true;
+  # boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.device =  "/dev/sda";
   boot.supportedFilesystems = [ "ntfs" ];
 
   services.hardware.bolt.enable = true;
@@ -59,21 +60,30 @@
     enableNotifications = true;
   };
 
-  boot.initrd.luks.devices = {
-    "nixos-lukscrypt" = {
-      device = "/dev/disk/by-uuid/72c8bfad-f3e6-4852-b0d0-48142cfd78d9";
-    };
-  };
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/f79d0ce3-c94e-41d5-80b6-148b982fcbdf";
-      fsType = "btrfs";
+    { device = "/dev/disk/by-uuid/48f84f4c-3368-41b3-b581-b2db18dc09e0";
+      fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/3E25-330D";
+    { device = "/dev/sda2";
       fsType = "vfat";
     };
 
   swapDevices = [ ];
 
+  boot.postBootCommands = ''
+    lsblk -f
+    lsmod
+  '';
+
+  boot.initrd.verbose = true;
+
+  boot.initrd.postDeviceCommands = ''
+    ls /dev/v*
+    ls /dev/s*
+    # lsmod
+    # ls /dev
+    # lsblk -f
+  '';
 }
