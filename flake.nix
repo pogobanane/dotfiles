@@ -54,6 +54,9 @@
     astro-nvim.url = "github:AstroNvim/AstroNvim";
     astro-nvim.flake = false;
 
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-gaming.url = "github:fufexan/nix-gaming";
 
     fenix = {
@@ -87,11 +90,13 @@
           pkgs = nixpkgs.legacyPackages.x86_64-linux;
           fenixPkgs = inputs.fenix.packages.x86_64-linux;
           tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
+          diskoPkgs = inputs.disko.packages.x86_64-linux;
         in {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
               just
               nix-output-monitor
+              diskoPkgs.disko
             ];
           };
           clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
