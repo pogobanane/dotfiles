@@ -29,7 +29,6 @@
       }
       ./modules/self.nix
       ./modules/nix-pkgs.nix
-      ./modules/gnome.nix
       ./modules/logger.nix
       ./modules/dnsmasq.nix
       ./modules/tor-ssh.nix
@@ -37,7 +36,6 @@
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
-      ./modules/jack.nix
     ];
 
   #sops.defaultSopsFile = ./secrets.yaml;

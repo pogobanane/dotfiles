@@ -2,6 +2,7 @@
 
   imports = [
     ./pipewire-audio.nix
+    ./jack.nix
   ];
 
   environment.sessionVariables = {
