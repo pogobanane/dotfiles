@@ -23,11 +23,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1685352168,
-        "narHash": "sha256-Ir9TbPQJCGvKZ8/f6LCN9V6z9pFIx7asWJiDgUHMzwo=",
+        "lastModified": 1703071356,
+        "narHash": "sha256-6UNK2aZV+G1O7K/mYyGtFsGBC0h2BAs5ZUYQHo0YWzA=",
         "ref": "refs/heads/master",
-        "rev": "b8f3f473f7e22eccc65838248f8fce01516262fa",
-        "revCount": 57,
+        "rev": "8422e0a50f556add2c0f90060567b2f987ca4aab",
+        "revCount": 62,
         "type": "git",
         "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
       },
@@ -47,6 +47,26 @@
       "original": {
         "type": "tarball",
         "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
+      }
+    },
+    "disko": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1703063214,
+        "narHash": "sha256-OgrRZKb7IkSSlIshUDaD7plxe0xIQauMA1y+OirtEWo=",
+        "owner": "nix-community",
+        "repo": "disko",
+        "rev": "b4104fcaea42037b04c199a5d6784682a15be254",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "disko",
+        "type": "github"
       }
     },
     "fenix": {
@@ -417,6 +437,7 @@
         "astro-nvim": "astro-nvim",
         "ctile": "ctile",
         "discord-tar": "discord-tar",
+        "disko": "disko",
         "fenix": "fenix",
         "flake-parts": "flake-parts",
         "home-manager": "home-manager",
