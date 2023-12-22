@@ -48,6 +48,9 @@
     loc-src.url = "github:cgag/loc";
     loc-src.flake = false;
 
+    hosthog.url = "github:pogobanane/hosthog/develop";
+    hosthog.inputs.nixpkgs.follows = "nixpkgs";
+
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 

@@ -9,6 +9,7 @@
 , username
 , homeDirectory
 , my-gui
+, inputs
 , ...
 }:
 let
@@ -44,7 +45,7 @@ in
     "${sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
     #./editors.nix
-    ./neovim
+    ./neovim # reset by deleting ~/.local/share/nvim/
     nix-index-database.hmModules.nix-index
   ];
 
@@ -181,5 +182,6 @@ in
     # rustup
     ranger # command line file manager
     man-pages
+    inputs.hosthog.packages.${system}.default
   ];
 }

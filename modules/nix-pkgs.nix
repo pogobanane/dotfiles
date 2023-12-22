@@ -107,6 +107,7 @@
     # upstream bitwarden depends on this as of now
     # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
     "electron-24.8.6"
+    "electron-25.9.0"
   ];
 
 }
