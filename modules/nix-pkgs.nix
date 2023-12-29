@@ -37,13 +37,18 @@
 
   # for legacy:
   nix.nixPath = [
-    "nixpkgs=${pkgs.path}"
+    "nixpkgs=${inputs.nixpkgs}"
     "home-manager=${inputs.home-manager}"
     "dotfiles=${self}"
     # "nur=${nur}" #now managed by home-manager in ~/.config/nixpkgs/config.nix:
   ];
   # for flakes:
   nix.registry = {
+    pkgs = {
+      from = { type = "indirect"; id = "pkgs"; };
+      flake = self.inputs.nixpkgs;
+      exact = false;
+    };
     dotfiles = {
       from = { type = "indirect"; id = "dotfiles"; };
       to = {
