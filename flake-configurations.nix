@@ -21,7 +21,7 @@ in {
       apps = {
         doctor-home = {
           type = "app";
-          program = "${self'.packages.flake-app-doctor-home}/bin/flake-app-doctor-home";
+          program = "${self.packages.${system}.flake-app-doctor-home}/bin/flake-app-doctor-home";
         };
       };
       packages = {

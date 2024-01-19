@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, inputs, flakepkgs, self, ... }: {
+{ config, pkgs, lib, inputs, flakepkgs, ... }: {
   imports =
     [
       inputs.sops-nix.nixosModules.sops

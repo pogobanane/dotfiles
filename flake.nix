@@ -73,7 +73,6 @@
   };
 
   outputs = {
-    nixpkgs,
     flake-parts,
     ...
   } @ inputs: flake-parts.lib.mkFlake
@@ -90,7 +89,7 @@
       };
       flake = {
         devShells.x86_64-linux = let 
-          pkgs = nixpkgs.legacyPackages.x86_64-linux;
+          pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           fenixPkgs = inputs.fenix.packages.x86_64-linux;
           tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;
           diskoPkgs = inputs.disko.packages.x86_64-linux;

@@ -13,6 +13,7 @@
   };
   flake = let 
     pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+    make-disk-image = import (./nix/make-disk-image.nix);
   in {
     packages.x86_64-linux = {
       webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
