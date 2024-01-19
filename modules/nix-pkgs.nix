@@ -71,6 +71,13 @@
   nixpkgs.overlays = [
     inputs.nur.overlay
     (_final: prev: {
+      # logseq = inputs.unstablepkgs.legacyPackages.x86_64-linux.logseq;
+      logseq = (import inputs.unstablepkgs {
+        system = "x86_64-linux";
+        config = {
+          allowInsecurePredicate = pkg: true;
+        };
+      }).logseq;
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
       nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; 
@@ -108,12 +115,15 @@
     # })
   ];
 
-  nixpkgs.config.permittedInsecurePackages = [
-    # upstream bitwarden depends on this as of now
-    # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
-    "electron-24.8.6"
-    "electron-25.9.0"
-  ];
+  nixpkgs.config = {
+    permittedInsecurePackages = [
+      # upstream bitwarden depends on this as of now
+      # should soon be backported to 23.05 https://github.com/NixOS/nixpkgs/pull/264472
+      "electron-24.8.6"
+      "electron-25.9.0"
+    ];
+    allowInsecurePredicate = pkg: true;
+  };
 
 }
 
