@@ -1098,11 +1098,11 @@
     "nix-top-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1705777486,
-        "narHash": "sha256-VpxxrYKRDSkgrU7XjbVF3ynk22jR3USbijvPgZUuEys=",
+        "lastModified": 1705778081,
+        "narHash": "sha256-sg5uKjmvHST3u8CAPhkPwk4kuhVsTaszgQeO7KQsJHo=",
         "owner": "pogobanane",
         "repo": "nix-top",
-        "rev": "a60769fb9fc76af23c1d505cca583ffdf79ba33c",
+        "rev": "5ef9a4510c601c93d294b1cc294d61c74096250a",
         "type": "github"
       },
       "original": {
