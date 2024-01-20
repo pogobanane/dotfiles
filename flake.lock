@@ -723,11 +723,11 @@
     "nix-top-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1705773293,
-        "narHash": "sha256-qWz7h4QyKXlTcOtppyf5wE8EiPlcTUbTBttuEhFnO40=",
+        "lastModified": 1705777486,
+        "narHash": "sha256-VpxxrYKRDSkgrU7XjbVF3ynk22jR3USbijvPgZUuEys=",
         "owner": "pogobanane",
         "repo": "nix-top",
-        "rev": "b29e4686c061bae65b163d426a5648276d96194e",
+        "rev": "a60769fb9fc76af23c1d505cca583ffdf79ba33c",
         "type": "github"
       },
       "original": {
