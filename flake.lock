@@ -355,6 +355,23 @@
         "type": "github"
       }
     },
+    "nix-top-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1705773293,
+        "narHash": "sha256-qWz7h4QyKXlTcOtppyf5wE8EiPlcTUbTBttuEhFnO40=",
+        "owner": "pogobanane",
+        "repo": "nix-top",
+        "rev": "b29e4686c061bae65b163d426a5648276d96194e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pogobanane",
+        "ref": "dev/owner",
+        "repo": "nix-top",
+        "type": "github"
+      }
+    },
     "nixos-hardware": {
       "locked": {
         "lastModified": 1702453208,
@@ -513,6 +530,7 @@
         "loc-src": "loc-src",
         "nix-gaming": "nix-gaming",
         "nix-index-database": "nix-index-database",
+        "nix-top-src": "nix-top-src",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_3",
         "nur": "nur",

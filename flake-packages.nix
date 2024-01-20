@@ -9,6 +9,10 @@
       #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
       #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
       #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
+      nix-top = pkgs.nix-top.overrideAttrs (finalAttrs: previousAttrs: {
+        # my nix-top fork
+        src = inputs.nix-top-src;
+      });
     };
   };
   flake = let 

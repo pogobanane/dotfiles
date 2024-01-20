@@ -51,6 +51,9 @@
     hosthog.url = "github:pogobanane/hosthog/develop";
     hosthog.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-top-src.url = "github:pogobanane/nix-top/dev/owner";
+    nix-top-src.flake = false;
+
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
