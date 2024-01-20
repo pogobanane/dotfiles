@@ -1,11 +1,12 @@
 { self, inputs, ...}: let
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
+  flakepkgs = self.packages.${pkgs.hostPlatform.system};
   extraArgs = [
     ({ pkgs, ... }: {
       config._module.args = {
         #   # This is the new, hip extraArgs.
-        flakepkgs = self.packages.${pkgs.hostPlatform.system};
+        inherit flakepkgs;
       };
     })
   ];
@@ -37,7 +38,8 @@ in {
             ./homeManager/peter.nix
           ];
           extraSpecialArgs = {
-            inputs = inputs;
+            # inputs = inputs; # TODO why does this still arrive in peter.nix?
+            # flakepkgs = pkgs; # TODO why does this not arrive in peter.nix?
             inherit (inputs) sops-nix nur nixpkgs nix-index-database astro-nvim;
             username = "peter";
             homeDirectory = "/home/peter";

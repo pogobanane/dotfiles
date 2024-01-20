@@ -183,5 +183,6 @@ in
     ranger # command line file manager
     man-pages
     inputs.hosthog.packages.${system}.default
+    inputs.wtf.packages.${system}.nix-top
   ];
 }

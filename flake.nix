@@ -65,6 +65,10 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
 
+    # TODO i cant get self to leak into peter.nix, so i leak self through this wtf, because inputs reach into peter.nix...
+    wtf.url = "github:pogobanane/dotfiles";
+    wtf.inputs.nixpkgs.follows = "nixpkgs";
+
     fenix = {
       url = "github:nix-community/fenix";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
