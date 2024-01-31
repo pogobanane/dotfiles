@@ -2634,6 +2634,7 @@
         "sops-nix": "sops-nix",
         "tex2nix": "tex2nix",
         "unstablepkgs": "unstablepkgs",
+        "wondershaper-src": "wondershaper-src",
         "wtf": "wtf"
       }
     },
@@ -3179,6 +3180,22 @@
         "owner": "Nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "wondershaper-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1634320680,
+        "narHash": "sha256-kt5f1dA3fSR5Xsuvh6ZvcY/SFeac8P9MAlwSAJ586W0=",
+        "owner": "magnific0",
+        "repo": "wondershaper",
+        "rev": "98792b55c2ebf4ab4cafffb0780e0c4185fdc03d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "magnific0",
+        "repo": "wondershaper",
         "type": "github"
       }
     },

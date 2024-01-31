@@ -60,6 +60,10 @@
     astro-nvim.url = "github:AstroNvim/AstroNvim";
     astro-nvim.flake = false;
 
+    wondershaper-src.url = "github:magnific0/wondershaper";
+    wondershaper-src.flake = false;
+
+
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
