@@ -175,6 +175,7 @@
     #(pkgs.nerdfonts.override {
     #    fonts = ["FiraCode"];
     #})
+    gamescope # util for proton games steam
   ];
 
   # Since git version 2.33.3, it fails when operating on a repo of

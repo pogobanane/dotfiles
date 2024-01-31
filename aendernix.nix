@@ -30,17 +30,16 @@
     virtualisation.libvirtd = {
       enable = true;
     };
-    boot.kernelParams = [
-      # spdk/dpdk hugepages
-      "default_hugepagesz=1G"
-      "hugepagesz=1G"
-      "hugepages=16"
-    ] ++ (if config.boot.hideR7240 then [
+    boot.kernelParams = (if config.boot.hideR7240 then [
       # 07:00.0: R7240
       "vfio-pci.ids=1002:699f" # TODO nixify this parameter so that it gets properly merged with other definitions
     ] else [
       # 08:00.0: RX 590
       "vfio-pci.ids=1002:67df,1002:aaf0"
+      # spdk/dpdk/qemu hugepages
+      "default_hugepagesz=1G"
+      "hugepagesz=1G"
+      "hugepages=16"
     ]);
     users.groups.libvirtd.members = [ "peter" ];
     #users.groups.input.members = [ "peter" ];
