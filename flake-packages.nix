@@ -7,6 +7,7 @@
       self-flake = pkgs.callPackage ./pkgs/self-flake.nix { impure-debug-info = inputs.impurity; };
       nix-patched = pkgs.callPackage ./pkgs/nix-patched.nix { };
       wondershaper = pkgs.callPackage ./pkgs/wondershaper.nix { inherit (inputs) wondershaper-src; };
+      jack-keyboard = pkgs.callPackage ./pkgs/jack-keyboard.nix { };
       #wluma = pkgs.callPackage ./pkgs/wluma.nix { };
       #webcord = if "${system}" == "x86_64-linux" then pkgs.callPackage ./pkgs/webcord-appimage.nix { } else null;
       #webcord = pkgs.callPackage ./pkgs/webcord-appimage.nix { };
