@@ -9,6 +9,13 @@
     calf
     helm
     odin2
+    zam-plugins
+    tambura
+    lsp-plugins
+    distrho
+    delayarchitect
+    dexed
+    cardinal
   ];
 
 }
