@@ -6,26 +6,6 @@
 
 Add impurities to self-flake/impure-debug-info via `nix build --override-inputs impurity "path:/tmp/foo/".
 
-## Keyboard setup
-
-For Keychron K3 v1/2 ansi color with controller SN32F248B
-
-```bash
-git clone git@github.com:SonixQMK/sonix-flasher.git # 36d51d900fd4727719d31167573ca8691162d182
-cd sonix-flasher
-nix build .#default
-./result/bin/sonix-flasher # needs to run in sonix-flasher repo
-
-```
-
-
-build it with `nix build .#default` and run result in command line.
-
-original firmware:
-https://github.com/SonixQMK/Mechanical-Keyboard-Database/blob/main/stockFWs/Keychron/260/Keychron_K3_White_v1.06_260.bin
-
-in qmk_firmware, the following key boots to bootloader (in win mode): fn esc
-
 
 # Notes
 
