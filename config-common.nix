@@ -209,10 +209,12 @@
   };
 
   hardware.keyboard.qmk.enable = true;
-  # 1. qmk firmware
-  # 2. SN32F248 bootloader
   services.udev.extraRules = ''
+    # my/SonixQMK firmware for keychron k3
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="fe04", TAG+="uaccess"
+    # seyahdoo's qmk firmware for keychron k3
+    SUBSYSTEMS=="usb", ATTRS{idVendor}=="3434", ATTRS{idProduct}=="fe05", TAG+="uaccess"
+    # SN32F248 bootloader on keychron k3
     SUBSYSTEMS=="usb", ATTRS{idVendor}=="0C45", ATTRS{idProduct}=="7040", TAG+="uaccess"
   '';
 
