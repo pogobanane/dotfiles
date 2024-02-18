@@ -1,7 +1,7 @@
 {pkgs ? <nixpkgs>} :
 
 pkgs.stdenv.mkDerivation {
-  name = "qmk_firmware";
+  name = "qmk_firmware_k3";
   src = pkgs.fetchgit {
     url = "https://github.com/pogobanane/qmk_firmware.git";
     fetchSubmodules = true;

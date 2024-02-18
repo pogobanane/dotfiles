@@ -57,12 +57,9 @@ https://github.com/SonixQMK/Mechanical-Keyboard-Database/blob/main/stockFWs/Keyc
 
 #### My firmware
 
-```
-git clone git@github.com:pogobanane/qmk_firmware.git
-cd qmk_firmware
-git checkout k3_dev
-qmk compile --keyboard keychron/k3/rgb/optical_ansi --keymap via
-```
+build firmware: `nix build .#qmk_firmware_k3`
+
+flash via `sudo sonixflasherc --vidpid 0c45/7040 --file ./result/keychron_k3_rgb_optical_ansi_via.bin` and then configure with via with `via_ansi.json`
 
 - boots every time
 - can do mouse
