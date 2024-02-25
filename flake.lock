@@ -1289,11 +1289,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1703622541,
-        "narHash": "sha256-bbA2R1xRz3RSTkdcr+KbWFSl8neQiy+IHwtLMHwkV6I=",
+        "lastModified": 1708903616,
+        "narHash": "sha256-9mNR/PI9AUZ70Yl30zwGNK3CwP2NEiOvDircHnAV+hU=",
         "owner": "pogobanane",
         "repo": "hosthog",
-        "rev": "e241409de806ade5b61c5a077435fd5c0168a6a9",
+        "rev": "1d3a0fd3af209f6b95decb8785559f5cd7fa98d2",
         "type": "github"
       },
       "original": {
