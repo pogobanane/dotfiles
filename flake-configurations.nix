@@ -68,6 +68,7 @@ in {
             ./aendernix.nix
             ./config-common.nix
             ./modules/gnome.nix
+            ./modules/android-dev.nix
           ];
           inherit specialArgs;
         };

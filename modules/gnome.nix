@@ -140,13 +140,6 @@
   services.printing.enable = true;
   services.printing.drivers = [ pkgs.gutenprint ]; # often replaces hplip
 
-  # android stuff
-  programs.adb.enable = true;
-  users.extraUsers.peter.extraGroups = [ "adbusers" ];
-  # simple audio streaming for andoid
-  # https://github.com/kaytat/SimpleProtocolPlayer
-  # https://docs.pipewire.org/page_module_protocol_simple.html
-
   services.flatpak.enable = true;
 
   systemd.services.audio-off = {
