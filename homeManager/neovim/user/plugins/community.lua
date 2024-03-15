@@ -30,15 +30,15 @@ return {
  { import = "astrocommunity.pack.yaml" },
  { import = "astrocommunity.pack.nix" },
  { import = "astrocommunity.terminal-integration.vim-tpipeline" }, -- do i need this?
- { import = "astrocommunity.colorscheme.gruvbox-nvim" },
+ -- { import = "astrocommunity.colorscheme.gruvbox-nvim" }, -- comment to disable. Otherwise it is really aggressive
  { import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
  { import = "astrocommunity.editing-support.auto-save-nvim" },
  {
-  "Tsuzat/NeoSolarized.nvim",
-  name = "NeoSolarized.nvim",
-  opts = {
-    style = "light", -- "dark" or "light"
-    transparent = false,
-  },
+    "loctvl842/monokai-pro.nvim",
+    config = function()
+      require("monokai-pro").setup {
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+      }
+    end
  },
 }

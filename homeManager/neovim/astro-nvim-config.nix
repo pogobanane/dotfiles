@@ -1,11 +1,15 @@
-{ inputs
-, lib
+{ lib
 , pkgs
 , stdenv
+, astro-nvim
 }:
 let
   lspPackages = with pkgs; [
-    vimPlugins.molokai
+    # vimPlugins.molokai
+    # vimPlugins.nvim-treesitter
+    # vimPlugins.nvim-treesitter.withAllGrammars
+    tree-sitter
+    fzf
 
     nodejs # copilot
     vale
@@ -66,7 +70,8 @@ stdenv.mkDerivation {
   phases = "installPhase";
   installPhase = ''
     mkdir -p $out/parser
-    cp -r --reflink=auto ${inputs.astro-nvim}/* $out/
+    echo foo
+    cp -r --reflink=auto ${astro-nvim}/* $out/
 
     pushd $out
     chmod -R +w .

@@ -1,10 +1,13 @@
 { config
 , pkgs
-, self
+, astro-nvim
 , ...
 }:
 let
-  inherit (self.packages.${pkgs.hostPlatform.system}) astro-nvim-config nvim-open;
+  # inherit (self.packages.${pkgs.hostPlatform.system}) astro-nvim-config nvim-open;
+  astro-nvim-config = pkgs.callPackage ./astro-nvim-config.nix { inherit astro-nvim; };
+  nvim-open = pkgs.python3Packages.callPackage ./nvim-open.nix { };
+
 in
 {
   home.packages = [ astro-nvim-config.neovim nvim-open ] ++ astro-nvim-config.lspPackages;
