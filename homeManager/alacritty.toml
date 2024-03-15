@@ -1,0 +1,80 @@
+import = ["./.config/alacritty/alacritty.colors.toml"]
+live_config_reload = true
+title = "Term/Alacritty"
+
+[font]
+size = 10.0
+
+[font.bold]
+family = "FiraCode Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "FiraCode Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "FiraCode Nerd Font"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "Up"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "IncreaseFontSize"
+key = "K"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "Down"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "DecreaseFontSize"
+key = "J"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Copy"
+key = "C"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "CreateNewWindow"
+key = "N"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "W"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "Quit"
+key = "Q"
+mods = "Control|Shift"
+
+[[keyboard.bindings]]
+action = "ToggleFullscreen"
+key = "F11"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[selection]
+save_to_clipboard = true
+
+[window]
+dynamic_padding = true
+
+[window.padding]
+x = 5
+y = 0

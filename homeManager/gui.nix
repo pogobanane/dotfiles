@@ -53,8 +53,8 @@
       # };
     };
 
-    home.file.".config/alacritty/alacritty.colors.yml".source = ./alacritty.colors.yml;
-    home.file.".config/alacritty/alacritty.yml".source = ./alacritty.yml;
+    home.file.".config/alacritty/alacritty.colors.toml".source = ./alacritty.colors.toml;
+    home.file.".config/alacritty/alacritty.toml".source = ./alacritty.toml;
 
     # nah doesnt work. Rather just place according files in ~/.config/autostart like gnome-tweaks does
     # systemd.user.services = {
