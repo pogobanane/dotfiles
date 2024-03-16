@@ -35,4 +35,6 @@ return {
  { import = "astrocommunity.editing-support.auto-save-nvim" },
  { import = "astrocommunity.colorscheme.melange-nvim" },
  { import = "astrocommunity.colorscheme.monokai-pro-nvim" },
+ { import = "astrocommunity.colorscheme.everforest" },
+ { import = "astrocommunity.colorscheme.sonokai" }, -- very nice with let g:sonokai_style = "espresso"
 }
