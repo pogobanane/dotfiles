@@ -11,7 +11,7 @@ return {
     -- after linewrap, indent 2 more than parent
     breakindent = true,
     breakindentopt = "shift:2",
-    background = "light",
+    background = "dark",
   },
   g = {
     mapleader = " ", -- sets vim.g.mapleader

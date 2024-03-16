@@ -42,7 +42,7 @@ return {
     },
   },
   -- Set colorscheme to use
-  colorscheme = "monokai-pro",
+  colorscheme = "gruvbox",
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
     virtual_text = true,
@@ -97,6 +97,9 @@ return {
       "denols",
       "ocamllsp",
     },
+  },
+  filesystem = {
+    follow_current_file = { enabled = false },
   },
   -- Configure require("lazy").setup() options
   lazy = {

@@ -5,7 +5,7 @@
 }:
 let
   lspPackages = with pkgs; [
-    # vimPlugins.molokai
+    vimPlugins.molokai
     # vimPlugins.nvim-treesitter
     # vimPlugins.nvim-treesitter.withAllGrammars
     tree-sitter

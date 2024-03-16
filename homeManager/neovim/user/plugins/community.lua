@@ -29,16 +29,10 @@ return {
  { import = "astrocommunity.pack.rust" },
  { import = "astrocommunity.pack.yaml" },
  { import = "astrocommunity.pack.nix" },
- { import = "astrocommunity.terminal-integration.vim-tpipeline" }, -- do i need this?
- -- { import = "astrocommunity.colorscheme.gruvbox-nvim" }, -- comment to disable. Otherwise it is really aggressive
+ { import = "astrocommunity.terminal-integration.vim-tpipeline" }, -- merge tmux and vim statusline
+ { import = "astrocommunity.colorscheme.gruvbox-nvim" },
  { import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
  { import = "astrocommunity.editing-support.auto-save-nvim" },
- {
-    "loctvl842/monokai-pro.nvim",
-    config = function()
-      require("monokai-pro").setup {
-        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
-      }
-    end
- },
+ { import = "astrocommunity.colorscheme.melange-nvim" },
+ { import = "astrocommunity.colorscheme.monokai-pro-nvim" },
 }
