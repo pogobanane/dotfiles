@@ -65,7 +65,7 @@
     nix-index-database.url = "github:Mic92/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
 
-    astro-nvim.url = "github:AstroNvim/AstroNvim";
+    astro-nvim.url = "github:AstroNvim/AstroNvim/49d48171c22bcc1c3e67b36930f6b9c710f0c70c"; # pin to working version
     astro-nvim.flake = false;
 
     wondershaper-src.url = "github:magnific0/wondershaper";
