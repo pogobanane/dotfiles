@@ -20,6 +20,9 @@ in {
   systems = [ system ];
   perSystem = { self', pkgs, ... }: {
       apps = {
+        # today i had to fix stuff using:
+        # sudo mkdir -m 0755 -p /nix/var/nix/{profiles,gcroots}/per-user/$USER
+        # sudo chown -R $USER /nix/var/nix/{profiles,gcroots}/per-user/$USER
         doctor-home = {
           type = "app";
           program = "${self.packages.${system}.flake-app-doctor-home}/bin/flake-app-doctor-home";

@@ -17,6 +17,10 @@
     Host graham-builder-via-jumphost
       HostName graham.dse.in.tum.de
       ProxyJump builder-jumphost
+
+    Host rose-builder-via-jumphost
+      HostName graham.dse.in.tum.de
+      ProxyJump builder-jumphost
   '';
   programs.ssh.knownHosts = {
     "login.dos.cit.tum.de" = {
@@ -26,6 +30,10 @@
     "graham.dse.in.tum.de" = {
       hostNames = [ "graham.dse.in.tum.de" ];
       publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMhxrYxHNgOvaLH6fVGNG3F8/TNDP1xqUXymQBykV4b0 root@nixos";
+    };
+    "rose.dse.in.tum.de" = {
+      hostNames = [ "rose.dse.in.tum.de" ];
+      publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGXKWTYVfN/MPqNaypMktG50H5x4Aqs5Fdlv0bUhzii7";
     };
   };
   nix.buildMachines = [
@@ -43,9 +51,23 @@
     #    "nixos-test"
     #  ];
     #}
+    # {
+    #   speedFactor = 0;
+    #   hostName = "graham-builder-via-jumphost";
+    #   protocol = "ssh";
+    #   sshUser = "nix";
+    #   sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops
+    #   system = "x86_64-linux";
+    #   maxJobs = 64;
+    #   supportedFeatures = [
+    #     "big-parallel"
+    #     "kvm"
+    #     "nixos-test"
+    #   ];
+    # }
     {
       speedFactor = 0;
-      hostName = "graham-builder-via-jumphost";
+      hostName = "rose-builder-via-jumphost";
       protocol = "ssh";
       sshUser = "nix";
       sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops

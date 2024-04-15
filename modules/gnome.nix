@@ -93,6 +93,7 @@
     discord
     slack
     signal-desktop
+    zulip
     ferdium # one electron to contain all messengers
     # pretty ebook reader with one bug that has a workaround https://github.com/johnfactotum/foliate/issues/719#issuecomment-830874744
     foliate
