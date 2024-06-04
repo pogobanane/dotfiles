@@ -74,6 +74,7 @@
     libreoffice
     gimp
     inkscape
+    rawtherapee
     drawio
     thunderbird
     pdfarranger
