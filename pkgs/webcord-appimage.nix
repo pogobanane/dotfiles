@@ -17,7 +17,7 @@ appimageTools.wrapType2 rec {
     #'';
     in ''
       #cp $\{wrapped} $out/bin/${pname}
-      mv $out/bin/${pname}-${version} $out/bin/${pname}
+      # mv $out/bin/${pname} $out/bin/${pname}
       #wrapProgram $out/bin/${pname} \
       #makeWrapper $out/bin/${pname}-${version} $out/bin/${pname}
         #--add-flags $\{NIXOS_OZONE_WL:+$\{WAYLAND_DISPLAY:+--ozone-platform-hint=auto --enable-features=WaylandWindowDecorations}}

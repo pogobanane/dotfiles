@@ -12,7 +12,7 @@
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
   nixpkgs.overlays = [
-    #(self: super: { 
+    #(self: super: {
     #gnome = super.gnome.overrideScope' (gself: gsuper: {
     #gnome-keyring = gsuper.gnome-keyring.override {
     #doCheck = true;
@@ -23,7 +23,7 @@
     #'';
     #};
     #});
-    #} ) 
+    #} )
     (_self: super: {
       gnomeExtensions = super.gnomeExtensions // rec {
         #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
@@ -44,7 +44,7 @@
     # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
     gnome.gnome-terminal
-    gnome.gedit
+    gedit
     gnome.seahorse
     remmina # rdp/vnc client
     ctile
@@ -54,13 +54,13 @@
     gnomeExtensions.switcher-patched
     gnomeExtensions.sound-output-device-chooser # disabled
     # gnomeExtensions.tactile
-    gnomeExtensions.noannoyance-2
+    gnomeExtensions.noannoyance-fork
     gnomeExtensions.forge
     gnomeExtensions.ssh-search-provider-reborn
     # not as well wtf it should be
     # gnomeExtensions.noannoyance
     # gnomeExtensions.application-volume-mixer
-    # gnomeExtensions.run-or-raise	
+    # gnomeExtensions.run-or-raise
     # not available on gnome 41
     #gnomeExtensions.clock-override
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
@@ -85,10 +85,10 @@
     mumble
     marktext # markdown editor
     # logseq # markdown editor
-    dbeaver
+    dbeaver-bin
     pavucontrol
     libheif # for apple media codecs
-    cider
+    # cider # broken
     audacity
     webcord
     discord
