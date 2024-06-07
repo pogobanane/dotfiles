@@ -71,18 +71,11 @@
   nixpkgs.overlays = [
     inputs.nur.overlay
     (_final: prev: {
-      # logseq = inputs.unstablepkgs.legacyPackages.x86_64-linux.logseq;
-      logseq = (import inputs.unstablepkgs {
-        system = "x86_64-linux";
-        config = {
-          allowInsecurePredicate = pkg: true;
-        };
-      }).logseq;
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
-      nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client; 
+      nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
-      #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { }; 
+      #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
       #cider = unstablepkgs.legacyPackages.x86_64-linux.cider;
@@ -90,13 +83,13 @@
       webcord = self.packages.x86_64-linux.webcord;
       #loc = flakepkgs.x86_64-linux.loc-git;
       #discord = unstablepkgs.legacyPackages.x86_64-linux.discord;
-      discord = prev.discord.overrideAttrs (_: { 
-        src = inputs.discord-tar; 
+      discord = prev.discord.overrideAttrs (_: {
+        src = inputs.discord-tar;
         unpackCmd = "tar -xzf $curSrc";
       });
       alacritty = inputs.unstablepkgs.legacyPackages.x86_64-linux.alacritty;
     })
-    #(self: super: { 
+    #(self: super: {
       #cider = super.cider.overrideAttrs (old: rec {
         #name = "cider-mine-${version}";
         #version = "1.5.6";
