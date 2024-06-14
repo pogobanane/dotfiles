@@ -88,17 +88,18 @@ in
   # changes in each release.
   home.stateVersion = "21.03";
 
-  home.file.".config/nixpkgs/config.nix".text = ''
-    {
-      # pin nixpkgs to same version as for NixOS
-      pkgs ? import (${nixpkgs}){}
-    }: {
-        packageOverrides = pkgs: {
-          # pin nur to same version as for NixOS
-          nur = import (${nur}) { inherit pkgs; };
-      };
-    }
-  '';
+  # this doesnt work on our arm server for some reason
+  #home.file.".config/nixpkgs/config.nix".text = ''
+  #  {
+  #    # pin nixpkgs to same version as for NixOS
+  #    pkgs ? import (${nixpkgs}){}
+  #  }: {
+  #      packageOverrides = pkgs: {
+  #        # pin nur to same version as for NixOS
+  #        nur = import (${nur}) { inherit pkgs; };
+  #    };
+  #  }
+  #'';
 
   #systemd.user.services.ls1vpn = {
   #  Unit = {
