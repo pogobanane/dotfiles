@@ -23,16 +23,21 @@ in {
         # today i had to fix stuff using:
         # sudo mkdir -m 0755 -p /nix/var/nix/{profiles,gcroots}/per-user/$USER
         # sudo chown -R $USER /nix/var/nix/{profiles,gcroots}/per-user/$USER
-        doctor-home = {
+        doctor-home = let 
+	  activation-script = pkgs.writeShellScript "activate" ''
+           ${inputs.home-manager.packages.${pkgs.system}.home-manager}/bin/home-manager --option keep-going true --flake "${self}#peter-doctor-cluster" "$@"
+
+	  '';
+	in {
           type = "app";
-          program = "${self.packages.${system}.flake-app-doctor-home}/bin/flake-app-doctor-home";
+          program = "${activation-script}";
         };
       };
-      packages = {
-        flake-app-doctor-home = pkgs.writeScriptBin "flake-app-doctor-home" ''
-          ${self.homeConfigurations.peter-doctor-cluster.activationPackage}/activate
-        '';
-      };
+      #packages = {
+      #  flake-app-doctor-home = pkgs.writeScriptBin "flake-app-doctor-home" ''
+      #    ${self.homeConfigurations.peter-doctor-cluster.activationPackage}/activate
+      #  '';
+      #};
   };
   flake = {
         homeConfigurations.peter = inputs.home-manager.lib.homeManagerConfiguration {
