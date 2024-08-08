@@ -71,6 +71,7 @@
   nixpkgs.overlays = [
     inputs.nur.overlay
     (_final: prev: {
+      gnomeExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions; # TODO remove once https://github.com/NixOS/nixpkgs/pull/317972 is merged
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
       nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
