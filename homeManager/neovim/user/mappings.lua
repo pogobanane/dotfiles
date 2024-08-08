@@ -52,6 +52,12 @@ return {
     ["gf"] = { function() open_or_create_file(vim.fn.expand("<cfile>")) end, desc = "Create file" },
     ["<leader>*"] = { function() require("telescope.builtin").grep_string() end, desc = "Find for word under cursor", },
     ["<leader><leader>"] = { function() require("telescope.builtin").find_files() end, desc = "Find files" },
+
+    -- esc disables search highlighting and dismiss notifications
+    ["<esc>"] = { ":nohlsearch<cr>:lua require(\"notify\").dismiss()<cr>", desc = "Clear search highlights and dismiss notifications" },
+
+    -- dismiss notifications
+    -- ["<esc>"] = { ":lua require(\"notify\").dismiss()", desc = "Foobar" },
   },
   t = {
     -- setting a mapping to false will disable it
