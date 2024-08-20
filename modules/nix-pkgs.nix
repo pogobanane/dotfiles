@@ -75,6 +75,7 @@
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
       nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
+      drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
       #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
