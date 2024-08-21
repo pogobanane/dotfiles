@@ -76,6 +76,7 @@
       nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
       drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
+      gnomeExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
       #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;

@@ -27,12 +27,13 @@
     (_self: super: {
       gnomeExtensions = super.gnomeExtensions // rec {
         #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
-        switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
-          postPatch = ''
-            substituteInPlace metadata.json \
-              --replace '"42"' '"43", "42"'
-          '';
-        });
+        switcher-patched =super.pkgs.gnomeExtensions.switcher;
+        # switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
+        #   postPatch = ''
+        #     substituteInPlace metadata.json \
+        #       --replace '"42"' '"43", "42"'
+        #   '';
+        # });
       };
     })
   ];
