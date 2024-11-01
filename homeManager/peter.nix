@@ -40,11 +40,11 @@ let
     text = "${pkgs.nmap}/bin/nmap -sP \"$@\"";
   };
 
-  gc-roots = pkgs.writeScriptBin "dont-collect-these-nix-store-paths" ''
-    This script is a root node for the nix garbage collector. Hence the following store paths are prevented from being cleaned up.
-    echo "${config.home-files}" # home-files get collected otherwise. Maybe its NFS?
+  # gc-roots = pkgs.writeScriptBin "dont-collect-these-nix-store-paths" ''
+  #   This script is a root node for the nix garbage collector. Hence the following store paths are prevented from being cleaned up.
+  #   echo "${config.home-files}" # home-files get collected otherwise. Maybe its NFS?
 
-  '';
+  # '';
 in
 {
   imports = [
@@ -184,7 +184,7 @@ in
     sopspw
     age
     nscan
-    gc-roots
+    # gc-roots
     nixos-generations
     nix-output-monitor # nom
     # rustup

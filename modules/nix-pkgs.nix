@@ -75,7 +75,7 @@
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
       nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
-      drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
+      # drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
       gnomeExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
       #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
@@ -117,6 +117,16 @@
       "electron-24.8.6"
       "electron-25.9.0"
     ];
+    permittedUnfreePackages = [
+      "drawio-24.7.17"
+    ];
+    # allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkg) [
+    #   "drawio"
+    # ];
+    allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
+      "drawio"
+    ];
+
     allowInsecurePredicate = pkg: true;
   };
 
