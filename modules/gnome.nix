@@ -50,10 +50,7 @@
     remmina # rdp/vnc client
     ctile
     gnomeExtensions.appindicator
-    gnomeExtensions.gesture-improvements # disabled
-    gnomeExtensions.bluetooth-quick-connect # disabled
     gnomeExtensions.switcher-patched
-    gnomeExtensions.sound-output-device-chooser # disabled
     # gnomeExtensions.tactile
     gnomeExtensions.noannoyance-fork
     gnomeExtensions.forge

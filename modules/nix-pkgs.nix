@@ -73,7 +73,7 @@
     (_final: prev: {
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
-      nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
+      # nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
       # drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
       gnomeExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
