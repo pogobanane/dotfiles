@@ -56,7 +56,7 @@
     loc-src.url = "github:cgag/loc";
     loc-src.flake = false;
 
-    hosthog.url = "github:pogobanane/hosthog/develop";
+    hosthog.url = "github:pogobanane/hosthog";
     hosthog.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-top-src.url = "github:pogobanane/nix-top/dev/owner";
@@ -77,10 +77,6 @@
 
     nix-gaming.url = "github:fufexan/nix-gaming";
 
-    # TODO i cant get self to leak into peter.nix, so i leak self through this wtf, because inputs reach into peter.nix...
-    wtf.url = "github:pogobanane/dotfiles";
-    wtf.inputs.nixpkgs.follows = "nixpkgs";
-
     fenix = {
       url = "github:nix-community/fenix";
       # if we follow nixpkgs, nixpkgs updates will trigger a fenixPkgs.rust-analyzer rebuild
@@ -96,7 +92,7 @@
     ...
   } @ inputs: flake-parts.lib.mkFlake
     { inherit inputs; }
-    { 
+    {
       imports = [
         ./flake-packages.nix
         ./flake-configurations.nix
@@ -107,7 +103,7 @@
         };
       };
       flake = {
-        devShells.x86_64-linux = let 
+        devShells.x86_64-linux = let
           pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
           fenixPkgs = inputs.fenix.packages.x86_64-linux;
           tex2nixPkgs = inputs.tex2nix.packages.x86_64-linux;

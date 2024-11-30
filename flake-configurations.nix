@@ -23,7 +23,7 @@ in {
         # today i had to fix stuff using:
         # sudo mkdir -m 0755 -p /nix/var/nix/{profiles,gcroots}/per-user/$USER
         # sudo chown -R $USER /nix/var/nix/{profiles,gcroots}/per-user/$USER
-        doctor-home = let 
+        doctor-home = let
 	  activation-script = pkgs.writeShellScript "activate" ''
            ${inputs.home-manager.packages.${pkgs.system}.home-manager}/bin/home-manager --option keep-going true --flake "${self}#peter-doctor-cluster" "$@"
 
@@ -48,6 +48,8 @@ in {
           extraSpecialArgs = {
             # inputs = inputs; # TODO why does this still arrive in peter.nix?
             # flakepkgs = pkgs; # TODO why does this not arrive in peter.nix?
+            inherit inputs;
+            inherit flakepkgs;
             inherit (inputs) sops-nix nur nixpkgs nix-index-database astro-nvim;
             username = "peter";
             homeDirectory = "/home/peter";
@@ -61,7 +63,8 @@ in {
             ./homeManager/peter.nix
           ];
           extraSpecialArgs = {
-            inputs = inputs;
+            inherit inputs;
+            inherit flakepkgs;
             inherit (inputs) sops-nix nur nixpkgs nix-index-database astro-nvim;
             username = "okelmann";
             homeDirectory = "/home/okelmann";

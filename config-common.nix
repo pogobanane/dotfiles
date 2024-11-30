@@ -20,7 +20,7 @@
           inherit (inputs) nixpkgs;
           inherit (inputs) astro-nvim;
           inherit inputs;
-          # inherit flakepkgs;
+          inherit flakepkgs;
           username = "peter";
           homeDirectory = "/home/peter";
           my-gui = true;
