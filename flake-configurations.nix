@@ -96,15 +96,15 @@ in {
           inherit specialArgs;
         };
 
-        nixosConfigurations.aendernext = nixosSystem {
-          system = "x86_64-linux";
-          modules = extraArgs ++ [
-            ./hardware-aendernext.nix
-            ./aenderpad.nix
-            ./config-common.nix
-          ];
-          inherit specialArgs;
-        };
+        # nixosConfigurations.aendernext = nixosSystem {
+        #   system = "x86_64-linux";
+        #   modules = extraArgs ++ [
+        #     ./hardware-aendernext.nix
+        #     ./aenderpad.nix
+        #     ./config-common.nix
+        #   ];
+        #   inherit specialArgs;
+        # };
 
 };
   }

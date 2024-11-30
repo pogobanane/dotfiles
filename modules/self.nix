@@ -1,5 +1,5 @@
-{ pkgs, ... }: let 
-  self-flake = pkgs.callPackage ../pkgs/self-flake.nix { impure-debug-info = ../.; };
+{ self, pkgs, ... }: let
+  self-flake = pkgs.callPackage ../pkgs/self-flake.nix { inherit self; impure-debug-info = ../.; };
 in {
 
   systemd.tmpfiles.rules = [

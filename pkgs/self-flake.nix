@@ -1,4 +1,4 @@
-{ stdenv, impure-debug-info, ... }:
+{ self, stdenv, impure-debug-info, ... }:
 
 stdenv.mkDerivation {
   name = "self-flake";
@@ -8,11 +8,11 @@ stdenv.mkDerivation {
   preUnpack = ''
   ls -la
   ls -la $src
-  ls -la ${impure-debug-info}
+  ls -la ${self}
   '';
 
   installPhase = ''
   cp -r . $out/
-  cp -r ${impure-debug-info} $out/impure-debug-info
+  cp -r ${self} $out/impure-debug-info
   '';
 }
