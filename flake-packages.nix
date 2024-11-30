@@ -31,11 +31,5 @@
       # broken/in development:
       # apple-music = pkgs.callPackage pkgs/apple-music.nix { };
     };
-
-    #packages.x86_64-linux.geary = pkgs.callPackage pkgs/geary.nix { };
-    #packages.x86_64-linux.geary = pkgs.gnome.geary.overrideAttrs (finalAttrs: previousAttrs: {
-      #mesonFlags = [ "-Dprofile=development" "-Dcontractor=enabled" ];
-      #dontStrip = true;
-    #});
   };
 }

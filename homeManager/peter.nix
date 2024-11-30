@@ -1,11 +1,7 @@
 # ~/.config/nixpgs/home.nix
 # install home manager via: `nix-shell '<home-manager>' -A install`
 { config
-, nixpkgs
 , pkgs
-, sops-nix
-, nix-index-database
-, nur
 , username
 , homeDirectory
 , my-gui
@@ -49,11 +45,11 @@ let
 in
 {
   imports = [
-    "${sops-nix}/modules/home-manager/sops.nix"
+    "${inputs.sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
     #./editors.nix
     ./neovim # reset by deleting ~/.local/share/nvim/
-    nix-index-database.hmModules.nix-index
+    inputs.nix-index-database.hmModules.nix-index
   ];
 
   my-gui.enable = my-gui;

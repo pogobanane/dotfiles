@@ -5,7 +5,7 @@
   extraArgs = [
     ({ pkgs, ... }: {
       config._module.args = {
-        #   # This is the new, hip extraArgs.
+        # This is the new, hip extraArgs.
         inherit flakepkgs;
       };
     })
@@ -46,11 +46,8 @@ in {
             ./homeManager/peter.nix
           ];
           extraSpecialArgs = {
-            # inputs = inputs; # TODO why does this still arrive in peter.nix?
-            # flakepkgs = pkgs; # TODO why does this not arrive in peter.nix?
             inherit inputs;
             inherit flakepkgs;
-            inherit (inputs) sops-nix nur nixpkgs nix-index-database astro-nvim;
             username = "peter";
             homeDirectory = "/home/peter";
             my-gui = true;
@@ -65,7 +62,6 @@ in {
           extraSpecialArgs = {
             inherit inputs;
             inherit flakepkgs;
-            inherit (inputs) sops-nix nur nixpkgs nix-index-database astro-nvim;
             username = "okelmann";
             homeDirectory = "/home/okelmann";
             my-gui = false;
