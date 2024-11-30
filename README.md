@@ -16,17 +16,6 @@ Add impurities to self-flake/impure-debug-info via `nix build --override-inputs 
 - I cant figure out how to bind vfio-pci to gpus after stage 1, so we have to decide which gpu to use at boot time.
 
 
-## The secrets of the ssh-agents
-
-Due to gnome we are using gnome-keyring-deamon which spawns an `openssh-9.0p1/bin/ssh-agent -D -a /run/user/1000/keyring/.ssh` but exports another `SSH_AUTH_SOCK` to terminals: `/run/user/1000/keyring/ssh`. This deamon suffers from all limitations of gnome-keyrings ssh support [[1](https://wiki.gnome.org/Projects/GnomeKeyring/Ssh)] [[2](https://wiki.gnome.org/Projects/GnomeKeyring/Goals#SSH_Agent)]:
-
-- All `~/.ssh` keys are loaded whenever possible (but only if there also is a public key)
-- You cant remove autoloaded keys
-- Requiring confirmation is impossible (`ssh-add -c`)
-
-Additionally, for some reason, we have `systemctl --user status ssh-agent` running (`openssh-9.0p1/bin/ssh-agent -a /run/user/1000/ssh-agent`), which works as expected, given that some `ssh-askpass` (such as from seahorse) is available.
-
-More gnome BS: increase timeouts for "<app> is not responding" message in mutter source: `#define PING_TIMEOUT_DELAY 5000` https://askubuntu.com/questions/412917/how-to-increase-waiting-time-for-non-responding-programs?_gl=1*1d41o7l*_ga*MTE3MDIyNDA1Ny4xNjc4MDExNDEw*_ga_S812YQPLT2*MTY4NTI2NzU5Mi4zLjEuMTY4NTI2NzYyMy4wLjAuMA..
 
 ## Security to implement some day
 

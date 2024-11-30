@@ -12,18 +12,6 @@
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
   nixpkgs.overlays = [
-    #(self: super: {
-    #gnome = super.gnome.overrideScope' (gself: gsuper: {
-    #gnome-keyring = gsuper.gnome-keyring.override {
-    #doCheck = true;
-    #dontPatch = true;
-    #prePatch = ''
-    #substituteInPlace $out/pkcs11/ssh-store/gkm-ssh-module.c
-    #--replace "~/.ssh" "~/.ssh/gnome-autoload"
-    #'';
-    #};
-    #});
-    #} )
     (_self: super: {
       gnomeExtensions = super.gnomeExtensions // rec {
         #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
