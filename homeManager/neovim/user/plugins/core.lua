@@ -30,7 +30,8 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     opts = {
-      follow_current_file = true,
+      -- follow_current_file = true,
+      follow_current_file = { enabled = false },
     },
   },
   -- override make command build since we provide the shared library with home-manager already

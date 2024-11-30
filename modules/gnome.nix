@@ -110,6 +110,7 @@
     #libsForQt5.qtwayland
     #libsForQt5.plasma-wayland-protocols
     # broken on wayland right now
+    atlauncher
 
     # for iphone
     libimobiledevice

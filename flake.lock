@@ -322,8 +322,8 @@
     "discord-tar": {
       "flake": false,
       "locked": {
-        "lastModified": 1729541998,
-        "narHash": "sha256-OWGDEYTwzFXLcCLwIUHeGZxZF44sRbSg3gvZUFR7KRw=",
+        "lastModified": 1732556349,
+        "narHash": "sha256-nDUlHG22EwDoWkvO06wdYEdLuKi9/Q9uatpISslf8/U=",
         "type": "tarball",
         "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
       },
