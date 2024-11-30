@@ -50,6 +50,7 @@ in
       ];
       extraSpecialArgs = {
         inherit inputs;
+        inherit (inputs) astro-nvim;
         inherit flakepkgs;
         username = "peter";
         homeDirectory = "/home/peter";
@@ -64,6 +65,7 @@ in
       ];
       extraSpecialArgs = {
         inherit inputs;
+        inherit (inputs) astro-nvim;
         inherit flakepkgs;
         username = "okelmann";
         homeDirectory = "/home/okelmann";
