@@ -15,11 +15,6 @@ Add impurities to self-flake/impure-debug-info via `nix build --override-inputs 
 - Potential fix: framebuffer mapping to the default tty: `fbcon=map:<0123>` https://www.kernel.org/doc/html/latest/fb/fbcon.html (example fbcon=map:1). However during early boot stage 1, fb0 is the only one available. So no second screen then.
 - I cant figure out how to bind vfio-pci to gpus after stage 1, so we have to decide which gpu to use at boot time.
 
-## The secrets of the undocumented nix-command flags
-
-`nix build --keep-failed`: keeps the worktree of the build and prints its directory
-
-`nix build --option substitute false`: dont use cache servers (didnt work when i tried it today)
 
 ## The secrets of the ssh-agents
 
