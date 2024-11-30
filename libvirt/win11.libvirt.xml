@@ -7,8 +7,8 @@
       <libosinfo:os id="http://microsoft.com/win/10"/>
     </libosinfo:libosinfo>
   </metadata>
-  <memory unit='KiB'>16777216</memory>
-  <currentMemory unit='KiB'>16777216</currentMemory>
+  <memory unit='KiB'>1048576</memory>
+  <currentMemory unit='KiB'>1048576</currentMemory>
   <memoryBacking>
     <hugepages/>
   </memoryBacking>
@@ -17,7 +17,7 @@
   <os>
     <type arch='x86_64' machine='pc-q35-7.1'>hvm</type>
     <loader readonly='yes' type='pflash'>/run/libvirt/nix-ovmf/OVMF_CODE.fd</loader>
-    <nvram>/var/lib/libvirt/qemu/nvram/win11_VARS.fd</nvram>
+    <nvram template='/run/libvirt/nix-ovmf/OVMF_VARS.fd'>/var/lib/libvirt/qemu/nvram/win11_VARS.fd</nvram>
     <bootmenu enable='no'/>
   </os>
   <features>
@@ -192,39 +192,6 @@
       <address type='pci' domain='0x0000' bus='0x00' slot='0x1b' function='0x0'/>
     </sound>
     <audio id='1' type='none'/>
-    <hostdev mode='subsystem' type='pci' managed='yes'>
-      <source>
-        <address domain='0x0000' bus='0x08' slot='0x00' function='0x0'/>
-      </source>
-      <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='pci' managed='yes'>
-      <source>
-        <address domain='0x0000' bus='0x08' slot='0x00' function='0x1'/>
-      </source>
-      <address type='pci' domain='0x0000' bus='0x07' slot='0x00' function='0x0'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source>
-        <vendor id='0x046d'/>
-        <product id='0x0825'/>
-      </source>
-      <address type='usb' bus='0' port='3'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source>
-        <vendor id='0x1395'/>
-        <product id='0x1000'/>
-      </source>
-      <address type='usb' bus='0' port='4'/>
-    </hostdev>
-    <hostdev mode='subsystem' type='usb' managed='yes'>
-      <source>
-        <vendor id='0x054c'/>
-        <product id='0x09cc'/>
-      </source>
-      <address type='usb' bus='0' port='2'/>
-    </hostdev>
     <hostdev mode='subsystem' type='usb' managed='yes'>
       <source>
         <vendor id='0x046d'/>
@@ -232,6 +199,26 @@
       </source>
       <address type='usb' bus='0' port='1'/>
     </hostdev>
+    <hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x0c76'/>
+        <product id='0x1503'/>
+      </source>
+      <address type='usb' bus='0' port='5'/>
+    </hostdev>
+    <hostdev mode='subsystem' type='pci' managed='yes'>
+      <source>
+        <address domain='0x0000' bus='0x07' slot='0x00' function='0x0'/>
+      </source>
+      <address type='pci' domain='0x0000' bus='0x04' slot='0x00' function='0x0'/>
+    </hostdev>
+    <hostdev mode='subsystem' type='pci' managed='yes'>
+      <source>
+        <address domain='0x0000' bus='0x07' slot='0x00' function='0x1'/>
+      </source>
+      <address type='pci' domain='0x0000' bus='0x07' slot='0x00' function='0x0'/>
+    </hostdev>
+    <watchdog model='itco' action='reset'/>
     <memballoon model='none'/>
   </devices>
 </domain>
