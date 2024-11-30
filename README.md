@@ -1,13 +1,13 @@
 # My dotfiles for NixOS
 
-Built with flake-parts.
+Built with flake-parts, home-manager and sops-nix.
 
 Entrypoints:
 
- - `devShells/`: some shells containing stuff for development (e.g. `nix shell github:pogobanane/dotfiles#latex`)
- - `homeManager/`: my (home-manager)[https://github.com/nix-community/home-manager] config. Can be used stand-alone e.g. on the (doctor-cluster)[https://github.com/TUM-DSE/doctor-cluster-config] with `nix run github:pogobanane/dotfiles#doctor-home -- switch`
+ - `devShells/`: some shells containing stuff for development (try with e.g. `nix shell github:pogobanane/dotfiles#latex`)
+ - `homeManager/`: my [home-manager](https://github.com/nix-community/home-manager) config. Can be used stand-alone e.g. on the [doctor-cluster](https://github.com/TUM-DSE/doctor-cluster-config) with `nix run github:pogobanane/dotfiles#doctor-home -- switch`
  - `pkgs/`: some software i packaged for personal use (e.g. `nix run github:pogobanane/dotfiles#jack-keyboard`)
- - NixOS configurations are in `flake-configurations.nix` (e.g. `just nixos-build` and `sudo nixos-rebuild switch --flake .#aendernix`)
+ - NixOS configurations are in `flake-configurations.nix` (try with `just nixos-build` and `sudo nixos-rebuild switch --flake .#aendernix`)
 
 Table of contents (outdated):
 
