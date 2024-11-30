@@ -75,7 +75,7 @@ in {
         nixosConfigurations.aendernix = nixosSystem {
           system = "x86_64-linux";
           modules = extraArgs ++ [
-            ./hardware-aendernix.nix
+            ./modules/hardware/hardware-aendernix.nix
             ./aendernix.nix
             ./config-common.nix
             ./modules/gnome.nix
@@ -87,7 +87,7 @@ in {
         nixosConfigurations.aenderpad = nixosSystem {
           system = "x86_64-linux";
           modules = extraArgs ++ [
-            ./hardware-aenderpad.nix
+            ./modules/hardware/hardware-aenderpad.nix
             ./aenderpad.nix
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
             ./config-common.nix
@@ -99,7 +99,7 @@ in {
         # nixosConfigurations.aendernext = nixosSystem {
         #   system = "x86_64-linux";
         #   modules = extraArgs ++ [
-        #     ./hardware-aendernext.nix
+        #     ./modules/hardware/hardware-aendernext.nix
         #     ./aenderpad.nix
         #     ./config-common.nix
         #   ];
