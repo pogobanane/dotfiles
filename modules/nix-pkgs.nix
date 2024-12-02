@@ -71,7 +71,7 @@
     inputs.nur.overlay
     (_final: prev: {
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
-      nerdfonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerdfonts;
+      nerd-fonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerd-fonts;
       # nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
       wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
       # drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;

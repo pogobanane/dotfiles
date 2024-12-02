@@ -45,7 +45,10 @@
   #owner = "peter";
   #};
 
-  fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "FiraCode" "DroidSansMono" ]; }) ];
+  fonts.packages = with pkgs.nerd-fonts; [
+    fira-code
+    droid-sans-mono
+  ];
 
 
   specialisation = {
