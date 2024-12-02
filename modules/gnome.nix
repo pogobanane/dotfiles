@@ -32,9 +32,9 @@
   environment.systemPackages = with pkgs; [
     # fprintd # seems to brick the login screen on ThinkPad E14 amd
     nextcloud-client
-    gnome.gnome-terminal
+    gnome-terminal
     gedit
-    gnome.seahorse
+    seahorse
     remmina # rdp/vnc client
     ctile
     gnomeExtensions.appindicator
@@ -50,7 +50,7 @@
     # not available on gnome 41
     #gnomeExtensions.clock-override
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
-    gnome.gnome-tweaks
+    gnome-tweaks
     keepassxc
     bitwarden
     alacritty
@@ -108,7 +108,7 @@
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
   # allow fractional scaling:
   # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 

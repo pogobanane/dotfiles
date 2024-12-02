@@ -8,7 +8,7 @@ buildRustPackage rec {
 
   src = loc-src;
 
-  cargoSha256 = "sha256-9JXOEBEgHjom1VPPKLjsumlxLwBDq090EvPMFePVzB4=";
+  cargoHash = "sha256-9JXOEBEgHjom1VPPKLjsumlxLwBDq090EvPMFePVzB4=";
 
   meta = with lib; {
     homepage = "https://github.com/cgag/loc";
