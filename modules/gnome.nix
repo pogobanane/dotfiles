@@ -108,7 +108,7 @@
   ];
   # geary sucks. Or does it?
   # environment.gnome.excludePackages = with pkgs; [ gnome.geary ];
-  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
   # allow fractional scaling:
   # gsettings set org.gnome.mutter experimental-features "['scale-monitor-framebuffer']"
 

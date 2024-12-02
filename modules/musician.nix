@@ -12,7 +12,6 @@
     zam-plugins
     tambura
     lsp-plugins
-    distrho
     delayarchitect
     dexed
     cardinal

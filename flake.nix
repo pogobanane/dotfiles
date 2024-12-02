@@ -21,7 +21,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     flake-parts.inputs.nixpkgs-lib.follows = "nixpkgs";
 
-    nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11";
     #nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     #unstablepkgs.url = "/home/peter/dev/nix/nixpkgs";
     unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
@@ -33,7 +33,7 @@
     ctile.url = "git+https://gitlab.com/pogobanane/gnome-ctile.git";
     ctile.inputs.nixpkgs.follows = "nixpkgs";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.05";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
@@ -57,7 +57,7 @@
     loc-src.flake = false;
 
     hosthog.url = "github:pogobanane/hosthog";
-    hosthog.inputs.nixpkgs.follows = "nixpkgs";
+    # hosthog.inputs.nixpkgs.follows = "nixpkgs"; # hosthog needs to be updated to new nixpkgs
 
     nix-top-src.url = "github:pogobanane/nix-top/dev/owner";
     nix-top-src.flake = false;

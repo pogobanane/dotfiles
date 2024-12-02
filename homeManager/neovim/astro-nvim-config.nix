@@ -14,7 +14,7 @@ let
     nodejs # copilot
     vale
     terraform-ls
-    nodePackages.pyright
+    pyright
     sumneko-lua-language-server
 
     # based on ./suggested-pkgs.json
