@@ -11,18 +11,31 @@
     MOZ_ENABLE_WAYLAND = "1"; # mozillas wayland backend is experimental and disabled by default
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
-  nixpkgs.overlays = [
+  nixpkgs.overlays = let
+    unstableExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions;
+  in [
     (_self: super: {
-      gnomeExtensions = super.gnomeExtensions // rec {
-        #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
-        switcher-patched =super.pkgs.gnomeExtensions.switcher;
-        # switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
-        #   postPatch = ''
-        #     substituteInPlace metadata.json \
-        #       --replace '"42"' '"43", "42"'
-        #   '';
-        # });
-      };
+      gnomeExtensions = unstableExtensions // 
+	rec {
+	      switcher-patched = unstableExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
+		src = pkgs.fetchFromGitHub {
+			owner = "leducvin";
+			repo = "switcher";
+			rev = "9be5882ba47ac7decdd91f4a50bd2b350b1a7f5d";
+			sha256 = "sha256-t5oPc0Z3mEuvsOJVkJTu0fbhFnbe5ICtbLwG08tHiHA=";
+		};
+	      });
+	};
+      # gnomeExtensions = super.gnomeExtensions // rec {
+      #   #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
+      #   # switcher-patched = super.pkgs.gnomeExtensions.switcher;
+      #   # switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
+      #   #   postPatch = ''
+      #   #     substituteInPlace metadata.json \
+      #   #       --replace '"42"' '"43", "42"'
+      #   #   '';
+      #   # });
+      # };
     })
   ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland

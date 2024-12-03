@@ -24,12 +24,14 @@
     nixpkgs.url = "github:Nixos/nixpkgs/nixos-24.11";
     #nixpkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     #unstablepkgs.url = "/home/peter/dev/nix/nixpkgs";
-    unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    # unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
+    unstablepkgs.url = "github:pogobanane/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
 
+    # ctile.url = "path:/home/peter/dev/tiling/gnome-ctile";
     ctile.url = "git+https://gitlab.com/pogobanane/gnome-ctile.git";
     ctile.inputs.nixpkgs.follows = "nixpkgs";
 
