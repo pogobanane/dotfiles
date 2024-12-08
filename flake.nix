@@ -49,6 +49,9 @@
 
     retiolum.url = "github:Mic92/retiolum";
 
+    mic92-dotfiles.url = "path:/tmp/mic92-dotfiles"; # "github:Mic92/dotfiles";
+    mic92-dotfiles.inputs.nixpkgs.follows = "nixpkgs";
+
     tex2nix.url = "github:Mic92/tex2nix";
     tex2nix.inputs.utils.follows = "nixpkgs";
 
@@ -99,9 +102,10 @@
         ./flake-packages.nix
         ./flake-configurations.nix
         ./flake-devshells.nix
+        ./homeManager/poba-nvim/flake-packages.nix
       ];
       systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" ];
-      perSystem = { ... }: {
+      perSystem = { inputs', ... }: {
         packages = {
         };
       };
