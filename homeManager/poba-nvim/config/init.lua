@@ -49,3 +49,8 @@ require("lazy").setup({
 	},
 	{ import = "plugins" },
 })
+
+return {
+  -- Set colorscheme to use
+  colorscheme = "gruvbox",
+}

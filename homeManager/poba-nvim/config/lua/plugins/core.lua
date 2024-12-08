@@ -7,6 +7,10 @@ return {
 			opt = {
 				-- set configuration options  as described below
 				relativenumber = false, -- sets vim.opt.relativenumber
+
+				wrap = true,
+				breakindent = true,
+				breakindentopt = "shift:2",
 			},
 		},
 	},

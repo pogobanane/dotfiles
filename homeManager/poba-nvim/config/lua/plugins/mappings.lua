@@ -58,6 +58,9 @@ return {
 					end,
 					desc = "Find files",
 				},
+
+    		-- esc disables search highlighting and dismiss notifications
+    		["<esc>"] = { ":nohlsearch<cr>:lua require(\"notify\").dismiss()<cr>", desc = "Clear search highlights and dismiss notifications" },
 			},
 			t = {
 				-- setting a mapping to false will disable it

@@ -35,4 +35,9 @@ return {
 	{ import = "astrocommunity.editing-support.rainbow-delimiters-nvim" },
 	{ import = "astrocommunity.editing-support.auto-save-nvim" },
 	{ import = "astrocommunity.motion.nvim-surround" },
+ { import = "astrocommunity.colorscheme.gruvbox-nvim" },
+ { import = "astrocommunity.colorscheme.melange-nvim" },
+ { import = "astrocommunity.colorscheme.monokai-pro-nvim" },
+ { import = "astrocommunity.colorscheme.everforest" },
+ { import = "astrocommunity.colorscheme.sonokai" }, -- very nice with let g:sonokai_style = "espresso"
 }
