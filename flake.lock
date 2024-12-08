@@ -691,14 +691,17 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1733660730,
-        "narHash": "sha256-jaJEBBanWNwh9OpOt8vuzQUPoSu+g2TEXEfchMqnHZA=",
-        "path": "/tmp/mic92-dotfiles",
-        "type": "path"
+        "lastModified": 1733673479,
+        "narHash": "sha256-uAvicnYEA9w9bEfpD0sDEAhgiAqVgklTXhXyVMw2Nvw=",
+        "owner": "pogobanane",
+        "repo": "mic92-dotfiles",
+        "rev": "c07a3118096094a063588ff0a14a75d3ab3003a0",
+        "type": "github"
       },
       "original": {
-        "path": "/tmp/mic92-dotfiles",
-        "type": "path"
+        "owner": "pogobanane",
+        "repo": "mic92-dotfiles",
+        "type": "github"
       }
     },
     "nether": {

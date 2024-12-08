@@ -49,7 +49,7 @@
 
     retiolum.url = "github:Mic92/retiolum";
 
-    mic92-dotfiles.url = "path:/tmp/mic92-dotfiles"; # "github:Mic92/dotfiles";
+    mic92-dotfiles.url = "github:pogobanane/mic92-dotfiles";
     mic92-dotfiles.inputs.nixpkgs.follows = "nixpkgs";
 
     tex2nix.url = "github:Mic92/tex2nix";
