@@ -103,6 +103,7 @@
     flakepkgs.kobo-book-downloader
     AusweisApp2
     via # for qmk keyboard flashing
+    zotero # academic paper manager
 
     inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
 
