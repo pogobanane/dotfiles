@@ -76,11 +76,12 @@
     wondershaper-src.url = "github:magnific0/wondershaper";
     wondershaper-src.flake = false;
 
-
     disko.url = "github:nix-community/disko";
     disko.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-gaming.url = "github:fufexan/nix-gaming";
+
+    ghostty.url = "github:ghostty-org/ghostty";
 
     fenix = {
       url = "github:nix-community/fenix";

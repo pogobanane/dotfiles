@@ -12,7 +12,7 @@
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
   nixpkgs.overlays = let
-    unstableExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions;
+    unstableExtensions = inputs.unstablepkgs.legacyPackages.${pkgs.system}.gnomeExtensions;
   in [
     (_self: super: {
       gnomeExtensions = unstableExtensions // 
@@ -66,8 +66,12 @@
     gnome-tweaks
     keepassxc
     bitwarden
+
+    # terminal emulators:
     alacritty
     wezterm
+    inputs.ghostty.packages.${pkgs.system}.default
+
     vlc
     obs-studio
     libreoffice
