@@ -37,7 +37,8 @@
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
   boot.kernelPackages = let
-      linux = pkgs.linuxPackages;
+      # linux = pkgs.linuxPackages;
+      linux = pkgs.linuxPackages_zen;
     in
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
