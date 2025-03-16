@@ -171,6 +171,7 @@ in
     psmisc
     # libguestfs-with-appliance
     lazygit
+    gitui
     ack
     ripgrep
     bottom # btm
