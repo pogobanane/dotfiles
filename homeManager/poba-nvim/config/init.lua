@@ -50,6 +50,8 @@ require("lazy").setup({
 	{ import = "plugins" },
 })
 
+vim.api.nvim_set_current_dir = function(dir) end -- prevent all chdir
+
 return {
   -- Set colorscheme to use
   colorscheme = "gruvbox",
