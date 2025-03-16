@@ -50,6 +50,8 @@
     retiolum.url = "github:Mic92/retiolum";
 
     mic92-dotfiles.url = "github:pogobanane/mic92-dotfiles";
+    # mic92-dotfiles.url = "git+file:///home/peter/dev/mic92-dotfiles";
+    # mic92-dotfiles.url = "github:mic92/dotfiles";
     mic92-dotfiles.inputs.nixpkgs.follows = "nixpkgs";
 
     tex2nix.url = "github:Mic92/tex2nix";
