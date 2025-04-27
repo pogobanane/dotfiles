@@ -45,6 +45,8 @@
     users.groups.libvirtd.members = [ "peter" ];
     #users.groups.input.members = [ "peter" ];
 
+    programs.kdeconnect.enable = true;
+
     environment.systemPackages = with pkgs; [
       virt-manager
       pciutils
