@@ -16,6 +16,7 @@
       ipv4 = "10.243.29.172";
       ipv6 = "42:0:3c46:f14:26a0:7b5e:349f:7f0b";
     };
+    networking.firewall.enable = lib.mkForce false;
 
     specialisation = {
       bootR7240 = {

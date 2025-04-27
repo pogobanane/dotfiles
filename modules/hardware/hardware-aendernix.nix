@@ -37,8 +37,9 @@
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
   boot.kernelPackages = let
-      # linux = pkgs.linuxPackages;
-      linux = pkgs.linuxPackages_zen;
+      linux = pkgs.linuxPackages;
+      # zen hangs less during high disk IO but also has noticably worse frametimes in games
+      # linux = pkgs.linuxPackages_zen;
     in
       pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
