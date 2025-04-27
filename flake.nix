@@ -5,12 +5,10 @@
     extra-substituters = [
       "https://nix-gaming.cachix.org"
       "https://tum-dse.cachix.org"
-      "https://cache.garnix.io"
     ];
     extra-trusted-public-keys = [
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       "tum-dse.cachix.org-1:v67rK18oLwgO0Z4b69l30SrV1yRtqxKpiHodG4YxhNM="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
 
