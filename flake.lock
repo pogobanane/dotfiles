@@ -189,8 +189,8 @@
     "discord-tar": {
       "flake": false,
       "locked": {
-        "lastModified": 1745347437,
-        "narHash": "sha256-W03syxKW0Ho7XcPYtrScVY+RZI71i4JaLrR/DoVvHdU=",
+        "lastModified": 1745885748,
+        "narHash": "sha256-NDLEnY2Y17KzO0WiQv0fPTLT78Ra23HvqwzfWC6O2lM=",
         "type": "tarball",
         "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
       },
@@ -515,11 +515,11 @@
         "zon2nix": "zon2nix"
       },
       "locked": {
-        "lastModified": 1745607661,
-        "narHash": "sha256-72OO+/vP4h7uiZ1gdGmFf1z+17NxCt8dhrRD+mltW44=",
+        "lastModified": 1746118269,
+        "narHash": "sha256-nWCxF4Fl53yaJzxlHVDkDZNrWGsrYk9f5ondtMa+S04=",
         "owner": "ghostty-org",
         "repo": "ghostty",
-        "rev": "38445dca2ac2af176c7f3b205d88d697cf8c89c8",
+        "rev": "e79bf71f2322fa5d54af07f2985f8460290f2085",
         "type": "github"
       },
       "original": {
