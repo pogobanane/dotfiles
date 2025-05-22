@@ -18,6 +18,14 @@
         # my nix-top fork
         src = inputs.nix-top-src;
       });
+      qemu-test = pkgs.qemu.overrideAttrs (old: new: {
+        version = "9.2.0";
+        src = pkgs.fetchurl {
+          url = "https://download.qemu.org/qemu-${new.version}.tar.xz";
+          hash = "sha256-Gf2ddTWlTW4EThhkAqo7OxvfqHw5LsiISFVZLIUQyW8=";
+        };
+      });
+      build-linux = pkgs.vmTools.runInLinuxVM pkgs.linuxPackages.kernel;
     };
   };
   flake = let
@@ -30,6 +38,7 @@
       kobo-book-downloader = pkgs.callPackage pkgs/kobo-book-downloader.nix { };
       # broken/in development:
       # apple-music = pkgs.callPackage pkgs/apple-music.nix { };
+      test = pkgs.callPackage ./pkgs/test.nix { };
     };
   };
 }
