@@ -70,7 +70,8 @@
     # terminal emulators:
     alacritty
     wezterm
-    inputs.ghostty.packages.${pkgs.system}.default
+    # inputs.ghostty.packages.${pkgs.system}.default
+    ghostty
 
     vlc
     obs-studio
@@ -107,7 +108,7 @@
     flakepkgs.kobo-book-downloader
     AusweisApp2
     via # for qmk keyboard flashing
-    zotero # academic paper manager
+    zotero # academic paper manager. Useful plugin: https://retorque.re/zotero-better-bibtex/exporting/auto/index.html
 
     inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
 
