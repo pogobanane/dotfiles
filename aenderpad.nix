@@ -7,4 +7,5 @@
     ipv6 = "42:0:3c46:2aad:ed1e:33cf:aece:d216";
   };
   networking.firewall.enable = false;
+  services.sysprof.enable = true;
 }
