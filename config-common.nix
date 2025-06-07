@@ -175,7 +175,7 @@
     htop
     iotop
     lsd
-    loc
+    tokei
     #(pkgs.nerdfonts.override {
     #    fonts = ["FiraCode"];
     #})
