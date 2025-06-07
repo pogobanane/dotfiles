@@ -19,10 +19,10 @@
 	rec {
 	      switcher-patched = unstableExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
 		src = pkgs.fetchFromGitHub {
-			owner = "leducvin";
+			owner = "schrieveslaach";
 			repo = "switcher";
-			rev = "9be5882ba47ac7decdd91f4a50bd2b350b1a7f5d";
-			sha256 = "sha256-t5oPc0Z3mEuvsOJVkJTu0fbhFnbe5ICtbLwG08tHiHA=";
+			rev = "3dcd662682d493e9352c15f3f38464617f513ae2";
+			sha256 = "sha256-Byuj3pRav6+yJifR6OP8DO30ccZaxVf/ome6rwHfD8s=";
 		};
 	      });
 	};
@@ -53,7 +53,7 @@
     gnomeExtensions.appindicator
     gnomeExtensions.switcher-patched
     # gnomeExtensions.tactile
-    gnomeExtensions.noannoyance-fork
+    # gnomeExtensions.noannoyance-fork
     gnomeExtensions.forge
     gnomeExtensions.ssh-search-provider-reborn
     # not as well wtf it should be
