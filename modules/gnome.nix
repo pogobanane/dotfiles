@@ -13,29 +13,31 @@
   };
   nixpkgs.overlays = let
     unstableExtensions = inputs.unstablepkgs.legacyPackages.${pkgs.system}.gnomeExtensions;
+    majorGnomeVersion = lib.lists.head (lib.strings.splitString "." pkgs.gnome-shell.version);
   in [
     (_self: super: {
-      gnomeExtensions = unstableExtensions // 
-	rec {
-	      switcher-patched = unstableExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
-		src = pkgs.fetchFromGitHub {
-			owner = "schrieveslaach";
-			repo = "switcher";
-			rev = "3dcd662682d493e9352c15f3f38464617f513ae2";
-			sha256 = "sha256-Byuj3pRav6+yJifR6OP8DO30ccZaxVf/ome6rwHfD8s=";
-		};
-	      });
-	};
-      # gnomeExtensions = super.gnomeExtensions // rec {
-      #   #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
-      #   # switcher-patched = super.pkgs.gnomeExtensions.switcher;
-      #   # switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
-      #   #   postPatch = ''
-      #   #     substituteInPlace metadata.json \
-      #   #       --replace '"42"' '"43", "42"'
-      #   #   '';
-      #   # });
-      # };
+     #  gnomeExtensions = unstableExtensions // rec {
+	    #   switcher-patched = unstableExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
+		   #    src = pkgs.fetchFromGitHub {
+			  #     owner = "schrieveslaach";
+			  #     repo = "switcher";
+			  #     rev = "3dcd662682d493e9352c15f3f38464617f513ae2";
+			  #     sha256 = "sha256-Byuj3pRav6+yJifR6OP8DO30ccZaxVf/ome6rwHfD8s=";
+		   #    };
+	    #   });
+	    # };
+      gnomeExtensions = super.gnomeExtensions // rec {
+        #switcher = gsuper.switcher.overrideAttrs (finalAttrs: previousAttrs: {
+        # switcher-patched = super.pkgs.gnomeExtensions.switcher;
+        switcher-patched = super.pkgs.gnomeExtensions.switcher.overrideAttrs (_finalAttrs: _previousAttrs: rec {
+          buildInputs = [ pkgs.jq ];
+          postPatch = ''
+            # substituteInPlace metadata.json \
+            #   --replace '"42"' '"${majorGnomeVersion}", "42"'
+            jq '.["shell-version"] = ["${majorGnomeVersion}"]' metadata.json > metadata.json.tmp && mv metadata.json.tmp metadata.json
+          '';
+        });
+      };
     })
   ];
   # chromium --enable-features=UseOzonePlatform --ozone-platform=wayland
