@@ -142,11 +142,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1733147613,
-        "narHash": "sha256-pp28xmkq+bB1xlj/gbwlq10/995WZq+yPreoPZ2Ev5o=",
+        "lastModified": 1749240175,
+        "narHash": "sha256-GHxA+nyuiVjrZbGyghlE/hPCxEgr3XxswZcY8oN8Hco=",
         "ref": "refs/heads/master",
-        "rev": "ef8f43fe3b5f9fcf5fb80ad8ebadda3698993eb3",
-        "revCount": 64,
+        "rev": "58b336b0b4e0ba6dedc9db5eb2fc3ea96ef375b5",
+        "revCount": 66,
         "type": "git",
         "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
       },
@@ -672,15 +672,14 @@
     "impurity": {
       "flake": false,
       "locked": {
-        "lastModified": 1,
-        "narHash": "sha256-X1rrJlYl0RM82FlY3M0T0/VoHri4yjPZYZWCLnuwqwk=",
         "path": "./modules/empty",
         "type": "path"
       },
       "original": {
         "path": "./modules/empty",
         "type": "path"
-      }
+      },
+      "parent": []
     },
     "lambda-pirate": {
       "inputs": {
@@ -1485,15 +1484,15 @@
     },
     "unstablepkgs": {
       "locked": {
-        "lastModified": 1733657982,
-        "narHash": "sha256-u3U8GSZj0wX1cP1sda2LSG8leUk88v6FnWyGjU5PK0Y=",
-        "owner": "pogobanane",
+        "lastModified": 1749143949,
+        "narHash": "sha256-QuUtALJpVrPnPeozlUG/y+oIMSLdptHxb3GK6cpSVhA=",
+        "owner": "Nixos",
         "repo": "nixpkgs",
-        "rev": "47e07506851db10165af5c2df9e18288b69f9e8f",
+        "rev": "d3d2d80a2191a73d1e86456a751b83aa13085d7d",
         "type": "github"
       },
       "original": {
-        "owner": "pogobanane",
+        "owner": "Nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
