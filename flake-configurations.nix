@@ -93,6 +93,7 @@ in
         inputs.nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
         ./config-common.nix
         ./modules/gnome.nix
+        ./modules/nokia.nix
       ];
       inherit specialArgs;
     };
