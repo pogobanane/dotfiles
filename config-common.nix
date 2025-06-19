@@ -21,11 +21,11 @@
           inherit (inputs) astro-nvim;
           inherit inputs;
           inherit flakepkgs;
-          username = "peter";
-          homeDirectory = "/home/peter";
-          my-gui = true;
+          username = "nixos";
+          homeDirectory = "/home/nixos";
+          my-gui = false;
         };
-        home-manager.users.peter = import ./homeManager/peter.nix;
+        home-manager.users.nixos = import ./homeManager/peter.nix;
       }
       ./modules/self.nix
       ./modules/nix-pkgs.nix
@@ -36,7 +36,7 @@
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
-      ./modules/musician.nix
+      # ./modules/musician.nix
     ];
 
   #sops.defaultSopsFile = ./secrets.yaml;
@@ -152,6 +152,9 @@
     openssh.authorizedKeys.keys = [
       "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDITBcN9iw5Fn7yyfgiWFet3QWDoMcUNtzLi+PNoYS7jksvcKZy5pLOjE6wCpkbYx+Tcb4MyvoWPXvwdo5FfL4XdhZRO+JlZ66p/rGssq/wEr2BBUwohP7o39JLtiyXGXSsK6MO2aceOFLQr4KAdaeD8ST0XumGcV6bGqIbjFsK5FCxFhO8NkCFtavBjDwKUm3uyOnVCWMp12abUphzxrVtWhcsnw5GapohATP03mCNxmrn/L7x393HutxgjyduScX7++MjwVE6J7wCnztPUtJbh9jYemr/K9fBMBbLhQagOjrlQYGU5frgmLrPCRZusyg5HjWx6gJIxs/DskfgmW+V peter@aenderarch" # gitpogobanane
     ];
+  };
+  users.users.nixos = {
+    shell = pkgs.zsh;
   };
 
   virtualisation.docker.enable = true;

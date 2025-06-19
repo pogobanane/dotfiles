@@ -97,6 +97,22 @@ in
       inherit specialArgs;
     };
 
+    nixosConfigurations.aenderwsl = nixosSystem {
+      system = "x86_64-linux";
+      modules = extraArgs ++ [
+        # ./modules/hardware/hardware-aenderpad.nix
+        # ./aenderpad.nix
+        # inputs.nixos-hardware.nixosModules.lenovo-thinkpad-e14-amd
+        ./config-common.nix
+        # ./modules/gnome.nix
+        inputs.nixos-wsl.nixosModules.default
+        ({ wsl.enable = true; })
+      ];
+      inherit specialArgs;
+
+
+    };
+
     # nixosConfigurations.aendernext = nixosSystem {
     #   system = "x86_64-linux";
     #   modules = extraArgs ++ [
