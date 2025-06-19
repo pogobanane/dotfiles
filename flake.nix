@@ -25,6 +25,7 @@
     unstablepkgs.url = "github:Nixos/nixpkgs/nixos-unstable";
     # unstablepkgs.url = "github:pogobanane/nixpkgs/nixos-unstable";
     nur.url = "github:nix-community/NUR";
+    nixos-wsl.url = "github:nix-community/NixOS-WSL/main";
 
     lambda-pirate.url = "github:pogobanane/lambda-pirate";
     lambda-pirate.inputs.nixpkgs.follows = "nixpkgs";
