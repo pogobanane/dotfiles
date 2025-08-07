@@ -13,11 +13,37 @@ if [[ ! -d "/run/current-system" ]]; then
     exit 1
 fi
 
-# Find specializations directory
+# Find magic specializations directory (probably doesnt exist)
 SPEC_DIR="/var/current-nixos-specialisation-base/specialisation"
 
+# Find specialisations of current system among available nixos-generations
+HITS=0
 if [[ ! -d "$SPEC_DIR" ]]; then
-    # default dir when specialisation-base is unknown.
+    for dir in /nix/var/nix/profiles/system-*; do
+        if [ -d "$dir" ]; then
+            # echo $(realpath /run/current-system) $(realpath "$dir")
+            if [[ $(realpath /run/current-system) == $(realpath "$dir") ]]; then
+                [[ $HITS -gt 1 ]] || SPEC_DIR="$dir/specialisation"
+                ((HITS=HITS+1))
+            fi
+            for dir2 in ${dir}/specialisation/*; do
+                # echo $(realpath /run/current-system) $(realpath "$dir2")
+                if [[ $(realpath /run/current-system) == $(realpath "$dir2") ]]; then
+                    [[ $HITS -gt 1 ]] || SPEC_DIR="$dir/specialisation"
+                    ((HITS=HITS+1))
+                fi
+            done
+            # echo "Processing directory: $dir"
+        fi
+    done
+    if [[ $HITS -ge 2 ]]; then
+        echo "Warning: multiple nixos-generations match the current system"
+        echo "Showing specialisations of the lexicographically first one"
+    fi
+fi
+
+# Use default dir when specialisation-base is unknown.
+if [[ ! -d "$SPEC_DIR" ]]; then
     # Will be empty if we already are in a specialisation
     SPEC_DIR="/run/current-system/specialisation"
 fi
@@ -36,14 +62,14 @@ if [[ ${#specializations[@]} -eq 0 ]]; then
 fi
 
 # Add current system as option
-specializations=("current-system" "${specializations[@]}")
+specializations=("base-system" "${specializations[@]}")
 
 # Menu variables
 selected=0
 total=${#specializations[@]}
 
 # search current specialization (from the back to default to entry 0)
-for ((selected=${#specializations[@]}-1; selected>=0; selected--)); do
+for ((selected=${#specializations[@]}-1; selected>0; selected--)); do
     if [[ $(realpath "${SPEC_DIR}/${specializations[selected]}") == $(realpath /run/current-system) ]]; then
         break
     fi
@@ -128,12 +154,12 @@ echo
 echo "Selected: $selected_spec"
 
 # Switch to specialization
-if [[ "$selected_spec" == "current-system" ]]; then
-    echo "Switching to current system configuration..."
-    sudo /run/current-system/bin/switch-to-configuration switch
+if [[ "$selected_spec" == "base-system" ]]; then
+    echo "Switching to unspecialized base-system configuration..."
+    sudo $SPEC_DIR/../bin/switch-to-configuration switch
 else
     echo "Switching to specialization: $selected_spec"
-    sudo "/run/current-system/specialisation/$selected_spec/bin/switch-to-configuration" switch
+    sudo "$SPEC_DIR/$selected_spec/bin/switch-to-configuration" switch
 fi
 
 echo "Done!"
