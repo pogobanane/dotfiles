@@ -14,10 +14,16 @@ if [[ ! -d "/run/current-system" ]]; then
 fi
 
 # Find specializations directory
-SPEC_DIR="/run/current-system/specialisation"
+SPEC_DIR="/var/current-nixos-specialisation-base/specialisation"
 
 if [[ ! -d "$SPEC_DIR" ]]; then
-    echo "No specializations found in /run/current-system/specialisation"
+    # default dir when specialisation-base is unknown.
+    # Will be empty if we already are in a specialisation
+    SPEC_DIR="/run/current-system/specialisation"
+fi
+
+if [[ ! -d "$SPEC_DIR" ]]; then
+    echo "No specializations found in $SPEC_DIR"
     exit 1
 fi
 
@@ -35,6 +41,13 @@ specializations=("current-system" "${specializations[@]}")
 # Menu variables
 selected=0
 total=${#specializations[@]}
+
+# search current specialization (from the back to default to entry 0)
+for ((selected=${#specializations[@]}-1; selected>=0; selected--)); do
+    if [[ $(realpath "${SPEC_DIR}/${specializations[selected]}") == $(realpath /run/current-system) ]]; then
+        break
+    fi
+done
 
 # Function to draw menu
 draw_menu() {
