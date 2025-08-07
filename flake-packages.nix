@@ -4,6 +4,7 @@
       map-cmd = pkgs.callPackage ./pkgs/map.nix { };
       loc-git = pkgs.callPackage ./pkgs/loc.nix { inherit (inputs) loc-src; };
       nixos-generations = pkgs.callPackage ./pkgs/nixos-generations.nix { };
+      nixos-specializations = pkgs.callPackage ./pkgs/nixos-specializations.nix { };
       self-flake = pkgs.callPackage ./pkgs/self-flake.nix { inherit self; impure-debug-info = inputs.impurity; };
       nix-patched = pkgs.callPackage ./pkgs/nix-patched.nix { };
       wondershaper = pkgs.callPackage ./pkgs/wondershaper.nix { inherit (inputs) wondershaper-src; };

@@ -14,4 +14,4 @@ pkgs.writeShellApplication {
   name = "nixos-specializations";
   # runtimeInputs = [ pkgs.];
   text = ./nixos-specializations;
-};
+}
