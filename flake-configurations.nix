@@ -1,5 +1,4 @@
-{ self, inputs, ... }:
-let
+{ self, inputs, ... }: let
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
   flakepkgs = self.packages.${pkgs.hostPlatform.system};
@@ -106,7 +105,9 @@ in
         ./config-common.nix
         # ./modules/gnome.nix
         inputs.nixos-wsl.nixosModules.default
-        ({ wsl.enable = true; })
+        ({
+          wsl.enable = true;
+        })
       ];
       inherit specialArgs;
 

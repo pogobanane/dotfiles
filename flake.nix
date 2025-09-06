@@ -90,6 +90,8 @@
       #inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    vscode-server.url = "github:nix-community/nixos-vscode-server";
+
     impurity.url = "path:./modules/empty";
     impurity.flake = false;
   };

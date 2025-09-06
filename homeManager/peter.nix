@@ -51,7 +51,10 @@ in
     # ./neovim # reset by deleting ~/.local/share/nvim/
     ./poba-nvim # reset by deleting ~/.config/poba-nvim ~/.cache/poba-nvim ~/.local/share/poba-nvim ~/.local/state/poba-nvim and re-applying home-manager activation
     inputs.nix-index-database.hmModules.nix-index
+    inputs.vscode-server.homeModules.default
   ];
+
+  services.vscode-server.enable = true;
 
   my-gui.enable = my-gui;
   programs.nix-index-database.comma.enable = true;
