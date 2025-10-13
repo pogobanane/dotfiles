@@ -1,3 +1,4 @@
+import argparse
 import pandas as pd
 import numpy as np
 from matplotlib import pyplot as plt
@@ -68,7 +69,55 @@ def show_heapmap(m, title=None, subtitle=None, vmin=None, vmax=None, yticks=True
               f"{subtitle}\n" +
               f"Min={vmin:0.1f}ns Median={np.nanmedian(m):0.1f}ns Max={vmax:0.1f}ns",
               fontsize=11, linespacing=1.5)
-    plt.savefig("foo.png")
+    return plt
 
-# show_heapmap(shuffle_numas(load_data("/mnt/c/Users/okelmann/OneDrive - Nokia/excel/martha-latency.csv")), title="martha dynamic frequncy", vmax=400)
-show_heapmap(load_data("/mnt/c/Users/okelmann/OneDrive - Nokia/excel/nokia04-latency.csv"), title="nokia04")
+def parse_args():
+    parser = argparse.ArgumentParser(description="Generate a NUMA heatmap from a core-to-core-latency CSV file")
+    parser.add_argument("csv_file", help="Path to the input CSV file")
+    parser.add_argument("--shuffle", action="store_true", help="Untangle core numbers when even/odd cores belong to different NUMA nodes")
+    parser.add_argument("--title", type=str, default="NUMA Heatmap", help="Title of the heatmap")
+    parser.add_argument("--subtitle", type=str, help="Subtitle of the heatmap")
+    parser.add_argument("--vmin", type=float, help="Minimum value for colormap")
+    parser.add_argument("--vmax", type=float, help="Maximum value for colormap")
+    parser.add_argument("--no-yticks", action="store_true", help="Hide Y-axis ticks (CPU labels)")
+    parser.add_argument("--figsize", type=str, help="Figure size as 'width,height'")
+    parser.add_argument("--output", type=str, default="core-to-core-latency-plot.png", help="Output image file name")
+    parser.add_argument("--show", action="store_true", help="Display the plot interactively")
+    args = parser.parse_args()
+    return args
+
+
+def main():
+    args = parse_args()
+
+    m = load_data(args.csv_file)
+    if args.shuffle:
+        m = shuffle_numas(m)
+
+    figsize = None
+    if args.figsize:
+        try:
+            w, h = map(float, args.figsize.split(","))
+            figsize = (w, h)
+        except:
+            raise ValueError("Invalid format for --figsize. Use 'width,height' (e.g., 12,10)")
+
+    show_heapmap(
+        m,
+        title=args.title,
+        subtitle=args.subtitle,
+        vmin=args.vmin,
+        vmax=args.vmax,
+        yticks=not args.no_yticks,
+        figsize=figsize
+    )
+
+    if args.show:
+        plt.show()
+    else:
+        plt.savefig(args.output)
+        print(f"Saved heatmap to '{args.output}'")
+
+
+if __name__ == "__main__":
+    main()

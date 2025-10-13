@@ -29,7 +29,7 @@ rustPlatform.buildRustPackage rec {
     );
   in ''
     mkdir -p $out/bin
-    ln -s ${plotting-script}/bin/core-to-core-latency-plot $out/bin/core-to-core-latency-plot
+    ln -s ${plotting-script} $out/bin/core-to-core-latency-plot
   '';
 
   meta = with lib; {
