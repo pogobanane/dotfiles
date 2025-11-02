@@ -79,6 +79,7 @@
     obs-studio
     libreoffice
     gimp
+    gthumb # photo folder viewer
     inkscape
     rawtherapee
     drawio
@@ -92,6 +93,7 @@
     marktext # markdown editor
     # logseq # markdown editor
     dbeaver-bin
+    gitg
     pavucontrol
     libheif # for apple media codecs
     # cider # broken
