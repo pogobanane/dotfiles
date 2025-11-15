@@ -41,7 +41,7 @@
 
     programs.firefox = {
       enable = true;
-      # Extra preferences to add to user.js: extraConfig = ""; 
+      # Extra preferences to add to user.js: extraConfig = "";
       # After manually setting settings, this will fail to apply.
       # profiles.default = {
       #    # Note that it is necessary to manually enable these extensions inside Firefox after the first installation.
@@ -52,6 +52,15 @@
       #   # settings = {  }; see about config
       # };
     };
+
+    # programs.zed-editor = {
+    #   enable = true;
+    #   extensions = [
+    #     "nix"
+    #     "lua"
+    #     "latex"
+    #   ];
+    # };
 
     home.file.".config/alacritty/alacritty.colors.toml".source = ./alacritty.colors.toml;
     home.file.".config/alacritty/alacritty.toml".source = ./alacritty.toml;

@@ -94,6 +94,7 @@
     # logseq # markdown editor
     dbeaver-bin
     gitg
+    zed-editor
     pavucontrol
     libheif # for apple media codecs
     # cider # broken
