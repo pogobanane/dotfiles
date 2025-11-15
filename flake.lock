@@ -189,8 +189,8 @@
     "discord-tar": {
       "flake": false,
       "locked": {
-        "lastModified": 1745885748,
-        "narHash": "sha256-NDLEnY2Y17KzO0WiQv0fPTLT78Ra23HvqwzfWC6O2lM=",
+        "lastModified": 1761591622,
+        "narHash": "sha256-X7nu1+BTq92GPx/liyHTkVw297nYDjAvQsAq0MvKq/o=",
         "type": "tarball",
         "url": "https://discord.com/api/download?format=tar.gz&platform=linux"
       },
@@ -668,18 +668,6 @@
         "repo": "hyprspace",
         "type": "github"
       }
-    },
-    "impurity": {
-      "flake": false,
-      "locked": {
-        "path": "./modules/empty",
-        "type": "path"
-      },
-      "original": {
-        "path": "./modules/empty",
-        "type": "path"
-      },
-      "parent": []
     },
     "lambda-pirate": {
       "inputs": {
@@ -1238,7 +1226,6 @@
         "ghostty": "ghostty",
         "home-manager": "home-manager",
         "hosthog": "hosthog",
-        "impurity": "impurity",
         "lambda-pirate": "lambda-pirate",
         "loc-src": "loc-src",
         "mic92-dotfiles": "mic92-dotfiles",
