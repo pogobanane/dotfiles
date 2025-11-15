@@ -241,6 +241,8 @@
   systemd.services.systemd-networkd-wait-online.enable = lib.mkForce false;
   systemd.services.NetworkManager-wait-online.enable = false;
 
+  boot.supportedFilesystems = [ "ntfs" ];
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
