@@ -89,8 +89,8 @@
       #inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    impurity.url = "path:./modules/empty";
-    impurity.flake = false;
+    # impurity.url = "path:./modules/empty";
+    # impurity.flake = false;
   };
 
   outputs = {
