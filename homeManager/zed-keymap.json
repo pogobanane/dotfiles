@@ -1,0 +1,82 @@
+// Zed keymap
+//
+// For information on binding keys, see the Zed
+// documentation: https://zed.dev/docs/key-bindings
+//
+// To see the default key bindings run `zed: open default keymap`
+// from the command palette.
+[
+  {
+    "bindings": {
+      "ctrl-shift-w": null // dont fucking close the entire window when this bind does something less destructive in other contexts
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "shift shift": "file_finder::Toggle"
+      "ctrl-w u": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "right" }
+      ],
+      "ctrl-w p": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "left" }
+      ],
+      "ctrl-w i": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "up" }
+      ],
+      "ctrl-w o": [
+        "workspace::MoveItemToPaneInDirection",
+        { "direction": "down" }
+      ]
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      // "j k": ["workspace::SendKeystrokes", "escape"]
+      //"ctrl-k": "workspace::ActivatePaneUp",
+      //"ctrl-j": "workspace::ActivatePaneDown",
+      //"ctrl-h": "workspace::ActivatePaneLeft",
+      //"ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "vim_mode == normal",
+    "bindings": {
+      // use leader keys only in normal mode, because it delays they leader key in insert mode
+      "space w": "workspace::Save", // compatibility for my habits
+      "space c": ["editor::ToggleComments", { "advance_downwards": false }], // compatibility for my habits
+      "space /": ["editor::ToggleComments", { "advance_downwards": false }] // compatibility for my habits
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {
+      // "ctrl-k": "workspace::ActivatePaneUp",
+      // "ctrl-j": "workspace::ActivatePaneDown",
+      // "ctrl-h": "workspace::ActivatePaneLeft",
+      // "ctrl-l": "workspace::ActivatePaneRight"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-w": null, // dont forward to terminal, so that we can use it as prefix
+      "ctrl-w w": ["pane::CloseActiveItem", { "close_pinned": false }], // default is ctrl-shift-w
+      "ctrl-w k": "workspace::ActivatePaneUp",
+      "ctrl-w j": "workspace::ActivatePaneDown",
+      "ctrl-w h": "workspace::ActivatePaneLeft",
+      "ctrl-w l": "workspace::ActivatePaneRight",
+      "ctrl-j": ["terminal::SendKeystroke", "ctrl-j"] // don't open bottom dock (terminal by default) but forward key
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "ctrl-w w": "workspace::ToggleLeftDock" // in some (non-vim) contexts you can show/hide the dock (files) with ctrl-b, but we add our tab close command that we use elsewhere to close the dock from within itself
+    }
+  }
+]
