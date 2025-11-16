@@ -184,6 +184,52 @@ at = [
 ];
 de = [
   # https://cuii.info/empfehlungen/
+  # mitterweile https://cuii.info/anordnungen/
+
+  # annas archive/ibooks
+  "annas-archive.org",
+  "annas-archive.se",
+  "annas-archive.li"
+
+  "rpgonly.com", # games
+  "fitgirl-repacks.size" # games
+
+  # hdfilme/streamcloud/filmpalast
+  "hdfilme.to"
+  "hdfilme.tv"
+  "hdfilme.io"
+  "streamcloud.cam",
+  "streamcloud-de.com",
+  "filmpalast.to",
+
+  "nxbrew.net", # nintendo
+  "bignox.com", # android emulator
+
+  # libgen
+  "libgen.ac",
+  "libgen.vg",
+  "libgen.al",
+  "libgen.bz",
+  "libgen.gl",
+
+  "switchroms.co.im", # nintendo
+  "switchroms.guru",
+
+  "getrockmusic.net",
+  "totalsportek.pro",
+  "zieptro.com",
+  "filmpalast.to",
+  "romslab.com",
+  "megakino.co",
+  "nswgame.com",
+  "sci-hub.st",
+  "bufferstreams.sx",
+  "filmfans.org",
+  "jokerlivestream.org",
+  "jokerlivestream.net",
+  "israbox.com", # music
+  "taodung.com", # ROMs (nintendo?)
+
   "serienjunkies.org",
   "cine.to",
   "kinox.to",
@@ -200,6 +246,8 @@ everything += at
 everything += de
 
 import dns.resolver
+import time
+from tqdm import tqdm
 
 resolver = dns.resolver.Resolver()
 resolver.nameservers = [ "1.1.1.1" ]
@@ -215,31 +263,33 @@ def addHost(ip: str, hostname: str):
     if not hostname in hosts[ip]:
         hosts[ip] += [hostname]
 
-for a in everything:
+def query_dns(domain, record_type="A"):
+    # while i in range(1, 10):
+        # backoff_sec = math.pow(2, i)
     try:
-        result = resolver.resolve(a, 'A')
+        result = resolver.resolve(domain, record_type)
         for ipval in result:
-            addHost(ipval.to_text(), a)
+            addHost(ipval.to_text(), domain)
             # hosts[str(ipval.to_text())] = []
-            print(f"\"{ipval.to_text()}\" = [ \"{a}\" ];")
+            print(f"\"{ipval.to_text()}\" = [ \"{domain}\" ];")
     except dns.resolver.NoAnswer:
         pass
     except dns.resolver.NXDOMAIN:
-        print(f"Doesnt exist: {a}")
+        print(f"Doesnt exist: {domain}")
+    except dns.resolver.NoNameservers:
+        print(f"Nameserver failed to answer for {domain}")
+    except dns.resolver.LifetimeTimeout:
+        print(f"Nameserver failed to answer for {domain} (timeout)")
 
-    try:
-        result = resolver.resolve(a, 'AAAA')
-        for ipval in result:
-            addHost(ipval.to_text(), a)
-            print(f"\"{ipval.to_text()}\" = [ \"{a}\" ];")
-    except dns.resolver.NoAnswer:
-        pass
-    except dns.resolver.NXDOMAIN:
-        print(f"Doesnt exist: {a}")
+query_dns("kinox.unblockit.buzz")
+for a in tqdm(everything):
+    query_dns(a, record_type="A")
+    query_dns(a, record_type="AAAA")
 
 print("")
 print("========= Deduplicated: ============");
 
+kv_pairs = []
 for key in hosts.keys():
     array = "[ "
     for host in hosts[key]:
@@ -247,4 +297,6 @@ for key in hosts.keys():
         array += host
         array += "\" "
     array += "]"
-    print(f"\"{key}\" = {array};")
+    kv_pair = f"\"{key}\" = {array};"
+    kv_pairs += [ kv_pair ]
+print("\n".join(sorted(kv_pairs)))

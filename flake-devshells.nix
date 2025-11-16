@@ -6,6 +6,10 @@
           just
           nix-output-monitor
           inputs'.disko.packages.disko
+          (python3.withPackages (python-pkgs: with python-pkgs; [
+            dnspython
+            tqdm
+          ]))
         ];
       };
       clang = pkgs.callPackage ./devShells/clang.nix { inherit pkgs; };
