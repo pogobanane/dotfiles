@@ -72,3 +72,8 @@ all-doctor-homes:
   ssh clara.dse.in.tum.de      -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
   ssh amy.dse.in.tum.de        -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
   ssh rose.dse.in.tum.de       -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
+
+backup-zed-config:
+    ls ~/.local/share/zed/extensions/installed > ./homeManager/zed-extensions.txt
+    cp ~/.config/zed/settings.json homeManager/zed-settings.json
+    cp ~/.config/zed/keymap.json homeManager/zed-keymap.json

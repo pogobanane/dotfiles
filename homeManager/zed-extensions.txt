@@ -1,0 +1,6 @@
+html
+just
+latex
+lua
+nix
+toml
