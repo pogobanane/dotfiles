@@ -1,269 +1,178 @@
 { lib, config, ... }: let
 
   hosts = {
-    "188.114.97.3" = [ "kinox.to" "movie4k.to" "kinox.tv" "kinox.am"
-    "movie4k.tv" "thepiratebay.gd" "thepiratebay.la" "thepiratebay.fm"
-    "libgen.unblocked.at" "burning-series.net" "serienstream.be"
-    "serienjunkies.org" "kinox.io" "kinox.sh" "kinox.lol" "kinox.wtf"
-    "kinox.fun" "kinox.fyi" "ffmovies.biz" "fmovies.kim" "fmovies.mom"
-    "seasonvar.ru" "kinokiste.club" "kkiste.ru" "kkiste.ac" "streamcloud.cam"
-    "streamcloud-de.com" "filmpalast.to" "kinoz.to" "www13.kinoz.to"
-    "kinox.click" "kinox.club" "kinox.direct" "kinox.space" "kinox.bz"
-    "kinox.unblockit.buzz" "kinox.unblockit.bz" "kinox.unblockit.cam"
-    "kinox.unblockit.club" "kinox.unblockit.link" "kinox.unblockit.ws"
-    "kinox.unblockit.blue" "newalbumreleases.unblockit.buzz"
-    "newalbumreleases.unblockit.link" "NSW2U.com" ];
-
-    "188.114.96.3" = [ "kinox.to" "movie4k.to" "kinox.tv" "kinox.am"
-    "movie4k.tv" "thepiratebay.gd" "thepiratebay.la" "thepiratebay.fm"
-    "libgen.unblocked.at" "burning-series.net" "serienstream.be"
-    "serienjunkies.org" "kinox.io" "kinox.sh" "kinox.lol" "kinox.wtf"
-    "kinox.fun" "kinox.fyi" "ffmovies.biz" "fmovies.kim" "fmovies.mom"
-    "seasonvar.ru" "kinokiste.club" "kkiste.ru" "kkiste.ac" "streamcloud.cam"
-    "streamcloud-de.com" "filmpalast.to" "kinoz.to" "www13.kinoz.to"
-    "kinox.click" "kinox.club" "kinox.direct" "kinox.space" "kinox.bz"
-    "kinox.unblockit.buzz" "kinox.unblockit.bz" "kinox.unblockit.cam"
-    "kinox.unblockit.club" "kinox.unblockit.link" "kinox.unblockit.ws"
-    "kinox.unblockit.blue" "newalbumreleases.unblockit.buzz"
-    "newalbumreleases.unblockit.link" "NSW2U.com" ];
-
-    "2a06:98c1:3120::3" = [ "kinox.to" "kinox.tv" "kinox.am" "movie4k.tv"
-    "thepiratebay.gd" "thepiratebay.la" "thepiratebay.fm" "libgen.unblocked.at"
-    "burning-series.net" "serienstream.be" "serienjunkies.org" "kinox.io"
-    "kinox.sh" "kinox.lol" "kinox.wtf" "kinox.fun" "kinox.fyi" "ffmovies.biz"
-    "fmovies.kim" "fmovies.mom" "kinokiste.club" "kkiste.ru" "kkiste.ac"
-    "streamcloud.cam" "streamcloud-de.com" "filmpalast.to" "kinoz.to"
-    "www13.kinoz.to" "kinox.click" "kinox.club" "kinox.direct" "kinox.space"
-    "kinox.bz" "kinox.unblockit.buzz" "kinox.unblockit.bz"
-    "kinox.unblockit.cam" "kinox.unblockit.club" "kinox.unblockit.link"
-    "kinox.unblockit.ws" "kinox.unblockit.blue"
-    "newalbumreleases.unblockit.buzz" "newalbumreleases.unblockit.link"
-    "NSW2U.com" ];
-
-    "2a06:98c1:3121::3" = [ "kinox.to" "kinox.tv" "kinox.am" "movie4k.tv"
-    "thepiratebay.gd" "thepiratebay.la" "thepiratebay.fm" "libgen.unblocked.at"
-    "burning-series.net" "serienstream.be" "serienjunkies.org" "kinox.io"
-    "kinox.sh" "kinox.lol" "kinox.wtf" "kinox.fun" "kinox.fyi" "ffmovies.biz"
-    "fmovies.kim" "fmovies.mom" "kinokiste.club" "kkiste.ru" "kkiste.ac"
-    "streamcloud.cam" "streamcloud-de.com" "filmpalast.to" "kinoz.to"
-    "www13.kinoz.to" "kinox.click" "kinox.club" "kinox.direct" "kinox.space"
-    "kinox.bz" "kinox.unblockit.buzz" "kinox.unblockit.bz"
-    "kinox.unblockit.cam" "kinox.unblockit.club" "kinox.unblockit.link"
-    "kinox.unblockit.ws" "kinox.unblockit.blue"
-    "newalbumreleases.unblockit.buzz" "newalbumreleases.unblockit.link"
-    "NSW2U.com" ];
-
-    "103.224.182.251" = [ "filme-streamz.com" ];
-    "103.224.182.252" = [ "movie2k.cm" ];
-    "103.224.182.253" = [ "kinox.sg" "sci-hub.tw" "kinox.si" "fmovies.cx" ];
-    "104.21.10.99" = [ "kinox.gratis" ];
-    "104.21.13.158" = [ "kinokiste.ru" ];
+    "101.99.89.48" = [ "libgen.vg" ];
+    "103.224.182.238" = [ "h33t.to" ];
+    "103.224.182.253" = [ "libgen.unblocked.at" "kinox.si" "kinox.fun" "burningseries.se" "kinox.unblockit.ist" "newalbumreleases.unblockit.ist" ];
+    "103.224.212.210" = [ "kinox.mobi" ];
+    "103.224.212.216" = [ "szene-streams.com" ];
+    "104.21.1.164" = [ "fmovies.taxi" ];
+    "104.21.16.32" = [ "NSW2U.com" ];
+    "104.21.2.213" = [ "getrockmusic.net" ];
     "104.21.2.248" = [ "primekiste.com" ];
-    "104.21.22.127" = [ "kinox.top" ];
-    "104.21.233.247" = [ "fmovies.hn" ];
-    "104.21.233.248" = [ "fmovies.hn" ];
-    "104.21.234.6" = [ "fmoviesto.cc" ];
-    "104.21.234.7" = [ "fmoviesto.cc" ];
-    "104.21.25.127" = [ "kinox.me" ];
-    "104.21.36.27" = [ "kinox.unblockit.uno" ];
-    "104.21.47.35" = [ "kinox.digital" ];
-    "104.21.5.57" = [ "fmoviesf.co" ];
+    "104.21.23.249" = [ "filmfans.org" ];
+    "104.21.39.102" = [ "fmovies.hn" ];
+    "104.21.40.193" = [ "1337x.to" ];
+    "104.21.49.61" = [ "switchroms.guru" ];
     "104.21.54.197" = [ "thepiratebay.vg" ];
-    "104.21.55.128" = [ "kinox.sx" ];
-    "104.21.57.211" = [ "kinox.cloud" ];
-    "104.21.59.64" = [ "kinox.express" ];
-    "104.21.6.167" = [ "kinox.unblockit.onl" ];
+    "104.21.57.79" = [ "israbox.com" ];
+    "104.21.59.118" = [ "canna-power.to" ];
+    "104.21.60.165" = [ "fmovies.cafe" ];
     "104.21.62.228" = [ "kkiste.club" ];
-    "104.21.64.35" = [ "kinox.unblockit.ist" "newalbumreleases.unblockit.ist" ];
-    "104.21.66.208" = [ "streamkiste.tv" ];
-    "104.21.66.54" = [ "kinox.unblockit.tv" ];
-    "104.21.69.123" = [ "kinox.unblockit.li" ];
-    "104.21.69.166" = [ "fmovies.town" ];
-    "104.21.70.220" = [ "sci-hub.ren" ];
-    "104.21.73.188" = [ "kinox.pub" ];
-    "104.21.75.156" = [ "fmovies.ink" ];
-    "104.21.79.246" = [ "kinox.tube" ];
+    "104.21.62.57" = [ "x1337x.ws" ];
+    "104.21.66.152" = [ "fmovies.pub" ];
     "104.21.8.4" = [ "kinos.to" ];
     "104.21.81.25" = [ "ww2.fmovies.cab" ];
-    "104.21.81.85" = [ "kinox.unblockit.kim" ];
-    "104.21.87.18" = [ "kinox.mobi" ];
-    "104.21.88.201" = [ "kinox.unblockit.ch" "newalbumreleases.unblockit.ch" ];
     "104.21.9.230" = [ "sci-hub.shop" ];
-    "104.26.10.92" = [ "fmovies.ps" ];
-    "104.26.11.92" = [ "fmovies.ps" ];
-    "104.26.12.95" = [ "newalbumreleases.unblockit.bet" ];
-    "104.26.13.95" = [ "newalbumreleases.unblockit.bet" ];
-    "104.31.16.10" = [ "movie4k.me" "fmovies.to" "newalbumreleases.net" ];
-    "104.31.16.11" = [ "1337x.to" ];
-    "104.31.16.118" = [ "1337x.to" ];
-    "104.31.16.119" = [ "movie4k.me" "fmovies.to" "newalbumreleases.net" ];
-    "104.31.16.120" = [ "1337x.st" ];
-    "104.31.16.121" = [ "fmovies.media" "fmovies.wtf" "fmovies.cafe" ];
-    "104.31.16.122" = [ "movie4k.am" "fmovies.taxi" ];
-    "104.31.16.123" = [ "fmovies.world" ];
-    "104.31.16.124" = [ "fmovies.pub" "fmovies.solar" ];
-    "104.31.16.125" = [ "movie.to" "movie4k.org" "fmovies.coffee" ];
-    "104.31.16.126" = [ "x1337x.ws" ];
-    "104.31.16.3" = [ "x1337x.ws" ];
-    "104.31.16.4" = [ "movie.to" "movie4k.org" "fmovies.coffee" ];
-    "104.31.16.5" = [ "fmovies.pub" "fmovies.solar" ];
-    "104.31.16.6" = [ "fmovies.world" ];
-    "104.31.16.7" = [ "movie4k.am" "fmovies.taxi" ];
-    "104.31.16.8" = [ "fmovies.media" "fmovies.wtf" "fmovies.cafe" ];
-    "104.31.16.9" = [ "1337x.st" ];
+    "104.21.96.105" = [ "gen.lib.rus.ec" ];
+    "13.248.169.48" = [ "fmovies.mom" "kkiste.ac" "kinox.tube" "kinox.club" ];
+    "139.162.174.209" = [ "kkiste.to" "isohunt.to" ];
+    "139.162.181.76" = [ "kkiste.to" "isohunt.to" ];
+    "151.101.131.52" = [ "libgen.ac" ];
+    "151.101.195.52" = [ "libgen.ac" ];
+    "151.101.3.52" = [ "libgen.ac" ];
+    "151.101.67.52" = [ "libgen.ac" ];
+    "157.90.33.73" = [ "kinox.fyi" ];
+    "157.90.33.74" = [ "kinox.fyi" ];
     "162.159.136.6" = [ "thepiratebay.org" ];
     "162.159.137.6" = [ "thepiratebay.org" ];
+    "172.104.149.86" = [ "kkiste.to" "isohunt.to" ];
+    "172.104.251.198" = [ "kkiste.to" "isohunt.to" ];
+    "172.233.219.123" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.233.219.49" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.sh" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.233.219.78" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.236.126.142" = [ "libgen.unblocked.uno" "libgen.unblocked.mx" "streamkiste.tv" "fmovies.kim" ];
+    "172.236.126.145" = [ "libgen.unblocked.uno" "libgen.unblocked.mx" "streamkiste.tv" "fmovies.kim" ];
+    "172.236.126.225" = [ "libgen.unblocked.uno" "libgen.unblocked.mx" "streamkiste.tv" "fmovies.kim" ];
+    "172.236.126.234" = [ "libgen.unblocked.uno" "libgen.unblocked.mx" "streamkiste.tv" "fmovies.kim" ];
+    "172.237.146.25" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.237.146.38" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.237.146.8" = [ "kinox.tv" "kinox.me" "movie4k.tv" "piratebayblocked.com" "movie4k.org" "kinox.io" "kinox.cloud" "burningseries.co" "fmovies.town" "fmovies.ink" "fmoviesf.co" "kinokiste.me" "kinox.unblockit.ch" "kinox.unblockit.club" "kinox.unblockit.onl" "kinox.unblockit.uno" "kinox.unblockit.blue" "newalbumreleases.unblockit.bet" "newalbumreleases.unblockit.ch" "megakino.co" ];
+    "172.67.129.161" = [ "fmovies.taxi" ];
+    "172.67.129.181" = [ "getrockmusic.net" ];
     "172.67.129.239" = [ "primekiste.com" ];
-    "172.67.131.78" = [ "kinox.gratis" ];
-    "172.67.133.4" = [ "fmoviesf.co" ];
-    "172.67.134.61" = [ "kinox.me" ];
-    "172.67.135.10" = [ "kinox.unblockit.onl" ];
     "172.67.139.233" = [ "kkiste.club" ];
-    "172.67.139.245" = [ "sci-hub.ren" ];
     "172.67.141.94" = [ "thepiratebay.vg" ];
-    "172.67.148.31" = [ "kinox.sx" ];
-    "172.67.149.244" = [ "kinox.cloud" ];
-    "172.67.150.82" = [ "kinox.tube" ];
-    "172.67.152.162" = [ "kinox.unblockit.ch" "newalbumreleases.unblockit.ch" ];
+    "172.67.142.77" = [ "switchroms.guru" ];
+    "172.67.144.51" = [ "fmovies.hn" ];
     "172.67.156.118" = [ "ww2.fmovies.cab" ];
     "172.67.156.149" = [ "kinos.to" ];
-    "172.67.156.191" = [ "kinokiste.ru" ];
-    "172.67.158.172" = [ "kinox.unblockit.kim" ];
+    "172.67.161.124" = [ "fmovies.pub" ];
     "172.67.161.98" = [ "sci-hub.shop" ];
-    "172.67.164.93" = [ "streamkiste.tv" ];
-    "172.67.165.109" = [ "kinox.pub" ];
-    "172.67.168.167" = [ "kinox.mobi" ];
-    "172.67.170.89" = [ "kinox.digital" ];
-    "172.67.175.231" = [ "kinox.unblockit.ist" "newalbumreleases.unblockit.ist" ];
-    "172.67.178.110" = [ "fmovies.ink" ];
-    "172.67.184.54" = [ "kinox.unblockit.uno" ];
-    "172.67.201.78" = [ "kinox.unblockit.tv" ];
-    "172.67.205.9" = [ "kinox.top" ];
-    "172.67.208.6" = [ "kinox.unblockit.li" ];
-    "172.67.210.140" = [ "fmovies.town" ];
-    "172.67.216.250" = [ "kinox.express" ];
-    "172.67.71.113" = [ "newalbumreleases.unblockit.bet" ];
-    "172.67.74.185" = [ "fmovies.ps" ];
+    "172.67.166.15" = [ "NSW2U.com" ];
+    "172.67.176.219" = [ "gen.lib.rus.ec" ];
+    "172.67.177.49" = [ "canna-power.to" ];
+    "172.67.188.67" = [ "1337x.to" ];
+    "172.67.189.177" = [ "israbox.com" ];
+    "172.67.198.37" = [ "fmovies.cafe" ];
+    "172.67.214.185" = [ "filmfans.org" ];
+    "172.67.220.109" = [ "x1337x.ws" ];
+    "173.234.157.130" = [ "movie4k.me" "libgen.unblocked.sh" ];
     "178.248.232.222" = [ "www.vesti.ru" ];
     "178.248.233.127" = [ "www.tvc.ru" ];
-    "178.248.234.228" = [ "radiosputnik.ria.ru" ];
-    "178.248.238.130" = [ "sputniknews.com" ];
-    "185.107.56.52" = [ "libgen.unblocked.red" ];
-    "185.225.18.165" = [ "isohunt.to" ];
-    "185.53.177.51" = [ "libgen.unblocked.lc" "scihub.unblocked.lc" "movie2k.nu" ];
-    "185.53.177.52" = [ "thepiratebay.ms" ];
-    "185.53.177.53" = [ "libgen.unblocked.win" ];
-    "185.53.177.54" = [ "thepiratebay.sh" ];
-    "185.53.178.52" = [ "thepiratebay.red" ];
-    "185.79.236.191" = [ "deutsch.rt.com" ];
+    "185.154.14.179" = [ "seasonvar.ru" ];
+    "185.53.178.99" = [ "thepiratebay.la" "libgen.unblocked.win" "libgen.unblocked.la" "libgen.unblocked.cat" "sci-hub.tw" "burningseries.tw" "kinokiste.ru" "kkiste.ru" "kinox.bz" "kinox.unblockit.ws" ];
+    "185.79.236.191" = [ "de.rt.com" "deutsch.rt.com" ];
     "185.79.236.192" = [ "fr.rt.com" ];
-    "186.2.163.137" = [ "burningseries.tw" ];
-    "186.2.163.173" = [ "burningseries.co" ];
     "186.2.163.190" = [ "serienstream.to" ];
+    "186.2.163.201" = [ "sci-hub.st" ];
     "186.2.163.219" = [ "sci-hub.se" ];
-    "186.2.163.227" = [ "burningseries.ac" ];
     "186.2.163.237" = [ "s.to" ];
-    "186.2.163.71" = [ "serien.cam" ];
-    "190.115.31.145" = [ "burningseries.sx" ];
-    "190.115.31.148" = [ "burningseries.vc" ];
-    "190.115.31.154" = [ "burningseries.nz" ];
+    "186.2.163.241" = [ "annas-archive.org" ];
+    "188.114.96.3" = [ "kinox.to" "movie4k.to" "movie.to" "thepiratebay.gd" "1337x.st" "sci-hub.ren" "burning-series.net" "serienstream.be" "serienjunkies.org" "fmovies.ps" "fmovies.world" "fmovies.wtf" "fmoviesto.cc" "kinokiste.club" "filmpalast.to" "kinoz.to" "www13.kinoz.to" "newalbumreleases.net" "canna.to" "uu.canna.to" "annas-archive.se" "nxbrew.net" "libgen.gl" "switchroms.co.im" "romslab.com" "nswgame.com" "taodung.com" ];
+    "188.114.97.3" = [ "kinox.to" "movie4k.to" "movie.to" "thepiratebay.gd" "1337x.st" "sci-hub.ren" "burning-series.net" "serienstream.be" "serienjunkies.org" "fmovies.ps" "fmovies.world" "fmovies.wtf" "fmoviesto.cc" "kinokiste.club" "filmpalast.to" "kinoz.to" "www13.kinoz.to" "newalbumreleases.net" "canna.to" "uu.canna.to" "annas-archive.se" "nxbrew.net" "libgen.gl" "switchroms.co.im" "romslab.com" "nswgame.com" "taodung.com" ];
     "190.115.31.19" = [ "cine.to" ];
     "190.115.31.20" = [ "bs.to" ];
-    "190.115.31.37" = [ "burningseries.se" ];
-    "193.106.30.58" = [ "kinokiste.me" "movie2k.ag" ];
-    "193.218.118.42" = [ "gen.lib.rus.ec" ];
-    "199.59.243.222" = [ "kkiste.to" "movie4k.pe" "libgen.unblocked.la" "libgen.unblocked.pet" "movie4k.sg" ];
-    "2.63.192.83" = [ "actualidad.rt.com" ];
-    "2.63.192.91" = [ "actualidad.rt.com" ];
+    "192.64.119.45" = [ "jokerlivestream.net" ];
+    "192.64.119.48" = [ "jokerlivestream.org" ];
+    "193.106.31.226" = [ "movie2k.ag" ];
+    "194.190.139.3" = [ "sputniknews.com" ];
+    "194.190.139.47" = [ "radiosputnik.ria.ru" ];
+    "194.9.94.85" = [ "thepiratebay.se" ];
+    "194.9.94.86" = [ "thepiratebay.se" ];
+    "195.201.128.179" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "199.59.243.228" = [ "libgen.unblocked.pet" "kinox.sx" "burningseries.sx" "burningseries.nz" "fmovies.media" "fmovies.solar" "kinox.unblockit.kim" "kinox.unblockit.tv" ];
+    "207.244.76.131" = [ "movie4k.lol" ];
+    "212.32.255.84" = [ "streamcloud.cam" ];
     "217.26.63.20" = [ "libgen.unblocked.li" ];
-    "23.82.12.35" = [ "libgen.unblocked.ink" ];
-    "23.82.12.36" = [ "libgen.unblocked.uno" ];
-    "23.82.12.37" = [ "libgen.unblocked.sh" ];
-    "2600:3c02::f03c:91ff:fee2:5b0f" = [ "szene-streams.com" "piratebayblocked.com" ];
-    "2606:4700:20::681a:a5c" = [ "fmovies.ps" ];
-    "2606:4700:20::681a:b5c" = [ "fmovies.ps" ];
-    "2606:4700:20::681a:c5f" = [ "newalbumreleases.unblockit.bet" ];
-    "2606:4700:20::681a:d5f" = [ "newalbumreleases.unblockit.bet" ];
-    "2606:4700:20::ac43:4771" = [ "newalbumreleases.unblockit.bet" ];
-    "2606:4700:20::ac43:4ab9" = [ "fmovies.ps" ];
-    "2606:4700:3030::6815:167f" = [ "kinox.top" ];
-    "2606:4700:3030::6815:197f" = [ "kinox.me" ];
-    "2606:4700:3030::6815:3780" = [ "kinox.sx" ];
-    "2606:4700:3030::6815:39d3" = [ "kinox.cloud" ];
+    "2600:9000:a612:55d9:1b82:e963:5969:d2c7" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "2606:4700:3030::6815:394f" = [ "israbox.com" ];
     "2606:4700:3030::6815:3ee4" = [ "kkiste.club" ];
-    "2606:4700:3030::6815:4023" = [ "kinox.unblockit.ist" "newalbumreleases.unblockit.ist" ];
-    "2606:4700:3030::ac43:8504" = [ "fmoviesf.co" ];
-    "2606:4700:3030::ac43:8bf5" = [ "sci-hub.ren" ];
-    "2606:4700:3030::ac43:98a2" = [ "kinox.unblockit.ch" "newalbumreleases.unblockit.ch" ];
+    "2606:4700:3030::6815:6069" = [ "gen.lib.rus.ec" ];
     "2606:4700:3030::ac43:9c95" = [ "kinos.to" ];
-    "2606:4700:3030::ac43:a8a7" = [ "kinox.mobi" ];
-    "2606:4700:3030::ac43:aa59" = [ "kinox.digital" ];
-    "2606:4700:3031::6815:241b" = [ "kinox.unblockit.uno" ];
-    "2606:4700:3031::6815:49bc" = [ "kinox.pub" ];
-    "2606:4700:3031::6815:4b9c" = [ "fmovies.ink" ];
-    "2606:4700:3031::ac43:870a" = [ "kinox.unblockit.onl" ];
+    "2606:4700:3031::6815:2d5" = [ "getrockmusic.net" ];
+    "2606:4700:3031::6815:313d" = [ "switchroms.guru" ];
+    "2606:4700:3031::6815:3e39" = [ "x1337x.ws" ];
+    "2606:4700:3031::6815:4298" = [ "fmovies.pub" ];
+    "2606:4700:3031::ac43:81a1" = [ "fmovies.taxi" ];
     "2606:4700:3031::ac43:8be9" = [ "kkiste.club" ];
-    "2606:4700:3031::ac43:941f" = [ "kinox.sx" ];
-    "2606:4700:3031::ac43:afe7" = [ "kinox.unblockit.ist" "newalbumreleases.unblockit.ist" ];
-    "2606:4700:3031::ac43:cd09" = [ "kinox.top" ];
     "2606:4700:3032::6815:36c5" = [ "thepiratebay.vg" ];
     "2606:4700:3032::6815:5119" = [ "ww2.fmovies.cab" ];
-    "2606:4700:3032::6815:539" = [ "fmoviesf.co" ];
-    "2606:4700:3032::ac43:834e" = [ "kinox.gratis" ];
-    "2606:4700:3032::ac43:9cbf" = [ "kinokiste.ru" ];
-    "2606:4700:3033::6815:46dc" = [ "sci-hub.ren" ];
+    "2606:4700:3032::ac43:bc43" = [ "1337x.to" ];
     "2606:4700:3033::ac43:8d5e" = [ "thepiratebay.vg" ];
-    "2606:4700:3033::ac43:9eac" = [ "kinox.unblockit.kim" ];
+    "2606:4700:3033::ac43:8e4d" = [ "switchroms.guru" ];
     "2606:4700:3033::ac43:a162" = [ "sci-hub.shop" ];
-    "2606:4700:3033::ac43:b836" = [ "kinox.unblockit.uno" ];
-    "2606:4700:3034::6815:2f23" = [ "kinox.digital" ];
+    "2606:4700:3033::ac43:bdb1" = [ "israbox.com" ];
     "2606:4700:3034::6815:2f8" = [ "primekiste.com" ];
+    "2606:4700:3034::6815:3b76" = [ "canna-power.to" ];
     "2606:4700:3034::6815:9e6" = [ "sci-hub.shop" ];
     "2606:4700:3034::ac43:81ef" = [ "primekiste.com" ];
-    "2606:4700:3034::ac43:863d" = [ "kinox.me" ];
-    "2606:4700:3035::6815:42d0" = [ "streamkiste.tv" ];
-    "2606:4700:3035::6815:5712" = [ "kinox.mobi" ];
-    "2606:4700:3035::6815:58c9" = [ "kinox.unblockit.ch" "newalbumreleases.unblockit.ch" ];
-    "2606:4700:3035::ac43:95f4" = [ "kinox.cloud" ];
-    "2606:4700:3035::ac43:9652" = [ "kinox.tube" ];
+    "2606:4700:3034::ac43:9033" = [ "fmovies.hn" ];
+    "2606:4700:3035::6815:1020" = [ "NSW2U.com" ];
+    "2606:4700:3035::6815:1a4" = [ "fmovies.taxi" ];
+    "2606:4700:3035::6815:28c1" = [ "1337x.to" ];
+    "2606:4700:3035::6815:3ca5" = [ "fmovies.cafe" ];
+    "2606:4700:3035::ac43:81b5" = [ "getrockmusic.net" ];
     "2606:4700:3035::ac43:9c76" = [ "ww2.fmovies.cab" ];
-    "2606:4700:3035::ac43:a45d" = [ "streamkiste.tv" ];
-    "2606:4700:3035::ac43:d8fa" = [ "kinox.express" ];
-    "2606:4700:3036::6815:4236" = [ "kinox.unblockit.tv" ];
-    "2606:4700:3036::6815:5155" = [ "kinox.unblockit.kim" ];
-    "2606:4700:3036::6815:6a7" = [ "kinox.unblockit.onl" ];
-    "2606:4700:3036::6815:a63" = [ "kinox.gratis" ];
-    "2606:4700:3036::6815:d9e" = [ "kinokiste.ru" ];
-    "2606:4700:3036::ac43:a56d" = [ "kinox.pub" ];
-    "2606:4700:3036::ac43:b26e" = [ "fmovies.ink" ];
-    "2606:4700:3037::6815:3b40" = [ "kinox.express" ];
-    "2606:4700:3037::6815:457b" = [ "kinox.unblockit.li" ];
-    "2606:4700:3037::6815:45a6" = [ "fmovies.town" ];
-    "2606:4700:3037::6815:4ff6" = [ "kinox.tube" ];
+    "2606:4700:3035::ac43:a60f" = [ "NSW2U.com" ];
+    "2606:4700:3035::ac43:b131" = [ "canna-power.to" ];
+    "2606:4700:3035::ac43:c625" = [ "fmovies.cafe" ];
+    "2606:4700:3036::6815:17f9" = [ "filmfans.org" ];
+    "2606:4700:3036::6815:2766" = [ "fmovies.hn" ];
+    "2606:4700:3036::ac43:a17c" = [ "fmovies.pub" ];
+    "2606:4700:3036::ac43:b0db" = [ "gen.lib.rus.ec" ];
+    "2606:4700:3036::ac43:dc6d" = [ "x1337x.ws" ];
     "2606:4700:3037::6815:804" = [ "kinos.to" ];
-    "2606:4700:3037::ac43:c94e" = [ "kinox.unblockit.tv" ];
-    "2606:4700:3037::ac43:d006" = [ "kinox.unblockit.li" ];
-    "2606:4700:3037::ac43:d28c" = [ "fmovies.town" ];
-    "2606:4700:3038::6815:e9f7" = [ "fmovies.hn" ];
-    "2606:4700:3038::6815:e9f8" = [ "fmovies.hn" ];
-    "2606:4700:3038::6815:ea06" = [ "fmoviesto.cc" ];
-    "2606:4700:3038::6815:ea07" = [ "fmoviesto.cc" ];
+    "2606:4700:3037::ac43:d6b9" = [ "filmfans.org" ];
     "2606:4700:7::a29f:8806" = [ "thepiratebay.org" ];
     "2606:4700:7::a29f:8906" = [ "thepiratebay.org" ];
     "2a00:d70:0:a::400" = [ "libgen.unblocked.li" ];
-    "2a0a:c800:1:d::154" = [ "isohunt.to" ];
-    "46.148.26.194" = [ "canna.to" ];
-    "46.148.26.245" = [ "canna-power.to" "uu.canna.to" ];
-    "67.227.226.240" = [ "piratebayblocked.com" ];
-    "69.16.230.42" = [ "szene-streams.com" "libgen.unblocked.vet" "libgen.unblocked.tv" "scihub.unblocked.vet" ];
-    "70.34.195.168" = [ "kinox.nu" ];
-    "72.52.178.23" = [ "libgen.unblocked.gdn" ];
+    "2a01:4f8:1c1e:d6f1::1" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "2a01:4f9:c013:a5e1::1" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "2a01:4ff:1f0:8641::1" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "2a01:4ff:f0:5f41::1" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "2a01:7e01::f03c:95ff:fe00:2692" = [ "kkiste.to" "isohunt.to" ];
+    "2a01:7e01::f03c:95ff:fe91:5d91" = [ "kkiste.to" "isohunt.to" ];
+    "2a01:7e01::f03c:95ff:feeb:9d4b" = [ "kkiste.to" "isohunt.to" ];
+    "2a01:7e01::f03c:95ff:feed:783e" = [ "kkiste.to" "isohunt.to" ];
+    "2a06:98c1:3120::3" = [ "kinox.to" "movie.to" "thepiratebay.gd" "1337x.st" "sci-hub.ren" "burning-series.net" "serienstream.be" "serienjunkies.org" "fmovies.ps" "fmovies.world" "fmovies.wtf" "fmoviesto.cc" "kinokiste.club" "filmpalast.to" "kinoz.to" "www13.kinoz.to" "newalbumreleases.net" "canna.to" "uu.canna.to" "annas-archive.se" "nxbrew.net" "libgen.gl" "switchroms.co.im" "romslab.com" "nswgame.com" "taodung.com" ];
+    "2a06:98c1:3121::3" = [ "kinox.to" "movie.to" "thepiratebay.gd" "1337x.st" "sci-hub.ren" "burning-series.net" "serienstream.be" "serienjunkies.org" "fmovies.ps" "fmovies.world" "fmovies.wtf" "fmoviesto.cc" "kinokiste.club" "filmpalast.to" "kinoz.to" "www13.kinoz.to" "newalbumreleases.net" "canna.to" "uu.canna.to" "annas-archive.se" "nxbrew.net" "libgen.gl" "switchroms.co.im" "romslab.com" "nswgame.com" "taodung.com" ];
+    "37.1.222.138" = [ "seasonvar.ru" ];
+    "37.48.77.79" = [ "libgen.unblocked.pro" ];
+    "37.48.77.81" = [ "burningseries.vc" "streamcloud-de.com" ];
+    "37.48.77.83" = [ "serien.cam" ];
+    "38.180.18.119" = [ "seasonvar.ru" ];
+    "38.180.52.194" = [ "seasonvar.ru" ];
+    "38.244.209.135" = [ "seasonvar.ru" ];
+    "46.30.41.42" = [ "seasonvar.ru" ];
+    "46.62.128.205" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "47.254.31.153" = [ "bignox.com" ];
+    "5.161.47.86" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "5.78.153.186" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
+    "62.204.42.78" = [ "seasonvar.ru" ];
+    "64.120.31.120" = [ "libgen.unblocked.gdn" ];
+    "64.120.31.121" = [ "libgen.unblocked.red" ];
+    "64.190.63.222" = [ "kinox.am" ];
+    "76.223.54.146" = [ "fmovies.mom" "kkiste.ac" "kinox.tube" "kinox.club" ];
+    "76.223.91.20" = [ "thepiratebay.red" "kinox.wtf" "kinox.express" "kinox.digital" "kinox.direct" ];
     "80.247.32.209" = [ "www.rtr-planeta.com" ];
+    "81.17.21.235" = [ "libgen.bz" ];
+    "82.29.189.104" = [ "fmovies.cx" ];
     "89.191.237.195" = [ "de.rt.com" "deutsch.rt.com" ];
     "89.191.237.196" = [ "fr.rt.com" ];
-    "91.215.41.10" = [ "www.rt.com" ];
+    "91.215.41.4" = [ "www.rt.com" ];
+    "91.215.41.5" = [ "actualidad.rt.com" ];
     "91.215.41.7" = [ "francais.rt.com" ];
-    "99.83.154.118" = [ "pirateproxy.cam" "libgen.unblocked.pro" "movie4k.lol" ];
   };
 
   extra = ''
