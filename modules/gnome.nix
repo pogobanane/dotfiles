@@ -67,7 +67,7 @@
     #gnomeExtensions.wintile-windows-10-window-tiling-for-gnome
     gnome-tweaks
     keepassxc
-    bitwarden
+    bitwarden-desktop
 
     # terminal emulators:
     alacritty
@@ -111,7 +111,7 @@
     calibre
     # cli tool to log in and back up Kobo (rakuten) ebooks:
     flakepkgs.kobo-book-downloader
-    AusweisApp2
+    ausweisapp
     via # for qmk keyboard flashing
     zotero # academic paper manager. Useful plugin: https://retorque.re/zotero-better-bibtex/exporting/auto/index.html
 
@@ -148,6 +148,7 @@
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.gcr-ssh-agent.enable = lib.mkForce false; # no, dear god, no!
 
   # printing:
   services.printing.enable = true;
