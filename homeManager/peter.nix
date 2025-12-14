@@ -49,7 +49,7 @@ in
     ./gui.nix
     #./editors.nix
     # ./neovim # reset by deleting ~/.local/share/nvim/
-    ./poba-nvim # reset by deleting ~/.config/poba-nvim ~/.cache/poba-nvim ~/.local/share/poba-nvim ~/.local/state/poba-nvim and re-applying home-manager activation
+    # ./poba-nvim # reset by deleting ~/.config/poba-nvim ~/.cache/poba-nvim ~/.local/share/poba-nvim ~/.local/state/poba-nvim and re-applying home-manager activation
     inputs.nix-index-database.hmModules.nix-index
   ];
 

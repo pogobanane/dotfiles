@@ -110,7 +110,7 @@
     # big plugin ecosystem for ebooks. Has a plugin that supposedly works to read and back up Kobo (rakuten) and some amazon ebooks: https://github.com/apprenticeharper/DeDRM_tools
     calibre
     # cli tool to log in and back up Kobo (rakuten) ebooks:
-    flakepkgs.kobo-book-downloader
+    # flakepkgs.kobo-book-downloader
     ausweisapp
     via # for qmk keyboard flashing
     zotero # academic paper manager. Useful plugin: https://retorque.re/zotero-better-bibtex/exporting/auto/index.html

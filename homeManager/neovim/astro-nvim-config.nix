@@ -21,7 +21,7 @@ let
     gopls
     golangci-lint
     nodePackages.bash-language-server
-    taplo-lsp
+    taplo
     marksman
     rust-analyzer
     yaml-language-server
