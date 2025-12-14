@@ -66,7 +66,7 @@
   };
 
   nixpkgs.overlays = [
-    inputs.nur.overlay
+    inputs.nur.overlays.default
     (_final: prev: {
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
       nerd-fonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerd-fonts;

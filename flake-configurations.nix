@@ -2,7 +2,7 @@
 let
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
-  flakepkgs = self.packages.${pkgs.hostPlatform.system};
+  flakepkgs = self.packages.${system}; # ${pkgs.hostPlatform.system};
   extraArgs = [
     ({ pkgs, ... }: {
       config._module.args = {

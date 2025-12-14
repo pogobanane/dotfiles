@@ -41,7 +41,7 @@
       # zen hangs less during high disk IO but also has noticably worse frametimes in games
       # linux = pkgs.linuxPackages_zen;
     in
-      pkgs.lib.mkDefault (pkgs.recurseIntoAttrs linux);
+      pkgs.lib.mkDefault (lib.recurseIntoAttrs linux);
   boot.extraModulePackages = [ ];
 
   # page compression because swap on zfs partitions is a bit dangerous.
