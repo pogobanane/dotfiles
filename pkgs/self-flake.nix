@@ -11,8 +11,10 @@ stdenv.mkDerivation {
   ls -la ${self}
   '';
 
+  dontFixup = true;
+
   installPhase = ''
   cp -r . $out/
-  cp -r ${self} $out/impure-debug-info
+  # cp -r ${self} $out/impure-debug-info
   '';
 }
