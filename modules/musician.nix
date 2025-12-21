@@ -5,7 +5,7 @@
 
   environment.systemPackages = with pkgs; [
     ardour
-    flakepkgs.jack-keyboard
+    # flakepkgs.jack-keyboard # fails to build since 25.11
     calf
     helm
     odin2
