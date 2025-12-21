@@ -2,7 +2,7 @@ hostname := `hostname`
 proot := `pwd`
 
 nixos-build HOST=`hostname`:
-  nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --log-format internal-json -v |& nom --json
+  nix build .#nixosConfigurations.{{HOST}}.config.system.build.toplevel --log-format internal-json -v --builders "" |& nom --json
 
 nixos-switch HOST=`hostname`:
   sudo nixos-rebuild switch --flake .#{{HOST}}
