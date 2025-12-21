@@ -19,7 +19,7 @@
       ProxyJump builder-jumphost
 
     Host rose-builder-via-jumphost
-      HostName graham.dse.in.tum.de
+      HostName rose.dse.in.tum.de
       ProxyJump builder-jumphost
   '';
   programs.ssh.knownHosts = {
