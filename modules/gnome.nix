@@ -96,6 +96,7 @@
     dbeaver-bin
     gitg
     zed-editor
+    rstudio
     pavucontrol
     libheif # for apple media codecs
     # cider # broken

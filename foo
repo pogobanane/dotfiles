@@ -1,0 +1,52 @@
+A)
+mapped DMA region iova=[100000, c0000000) vaddr=7fed2d043000 page_size=1000 mapping=[7fed2d043000, 7fedecf43000)
+7fed2d043000-7fedecf43000 rw-s 00100000 00:1d 2
+
+B)
+mapped DMA region iova=[100000000, 240000000) vaddr=7febed043000 page_size=1000 mapping=[7febed043000, 7fed2d043000)
+7febed043000-7fed2d043000 rw-s c0000000 00:1d 2
+
+C-failed)
+mapped DMA region iova=[f0000, c0000000) vaddr=7feb2d133000 page_size=1000 mapping=[7feb2d133000, 7febed043000)
+7feb2d133000-7fed2d043000 rw-s 000f0000 00:1d 2
+vifo failed to map dma, 17: File exists
+
+D=F)
+mapped DMA region iova=[c0000, c0000000) vaddr=7feb2d103000 page_size=1000 mapping=[7feb2d103000, 7febed043000)
+7feb2d103000-7fed2d043000 rw-s 000c0000 00:1d 2
+
+E)
+mapped DMA region iova=[(nil), c0000000) vaddr=7feb2d043000 page_size=1000 mapping=[7feb2d043000, 7febed043000)
+7feb2d043000-7fed2d043000 rw-s 00000000 00:1d 2
+
+F=D)
+mapped DMA region iova=[c0000, c0000000) vaddr=7feb2d103000 page_size=1000 mapping=[7feb2d103000, 7febed043000)
+7feb2d103000-7fed2d043000 rw-s 000c0000 00:1d 2
+
+G)
+mapped DMA region iova=[100000, c0000000) vaddr=7feb2d143000 page_size=1000 mapping=[7feb2d143000, 7febed043000)
+7feb2d143000-7fed2d043000 rw-s 00100000 00:1d 2
+
+
+
+
+                                                                    7feb2d043000              0       7feb2d103000          c0000
+                                  7feb2d133000          f0000       E)                                F=D)                            7feb2d143000         100000
+7febed043000      100000000       C-failed)          c0000000--                        c0000000--                        c0000000--   G)                 c0000000--
+                                                                                                  
+B)                                                                                                                                    
+                                                                                                                                      
+7fed2d043000--    240000000       7fed2d043000--                    7fed2d043000--                    7fed2d043000--                  7fed2d043000--     
+
+7fed2d043000         100000
+A)
+7fedecf43000--     c0000000
+
+
+
+
+
+
+
+
+
