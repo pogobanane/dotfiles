@@ -33,7 +33,7 @@
   boot.initrd.kernelModules = [ ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
   boot.kernelModules = [ "kvm-amd" ];
-  # boot.kernelPackages = pkgs.linuxPackages; # _latest; 
+  # boot.kernelPackages = pkgs.linuxPackages; # _latest;
   #boot.kernelPackages = pkgs.lib.mkDefault config.boot.zfs.package.latestCompatibleLinuxPackages;
   #boot.kernelPackages = let
   #    linux = pkgs.linuxPackages;
@@ -46,8 +46,8 @@
   #zramSwap.enable = true;
 
   # only kills cgroups. So either systemd services marked for killing under OOM, or (disabled by default) the entire user slice.
-  systemd.oomd.extraConfig = { 
-    DefaultMemoryPressureDurationSec = "10s"; 
+  systemd.oomd.settings.OOM = {
+    DefaultMemoryPressureDurationSec = "10s";
   };
 
   # configure /proc/sys/* values
