@@ -30,7 +30,6 @@
     '';
   };
 
-  nixpkgs.config.allowUnfree = true;
 
   # for legacy:
   nix.nixPath = [
@@ -65,15 +64,21 @@
     };
   };
 
-  nixpkgs.overlays = [
+  nixpkgs.overlays = let
+    unstablepkgs = import inputs.unstablepkgs {
+      inherit (pkgs.stdenv.hostPlatform) system;
+      inherit (config.nixpkgs) config;
+    };
+  in [
     inputs.nur.overlays.default
     (_final: prev: {
       ctile = inputs.ctile.packages.x86_64-linux.ctile;
-      nerd-fonts = inputs.unstablepkgs.legacyPackages.x86_64-linux.nerd-fonts;
+      nerd-fonts = unstablepkgs.nerd-fonts;
       # nextcloud-client = inputs.unstablepkgs.legacyPackages.x86_64-linux.nextcloud-client;
-      wezterm = inputs.unstablepkgs.legacyPackages.x86_64-linux.wezterm;
+      wezterm = unstablepkgs.wezterm;
       # drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
-      gnomeExtensions = inputs.unstablepkgs.legacyPackages.x86_64-linux.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
+      gnomeExtensions = unstablepkgs.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
+      claude-code = unstablepkgs.claude-code;
       #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
@@ -86,7 +91,7 @@
         src = inputs.discord-tar;
         unpackCmd = "tar -xzf $curSrc";
       });
-      alacritty = inputs.unstablepkgs.legacyPackages.x86_64-linux.alacritty;
+      alacritty = unstablepkgs.alacritty;
     })
     #(self: super: {
       #cider = super.cider.overrideAttrs (old: rec {
@@ -116,16 +121,18 @@
     ];
     permittedUnfreePackages = [
       "drawio-24.7.17"
+      "claude-code-2.0.72"
     ];
     # allowUnfreePredicate = pkgs: builtins.elem (lib.getName pkg) [
     #   "drawio"
     # ];
     allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
       "drawio"
+      "claude-code"
     ];
 
     allowInsecurePredicate = pkg: true;
+    allowUnfree = true;
   };
 
 }
-

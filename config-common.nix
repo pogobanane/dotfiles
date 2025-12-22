@@ -176,6 +176,7 @@
     iotop
     lsd
     tokei
+    claude-code
     #(pkgs.nerdfonts.override {
     #    fonts = ["FiraCode"];
     #})
