@@ -1,6 +1,6 @@
 { self, inputs, ...}: {
   perSystem = { inputs', pkgs, ... }: let
-      inherit (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}) treesitter-grammars;
+      inherit (inputs.mic92-dotfiles.packages.${pkgs.stdenv.hostPlatform.system}) treesitter-grammars;
     in {
     packages = {
       nvim2 = inputs'.mic92-dotfiles.packages.nvim.override rec {

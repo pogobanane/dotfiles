@@ -2,7 +2,7 @@
 let
   system = "x86_64-linux";
   pkgs = inputs.nixpkgs.legacyPackages.${system};
-  flakepkgs = self.packages.${system}; # ${pkgs.hostPlatform.system};
+  flakepkgs = self.packages.${system};
   extraArgs = [
     ({ pkgs, ... }: {
       config._module.args = {
@@ -28,7 +28,7 @@ in
       doctor-home =
         let
           activation-script = pkgs.writeShellScript "activate" ''
-            ${inputs.home-manager.packages.${pkgs.system}.home-manager}/bin/home-manager --option keep-going true --flake "${self}#peter-doctor-cluster" "$@"
+            ${inputs.home-manager.packages.${pkgs.stdenv.hostPlatform.system}.home-manager}/bin/home-manager --option keep-going true --flake "${self}#peter-doctor-cluster" "$@"
           '';
         in
         {

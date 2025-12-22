@@ -12,7 +12,7 @@
     NIXOS_OZONE_WL = "1"; # enables wayland for chrome/electron since nixos 22.11
   };
   nixpkgs.overlays = let
-    unstableExtensions = inputs.unstablepkgs.legacyPackages.${pkgs.system}.gnomeExtensions;
+    unstableExtensions = inputs.unstablepkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system}.gnomeExtensions;
     majorGnomeVersion = lib.lists.head (lib.strings.splitString "." pkgs.gnome-shell.version);
     update = extension: (extension.overrideAttrs (_finalAttrs: _previousAttrs: rec {
       buildInputs = [ pkgs.jq ];
@@ -117,7 +117,7 @@
     via # for qmk keyboard flashing
     zotero # academic paper manager. Useful plugin: https://retorque.re/zotero-better-bibtex/exporting/auto/index.html
 
-    inputs.nix-gaming.packages.${pkgs.system}.osu-lazer-bin
+    inputs.nix-gaming.packages.${pkgs.stdenv.hostPlatform.system}.osu-lazer-bin
 
     # teamspeak
     #teamspeak_client

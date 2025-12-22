@@ -9,8 +9,8 @@ let
   neovim = flakepkgs.nvim2;
   # neovim = inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}.nvim;
   nvim-appname = "poba-nvim";
-  inherit (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}) nvim-treesitter-plugins;
-  inherit (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}) nvim-install-treesitter;
+  inherit (inputs.mic92-dotfiles.packages.${pkgs.stdenv.hostPlatform.system}) nvim-treesitter-plugins;
+  inherit (inputs.mic92-dotfiles.packages.${pkgs.stdenv.hostPlatform.system}) nvim-install-treesitter;
   # inherit (inputs.mic92-dotfiles.legacyPackages.${pkgs.hostPlatform.system}) nvim-lsp-packages;
   nvim-lsp-packages = with pkgs; [
             nodejs # copilot
@@ -62,7 +62,7 @@ let
           ];
 in
 {
-  home.packages = [ (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}.nvim.override {
+  home.packages = [ (inputs.mic92-dotfiles.packages.${pkgs.stdenv.hostPlatform.system}.nvim.override {
     inherit nvim-appname;
     inherit nvim-lsp-packages;
     # nvim-lsp-packages = [];

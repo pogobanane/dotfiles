@@ -189,7 +189,7 @@ in
     # rustup
     ranger # command line file manager
     man-pages
-    inputs.hosthog.packages.${system}.default
+    inputs.hosthog.packages.${stdenv.hostPlatform.system}.default
     flakepkgs.nix-top
   ];
 }
