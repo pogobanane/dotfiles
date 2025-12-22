@@ -11,12 +11,61 @@ let
   nvim-appname = "poba-nvim";
   inherit (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}) nvim-treesitter-plugins;
   inherit (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}) nvim-install-treesitter;
-  inherit (inputs.mic92-dotfiles.legacyPackages.${pkgs.hostPlatform.system}) nvim-lsp-packages;
+  # inherit (inputs.mic92-dotfiles.legacyPackages.${pkgs.hostPlatform.system}) nvim-lsp-packages;
+  nvim-lsp-packages = with pkgs; [
+            nodejs # copilot
+
+            # based on ./suggested-pkgs.json
+            basedpyright
+            bash-language-server
+            clang-tools
+            golangci-lint
+            gopls
+            lua-language-server
+            marksman
+            nil
+            nixd
+            nixfmt-rfc-style
+            prettierd
+            ruff
+            selene
+            shellcheck
+            shfmt
+            stylua
+            vtsls
+            yaml-language-server
+            vscode-langservers-extracted
+            # based on https://github.com/ray-x/go.nvim#go-binaries-install-and-update
+            go
+            delve
+            ginkgo
+            gofumpt
+            golines
+            gomodifytags
+            gotests
+            gotestsum
+            gotools
+            govulncheck
+            iferr
+            impl
+
+            # others
+            rust-analyzer
+            clippy
+            rustfmt
+
+            zls
+            terraform-ls
+            taplo
+            typos
+            typos-lsp
+          ];
 in
 {
   home.packages = [ (inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}.nvim.override {
     inherit nvim-appname;
-    nvim-lsp-packages = [];
+    inherit nvim-lsp-packages;
+    # nvim-lsp-packages = [];
     lua-config = (pkgs.runCommand "${nvim-appname}-config" {} ''
       mkdir -p ./config
       cp -r ${./config}/* ./config
