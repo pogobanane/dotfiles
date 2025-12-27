@@ -52,8 +52,8 @@
     mic92-dotfiles.url = "github:mic92/dotfiles";
     # mic92-dotfiles.inputs.nixpkgs.follows = "nixpkgs";
 
-    tex2nix.url = "github:Mic92/tex2nix";
-    tex2nix.inputs.flake-utils.follows = "nixpkgs";
+    tex2nix.url = "github:Mic92/tex2nix"; # now owned by yliceee
+    tex2nix.inputs.nixpkgs.follows = "nixpkgs";
 
     discord-tar.url = "tarball+https://discord.com/api/download?platform=linux&format=tar.gz";
     discord-tar.flake = false;
