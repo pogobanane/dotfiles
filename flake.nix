@@ -53,7 +53,7 @@
     # mic92-dotfiles.inputs.nixpkgs.follows = "nixpkgs";
 
     tex2nix.url = "github:Mic92/tex2nix";
-    tex2nix.inputs.utils.follows = "nixpkgs";
+    tex2nix.inputs.flake-utils.follows = "nixpkgs";
 
     discord-tar.url = "tarball+https://discord.com/api/download?platform=linux&format=tar.gz";
     discord-tar.flake = false;
