@@ -6,7 +6,7 @@
   ...
 }:
 let
-  neovim = flakepkgs.nvim2;
+  # neovim = flakepkgs.nvim2;
   # neovim = inputs.mic92-dotfiles.packages.${pkgs.hostPlatform.system}.nvim;
   nvim-appname = "poba-nvim";
   inherit (inputs.mic92-dotfiles.packages.${pkgs.stdenv.hostPlatform.system}) nvim-treesitter-plugins;
