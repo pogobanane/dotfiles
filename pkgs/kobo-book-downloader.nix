@@ -4,6 +4,9 @@ buildPythonApplication {
   pname = "kobo-book-downloader";
   version = "2022-11-23";
 
+  pyproject = true;
+  build-system = [ setuptools ];
+
   propagatedBuildInputs = [ 
     colorama
     pycryptodome
