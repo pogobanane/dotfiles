@@ -69,6 +69,26 @@
     #};
     #};
   };
+  # used by nixos-specializations
+  # environment.etc."nixos-specializations/unspecialized-system".source = config.system.build.toplevel;
+
+  # TODO move into nixos-specialisation module with its package
+  # this must always be applie
+  # system.activationScripts.baseSpecialisation = lib.mkIf (!config.isSpecialisation) {
+  #   text =
+  #     ''
+  #         ln -sfn "$(readlink -f @out@)" /var/current-nixos-specialisation-base
+  #     '';
+  # };
+  # system.systemBuilderCommands = lib.mkIf (!config.isSpecialisation) ''
+  #   echo $out is the current system toplevel1
+  #   # mkdir -p $out/specialisation || true
+  #   # echo $out > $out/specialisation/base-system-path
+  #   # ln -s $out $out/specialisation/base
+  #   ls -la $out
+  #   # ls -la $out/specialisation
+  #   echo $out > $out/specialisation-base
+  # '';
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

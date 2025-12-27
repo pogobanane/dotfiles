@@ -24,6 +24,7 @@ let
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
+  nixos-specializations = pkgs.callPackage ../pkgs/nixos-specializations.nix { };
 
   sopspw = pkgs.writeShellApplication {
     name = "sopspw";
@@ -194,5 +195,6 @@ in
     man-pages
     inputs.hosthog.packages.${system}.default
     flakepkgs.nix-top
+    nixos-specializations
   ];
 }
