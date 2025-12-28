@@ -24,6 +24,7 @@ let
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
+  nixos-specializations = pkgs.callPackage ../pkgs/nixos-specializations.nix { };
 
   sopspw = pkgs.writeShellApplication {
     name = "sopspw";
@@ -185,6 +186,7 @@ in
     nscan
     # gc-roots
     nixos-generations
+    nixos-specializations
     nix-output-monitor # nom
     # rustup
     ranger # command line file manager

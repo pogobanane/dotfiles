@@ -1,0 +1,165 @@
+#!/usr/bin/env bash
+
+# NixOS Specialization Switcher
+# Lists available specializations and allows selection with arrow keys
+#
+# Copyright Notice: Written by https://claude.ai.
+
+set -e
+
+# Check if we're on NixOS
+if [[ ! -d "/run/current-system" ]]; then
+    echo "Error: /run/current-system not found. Are you running NixOS?" >&2
+    exit 1
+fi
+
+# Find magic specializations directory (probably doesnt exist)
+SPEC_DIR="/var/current-nixos-specialisation-base/specialisation"
+
+# Find specialisations of current system among available nixos-generations
+HITS=0
+if [[ ! -d "$SPEC_DIR" ]]; then
+    for dir in /nix/var/nix/profiles/system-*; do
+        if [ -d "$dir" ]; then
+            # echo $(realpath /run/current-system) $(realpath "$dir")
+            if [[ $(realpath /run/current-system) == $(realpath "$dir") ]]; then
+                [[ $HITS -gt 1 ]] || SPEC_DIR="$dir/specialisation"
+                ((HITS=HITS+1))
+            fi
+            for dir2 in ${dir}/specialisation/*; do
+                # echo $(realpath /run/current-system) $(realpath "$dir2")
+                if [[ $(realpath /run/current-system) == $(realpath "$dir2") ]]; then
+                    [[ $HITS -gt 1 ]] || SPEC_DIR="$dir/specialisation"
+                    ((HITS=HITS+1))
+                fi
+            done
+            # echo "Processing directory: $dir"
+        fi
+    done
+    if [[ $HITS -ge 2 ]]; then
+        echo "Warning: multiple nixos-generations match the current system"
+        echo "Showing specialisations of the lexicographically first one"
+    fi
+fi
+
+# Use default dir when specialisation-base is unknown.
+if [[ ! -d "$SPEC_DIR" ]]; then
+    # Will be empty if we already are in a specialisation
+    SPEC_DIR="/run/current-system/specialisation"
+fi
+
+if [[ ! -d "$SPEC_DIR" ]]; then
+    echo "No specializations found in $SPEC_DIR"
+    exit 1
+fi
+
+# Get list of specializations
+mapfile -t specializations < <(ls "$SPEC_DIR" 2>/dev/null | sort)
+
+if [[ ${#specializations[@]} -eq 0 ]]; then
+    echo "No specializations available"
+    exit 1
+fi
+
+# Add current system as option
+specializations=("base-system" "${specializations[@]}")
+
+# Menu variables
+selected=0
+total=${#specializations[@]}
+
+# search current specialization (from the back to default to entry 0)
+for ((selected=${#specializations[@]}-1; selected>0; selected--)); do
+    if [[ $(realpath "${SPEC_DIR}/${specializations[selected]}") == $(realpath /run/current-system) ]]; then
+        break
+    fi
+done
+
+# Function to draw menu
+draw_menu() {
+    # Move cursor back to start of menu and redraw
+    printf "\033[%dA" $((total + 2))  # Move up to start of menu
+
+    echo "NixOS Specializations:"
+
+    for i in "${!specializations[@]}"; do
+        printf "\033[K"  # Clear line
+        if [[ $i -eq $selected ]]; then
+            echo "→ ${specializations[$i]}"
+        else
+            echo "  ${specializations[$i]}"
+        fi
+    done
+
+    printf "\033[K"  # Clear line
+    echo "Use ↑/↓ arrow keys to navigate, Enter to select, q to quit"
+}
+
+# Function to handle key input
+handle_input() {
+    local key
+    read -rsn1 key
+
+    case "$key" in
+        $'\033')  # Escape sequence
+            read -rsn2 key
+            case "$key" in
+                '[A')  # Up arrow
+                    ((selected > 0)) && ((selected--))
+                    ;;
+                '[B')  # Down arrow
+                    ((selected < total - 1)) && ((selected++))
+                    ;;
+            esac
+            ;;
+        '')  # Enter
+            return 0
+            ;;
+        'q'|'Q')  # Quit
+            echo
+            echo "Cancelled"
+            exit 0
+            ;;
+    esac
+    return 1
+}
+
+# Main menu loop
+first_draw=true
+while true; do
+    if [[ $first_draw == true ]]; then
+        echo "NixOS Specializations:"
+        for i in "${!specializations[@]}"; do
+            if [[ $i -eq $selected ]]; then
+                echo "→ ${specializations[$i]}"
+            else
+                echo "  ${specializations[$i]}"
+            fi
+        done
+        echo "Use ↑/↓ arrow keys to navigate, Enter to select, q to quit"
+        first_draw=false
+    else
+        draw_menu
+    fi
+
+    if handle_input; then
+        break
+    fi
+done
+
+# Get selected specialization
+selected_spec="${specializations[$selected]}"
+
+echo
+echo "Selected: $selected_spec"
+
+# Switch to specialization
+if [[ "$selected_spec" == "base-system" ]]; then
+    echo "Switching to unspecialized base-system configuration..."
+    sudo $SPEC_DIR/../bin/switch-to-configuration switch
+else
+    echo "Switching to specialization: $selected_spec"
+    sudo "$SPEC_DIR/$selected_spec/bin/switch-to-configuration" switch
+fi
+
+echo "Done!"
