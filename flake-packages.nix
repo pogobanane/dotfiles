@@ -9,6 +9,7 @@
       nix-patched = pkgs.callPackage ./pkgs/nix-patched.nix { };
       wondershaper = pkgs.callPackage ./pkgs/wondershaper.nix { inherit (inputs) wondershaper-src; };
       jack-keyboard = pkgs.callPackage ./pkgs/jack-keyboard.nix { };
+      nss-passwords = pkgs.callPackage ./pkgs/nss-passwords.nix { };
       sonixflasherc = pkgs.callPackage ./pkgs/sonixflasherc.nix { };
       qmk_firmware_k3 = pkgs.callPackage ./pkgs/qmk_firmware.nix { };
       revanced-cli = pkgs.callPackage ./pkgs/revanced-cli.nix { };
