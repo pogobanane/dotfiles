@@ -18,11 +18,24 @@ function dump(o)
    end
 end
 
+function print_mails(mbox_)
+    io.write("Printing mails:\n\n")
+    for _, mesg in ipairs(mbox_) do
+        local mbox, uid = table.unpack(mesg)
+        local date = mbox[uid]:fetch_date()
+        io.write("New message: " .. date .. "\n")
+        local subject = mbox[uid]:fetch_field("Subject")
+        io.write("" .. subject .. "\n")
+        -- io.write(dump(mbox[uid]))
+    end
+end
+
+
 function addressfilter(mailbox, address)
     results = mailbox:is_unseen() * (
-           mailbox:contain_from(address) + 
-           mailbox:contain_to(address) + 
-           mailbox:contain_cc(address) + 
+           mailbox:contain_from(address) +
+           mailbox:contain_to(address) +
+           mailbox:contain_cc(address) +
            mailbox:contain_bcc(address)
 	   )
     i = 0
@@ -38,6 +51,33 @@ function addressfilter(mailbox, address)
     end
     io.write(string.format("Filtered %d messages.\n", i))
     --io.write(i)
+    return results
+end
+
+function subjectfilter(mailbox, subject_patterns, from_patterns)
+    -- return a list of results/emails that match a pattern
+    local results = nil
+    local unseen = mailbox:is_unseen()
+    for _, pattern in ipairs(subject_patterns) do
+        -- matches = mailbox:contain_subject(pattern)
+        local matches = unseen:contain_subject(pattern)
+        io.write(pattern .. ": #" .. tostring(#matches) .. "\n")
+        if results == nil then
+            results = matches
+        else
+            results = results + matches
+        end
+    end
+    for _, pattern in ipairs(from_patterns) do
+        -- matches = mailbox:contain_subject(pattern)
+        local matches = unseen:contain_from(pattern)
+        io.write(pattern .. ": #" .. tostring(#matches) .. "\n")
+        if results == nil then
+            results = matches
+        else
+            results = results + matches
+        end
+    end
     return results
 end
 
@@ -64,23 +104,31 @@ options.subscribe = true
 
 -- Connects to "imap1.mail.server", as user "user1" with "secret1" as
 -- password.
-io.write("Password for okelmann@in.tum.de:\n")
-account1 = IMAP {
-    server = 'mail.in.tum.de',
-    username = 'okelmann',
+-- io.write("Password for okelmann@in.tum.de:\n")
+-- account1 = IMAP {
+--     server = 'mail.in.tum.de',
+--     username = 'okelmann',
+--     password = get_password(),
+-- }
+
+io.write("Password for aenderboy@gmx.de:\n")
+account2 = IMAP {
+    server = 'imap.gmx.de',
+    username = 'aenderboy@gmx.de',
     password = get_password(),
+    ssl = "tls1.2",
 }
 
 function dostuff(mbox)
     result = addressfilter(account1["Inbox"], "qemu-devel@nongnu.org")
     result:move_messages(account1["qemu-devel"])
-    
+
     result = addressfilter(account1["Inbox"], "kvm@vger.kernel.org")
     result:move_messages(account1["kvm"])
-    
+
     result = addressfilter(account1["Inbox"], "virtio-dev@lists.oasis-open.org")
     result:move_messages(account1["virtio-dev"])
-    
+
     result = addressfilter(account1["Inbox"], "mitarbeiter@in.tum.de")
     result:move_messages(account1["mitarbeiter"])
 
@@ -88,19 +136,54 @@ function dostuff(mbox)
     result:move_messages(account1["mitarbeiter"])
 end
 
+function aenderboy_spamfilter(account)
+    subject_patterns = {
+        "Viagra",
+        "Cialis",
+        "weight loss",
+    }
+    from_patterns = {
+        "finance1-online.de",
+        "finanzselect-online.de",
+        "hiercapi.de",
+        "IHGOneRewards@mc.ihg.com",
+        "mind-mailing.de",
+        "betragreport.de",
+        "commerz-bank.com",
+    }
+    result = subjectfilter(account["INBOX"], subject_patterns, from_patterns)
+    result:move_messages(account["imapfiltered"])
+end
+
+function network_detector(account)
+    -- very well known entrypoints for network detection
+    local subject_patterns = {
+        "Deutsche Postcode Lotterie",
+    }
+
+    -- find all email addresses that sent matching spam (across ?all? mailboxes?)
+    local results = nil
+
+    -- declare all mail from that address as spam
+    return nil
+end
+
 --while true do
     --custom_idle(account1["Inbox"])
-    dostuff(account1["Inbox"])
+    --dostuff(account1["Inbox"])
 --end
 
 
---mailboxes, folders = account1:list_all()
---io.write(dump(mailboxes))
---io.write("\n")
---io.write(dump(folders))
---io.write("\n")
+mailboxes, folders = account2:list_all()
+io.write(dump(mailboxes))
+io.write("\n")
+io.write(dump(folders))
+io.write("\n")
+aenderboy_spamfilter(account2)
 --io.write(dump(account1["Inbox"]))
 --io.write("\n")
+--print_mails(account2.INBOX:is_unseen())
+
 
 
 --unread = addressfilter(account1["Inbox"], "qemu-devel@nongnu.org")
