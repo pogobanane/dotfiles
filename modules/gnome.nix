@@ -85,6 +85,7 @@
     rawtherapee
     drawio
     thunderbird
+    evince
     pdfarranger
     hexchat
     zoom-us

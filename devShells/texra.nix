@@ -14,6 +14,7 @@ in pkgs.mkShell {
       # (texlive.combine { inherit (texlive) scheme-small latexmk latexindent; })
 
       # vscode (with extensions required for texra):
+      # needs to be installed natively once for github login to work
       (vscode-with-extensions.override {
         vscodeExtensions = with vscode-extensions; [
           # jnoortheen.nix-ide
