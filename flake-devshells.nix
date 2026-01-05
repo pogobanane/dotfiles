@@ -1,5 +1,5 @@
-{ ... }: {
-  perSystem = { pkgs, inputs', ... }: {
+{ inputs, ... }: {
+  perSystem = { pkgs, lib, inputs', system, ... }: {
     devShells = {
       default = pkgs.mkShell {
         buildInputs = with pkgs; [
@@ -20,6 +20,7 @@
       python = pkgs.callPackage ./devShells/python.nix { inherit pkgs; };
       rust = pkgs.callPackage ./devShells/rust.nix { inherit pkgs; fenixPkgs = inputs'.fenix.packages; };
       sys-stats = pkgs.callPackage ./devShells/sys-stats.nix { inherit pkgs; };
+      texra = pkgs.callPackage ./devShells/texra.nix { inherit pkgs; inherit (inputs) nixpkgs; };
     };
   };
   flake = {
