@@ -13,6 +13,18 @@ def CONFERENCES(year: int):
         "EuroSys": f"https://{year}.eurosys.org/cfp.html#calls",
     }
 
+CYCLES_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "cycles": {
+            "type": "array",
+            "items": {"type": "string"},
+            "description": "List of submission cycle labels, e.g. ['Spring', 'Fall'] or [''] for single cycle"
+        }
+    },
+    "required": ["cycles"]
+})
+
 SINGLE_DEADLINE_SCHEMA = json.dumps({
     "type": "object",
     "properties": {
@@ -143,21 +155,23 @@ def fetch_deadlines(conference: str, year: int) -> dict:
 
     Returns:
         {
-            "submission_deadline": {
-                "date": "YYYY-MM-DD",
-                "time": "HH:MM:SS",
-                "timezone": "AoE",
-                "utc_offset": -12,
-                "raw_string": "...",
-                "valid": true
-            },
-            "other_deadlines": [
-                { ...same structure... }
+            "cycles": ["Spring", "Fall"],
+            "deadlines": [
+                {
+                    "cycle": "Spring",
+                    "deadline_type": "submission",  # "submission" | "unknown"
+                    "date": "YYYY-MM-DD",
+                    "time": "HH:MM:SS",
+                    "timezone": "AoE",
+                    "utc_offset": -12,
+                    "raw_string": "...",
+                    "valid": true
+                },
+                ...
             ]
         }
     """
     url = CONFERENCES(year).get(conference)
-
     domain = urlparse(url).netloc
 
     print(f"Checking {conference}")
@@ -177,70 +191,110 @@ def fetch_deadlines(conference: str, year: int) -> dict:
     if not page_content:
         raise ClaudeQueryError("Failed to fetch page content")
 
-    # Step 2: Extract submission deadline (using session to maintain context)
-    print("  Extracting submission deadline...", file=sys.stderr)
-    submission_output = run_claude(
-        prompt="Extract the paper submission deadline from the page you just fetched",
-        schema=SINGLE_DEADLINE_SCHEMA,
+    # Step 1.5: Extract submission cycles
+    print("  Extracting submission cycles...", file=sys.stderr)
+    cycles_output = run_claude(
+        prompt="What submission/review cycles does this conference have? E.g. Spring/Fall, Round 1/2/3, or just a single cycle. Return cycle labels as array.",
+        schema=CYCLES_SCHEMA,
         session_id=session_id,
     )
-    submission_deadline = submission_output.get("structured_output")
-    if not submission_deadline:
-        raise ClaudeQueryError(
-            f"No submission deadline found. Response: {submission_output.get('result', '')[:500]}"
+    cycles = cycles_output.get("structured_output", {}).get("cycles", [""])
+    if not cycles:
+        cycles = [""]
+
+    # Step 2: Extract submission deadline for each cycle
+    print("  Extracting submission deadlines...", file=sys.stderr)
+    submission_deadlines = []
+    for cycle in cycles:
+        cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
+        sub_output = run_claude(
+            prompt=cycle_prompt,
+            schema=SINGLE_DEADLINE_SCHEMA,
+            session_id=session_id,
         )
+        sub_deadline = sub_output.get("structured_output")
+        if sub_deadline:
+            submission_deadlines.append({
+                **sub_deadline,
+                "cycle": cycle,
+                "deadline_type": "submission",
+            })
 
-    # Step 3: Extract other deadlines (continuing session)
-    print("  Extracting other deadlines...", file=sys.stderr)
-    all_output = run_claude(
-        prompt="Extract all deadlines from the same page",
-        schema=OTHER_DEADLINES_SCHEMA,
-        session_id=session_id,
-    )
-    all_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
+    if not submission_deadlines:
+        raise ClaudeQueryError("No submission deadlines found")
 
-    # Step 4: Validate and remove submission deadline from all_deadlines
+    # Step 3: Extract all deadlines for each cycle
+    print("  Extracting all deadlines...", file=sys.stderr)
+    all_deadlines = []
+    for cycle in cycles:
+        cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
+        all_output = run_claude(
+            prompt=cycle_prompt,
+            schema=OTHER_DEADLINES_SCHEMA,
+            session_id=session_id,
+        )
+        cycle_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
+        for d in cycle_deadlines:
+            all_deadlines.append({**d, "cycle": cycle, "deadline_type": "unknown"})
+
+    # Step 4: Merge - replace matching entries with submission deadlines
     print("  Validating results...", file=sys.stderr)
-    matches = lambda d: (d["date"], d["time"]) == (submission_deadline["date"], submission_deadline["time"])
-
-    if not any(matches(d) for d in all_deadlines):
-        raise ClaudeQueryError(
-            f"Submission deadline ({submission_deadline['date']}, {submission_deadline['time']}) not found in all_deadlines"
-        )
+    for sub in submission_deadlines:
+        sub_key = (sub["date"], sub["time"])
+        found = False
+        for i, d in enumerate(all_deadlines):
+            if (d["date"], d["time"]) == sub_key:
+                all_deadlines[i] = sub
+                found = True
+                break
+        if not found:
+            raise ClaudeQueryError(
+                f"Submission deadline ({sub['date']}, {sub['time']}) not found in all_deadlines"
+            )
 
     # Step 5: Validate all items and add valid flag
     def add_valid_flag(item: dict) -> dict:
         return {**item, "valid": validate_deadline(item) is None}
 
     return {
-        "submission_deadline": add_valid_flag(submission_deadline),
-        "other_deadlines": [add_valid_flag(d) for d in all_deadlines if not matches(d)],
+        "cycles": cycles,
+        "deadlines": [add_valid_flag(d) for d in all_deadlines],
     }
 
 
 def print_deadline_table(results: dict):
     """Sort conferences by submission deadline and print as table."""
-    valid = {k: v for k, v in results.items() if v["submission_deadline"]["valid"]}
-    invalid = [k for k, v in results.items() if not v["submission_deadline"]["valid"]]
+    # Flatten: (conf_name, cycle, deadline) for each submission deadline
+    rows = []
+    invalid = []
+
+    for conf, data in results.items():
+        submission_deadlines = [
+            d for d in data["deadlines"]
+            if d["deadline_type"] == "submission"
+        ]
+        for d in submission_deadlines:
+            if d["valid"]:
+                # Add cycle suffix if multiple cycles
+                label = f"{conf} ({d['cycle']})" if d["cycle"] else conf
+                rows.append((label, d["date"]))
+            else:
+                invalid.append(conf)
 
     if invalid:
-        print(f"Invalid: {', '.join(invalid)}")
+        print(f"Invalid: {', '.join(set(invalid))}")
         print()
 
-    rows = [
-        (conf, data["submission_deadline"]["date"])
-        for conf, data in valid.items()
-    ]
     rows.sort(key=lambda r: r[1])
 
     # Header
-    print(f"{'Month':<10} {'Conference':<15} {'Deadline':<12}")
-    print("-" * 40)
+    print(f"{'Month':<10} {'Conference':<20} {'Deadline':<12}")
+    print("-" * 45)
 
     # Rows
     for conf, date in rows:
         month = date[:7]  # YYYY-MM
-        print(f"{month:<10} {conf:<15} {date:<12}")
+        print(f"{month:<10} {conf:<20} {date:<12}")
 
 
 def main():
@@ -249,6 +303,9 @@ def main():
         for year in [2025, 2026]
         for conf in CONFERENCES(year)
     ]
+    # tasks = [
+    #     ("SIGCOMM'25", "SIGCOMM", 2025)
+    # ]
 
     results = {}
     with ThreadPoolExecutor() as executor:
