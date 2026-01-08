@@ -6,10 +6,38 @@ import sys
 from urllib.parse import urlparse
 
 CONFERENCES = {
-    "sigcomm": "https://conferences.sigcomm.org/sigcomm/2026/cfp/",
+    "SIGCOMM": "https://conferences.sigcomm.org/sigcomm/2026/cfp/",
+    "EuroSys": "https://2026.eurosys.org/cfp.html#calls",
 }
 
-DEADLINE_SCHEMA = json.dumps({
+SINGLE_DEADLINE_SCHEMA = json.dumps({
+    "type": "object",
+    "properties": {
+        "date": {
+            "type": "string",
+            "description": "ISO 8601 date, e.g. 2026-01-30"
+        },
+        "time": {
+            "type": "string",
+            "description": "Time as HH:MM:SS, e.g. 23:59:59"
+        },
+        "timezone": {
+            "type": "string",
+            "description": "Timezone as stated on website, e.g. AoE, PST, UTC"
+        },
+        "utc_offset": {
+            "type": "integer",
+            "description": "Timezone offset from UTC in hours, e.g. -12 for AoE, -8 for PST, 0 for UTC"
+        },
+        "raw_string": {
+            "type": "string",
+            "description": "Exact quote from website containing the deadline type and date, e.g. 'Abstract registration: Friday, January 30, 2026 AoE'"
+        }
+    },
+    "required": ["date", "time", "timezone", "utc_offset", "raw_string"]
+})
+
+OTHER_DEADLINES_SCHEMA = json.dumps({
     "type": "object",
     "properties": {
         "deadlines": {
@@ -17,20 +45,28 @@ DEADLINE_SCHEMA = json.dumps({
             "items": {
                 "type": "object",
                 "properties": {
-                    "datetime": {
+                    "date": {
                         "type": "string",
                         "description": "ISO 8601 date, e.g. 2026-01-30"
                     },
+                    "time": {
+                        "type": "string",
+                        "description": "Time as HH:MM:SS, e.g. 23:59:59"
+                    },
                     "timezone": {
                         "type": "string",
-                        "description": "Timezone as stated, e.g. AoE"
+                        "description": "Timezone as stated on website, e.g. AoE, PST, UTC"
+                    },
+                    "utc_offset": {
+                        "type": "integer",
+                        "description": "Timezone offset from UTC in hours, e.g. -12 for AoE, -8 for PST, 0 for UTC"
                     },
                     "raw_string": {
                         "type": "string",
-                        "description": "Full deadline text as on website"
+                        "description": "Exact quote from website containing the deadline type and date, e.g. 'Abstract registration: Friday, January 30, 2026 AoE'"
                     }
                 },
-                "required": ["datetime", "timezone", "raw_string"]
+                "required": ["date", "time", "timezone", "utc_offset", "raw_string"]
             }
         }
     },
@@ -43,23 +79,27 @@ class ClaudeQueryError(Exception):
     pass
 
 
-def fetch_deadlines(conference: str) -> dict:
-    url = CONFERENCES.get(conference)
-    if not url:
-        raise ValueError(f"Unknown conference: {conference}. Available: {list(CONFERENCES.keys())}")
-
-    prompt = f"Fetch {url} and extract all deadlines"
-
-    domain = urlparse(url).netloc
-
+def run_claude(
+    prompt: str,
+    schema: str = None,
+    allowed_tools: str = None,
+    session_id: str = None,
+) -> dict:
+    """Run claude and return parsed JSON output."""
     cmd = [
         "claude",
         "-p", prompt,
         "--output-format", "json",
-        "--json-schema", DEADLINE_SCHEMA,
-        "--allowedTools", f"WebFetch(domain:{domain})",
     ]
-    print(shlex.join(cmd), file=sys.stderr)
+    if schema:
+        cmd.extend(["--json-schema", schema])
+    if allowed_tools:
+        cmd.extend(["--allowedTools", allowed_tools])
+    if session_id:
+        cmd.extend(["--resume", session_id])
+
+    # print(shlex.join(cmd), file=sys.stderr)
+    # print(file=sys.stderr)
 
     result = subprocess.run(
         cmd,
@@ -68,27 +108,72 @@ def fetch_deadlines(conference: str) -> dict:
         check=True,
     )
 
-    output = json.loads(result.stdout)
+    return json.loads(result.stdout)
 
-    structured = output.get("structured_output")
-    if not structured:
-        text_result = output.get("result", "No response")
+
+def fetch_deadlines(conference: str) -> dict:
+    url = CONFERENCES.get(conference)
+    if not url:
+        raise ValueError(f"Unknown conference: {conference}. Available: {list(CONFERENCES.keys())}")
+
+    domain = urlparse(url).netloc
+
+    print(f"Checking {conference}")
+
+    # Step 1: Fetch the URL content
+    print("  Fetching website content...", file=sys.stderr)
+    fetch_output = run_claude(
+        prompt=f"Fetch {url} and summarize the page content",
+        allowed_tools=f"WebFetch(domain:{domain})",
+    )
+    session_id = fetch_output.get("session_id")
+    if not session_id:
+        raise ClaudeQueryError("No session_id returned from fetch")
+
+    page_content = fetch_output.get("result", "")
+    if not page_content:
+        raise ClaudeQueryError("Failed to fetch page content")
+
+    # Step 2: Extract submission deadline (using session to maintain context)
+    print("  Extracting submission deadline...", file=sys.stderr)
+    submission_output = run_claude(
+        prompt="Extract the paper submission deadline from the page you just fetched",
+        schema=SINGLE_DEADLINE_SCHEMA,
+        session_id=session_id,
+    )
+    submission_deadline = submission_output.get("structured_output")
+    if not submission_deadline:
         raise ClaudeQueryError(
-            f"No structured output returned. Claude response: {text_result[:500]}"
+            f"No submission deadline found. Response: {submission_output.get('result', '')[:500]}"
         )
 
-    deadlines = structured.get("deadlines")
-    if not deadlines:
-        raise ClaudeQueryError("structured_output contains no deadlines")
+    # Step 3: Extract other deadlines (continuing session)
+    print("  Extracting other deadlines...", file=sys.stderr)
+    all_output = run_claude(
+        prompt="Extract all deadlines from the same page",
+        schema=OTHER_DEADLINES_SCHEMA,
+        session_id=session_id,
+    )
+    all_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
 
-    return structured
+    # Step 4: Validate and remove submission deadline from all_deadlines
+    print("  Validating results...", file=sys.stderr)
+    matches = lambda d: (d["date"], d["time"]) == (submission_deadline["date"], submission_deadline["time"])
+
+    if not any(matches(d) for d in all_deadlines):
+        raise ClaudeQueryError(
+            f"Submission deadline ({submission_deadline['date']}, {submission_deadline['time']}) not found in all_deadlines"
+        )
+
+    return {
+        "submission_deadline": submission_deadline,
+        "other_deadlines": [d for d in all_deadlines if not matches(d)],
+    }
 
 
 def main():
-    conference = sys.argv[1] if len(sys.argv) > 1 else "sigcomm"
-
-    deadlines = fetch_deadlines(conference)
-    print(json.dumps(deadlines, indent=2))
+    results = {conf: fetch_deadlines(conf) for conf in CONFERENCES}
+    print(json.dumps(results, indent=2))
 
 
 if __name__ == "__main__":
