@@ -3,12 +3,14 @@ import subprocess
 import json
 import shlex
 import sys
+from datetime import datetime
 from urllib.parse import urlparse
 
-CONFERENCES = {
-    "SIGCOMM": "https://conferences.sigcomm.org/sigcomm/2026/cfp/",
-    "EuroSys": "https://2026.eurosys.org/cfp.html#calls",
-}
+def CONFERENCES(year: int):
+    return {
+        "SIGCOMM": f"https://conferences.sigcomm.org/sigcomm/{year}/cfp/",
+        "EuroSys": f"https://{year}.eurosys.org/cfp.html#calls",
+    }
 
 SINGLE_DEADLINE_SCHEMA = json.dumps({
     "type": "object",
@@ -79,6 +81,30 @@ class ClaudeQueryError(Exception):
     pass
 
 
+def validate_deadline(item: dict) -> str | None:
+    """Validate a deadline item. Returns error message or None if valid."""
+    # Validate date (ISO 8601: YYYY-MM-DD)
+    try:
+        datetime.strptime(item["date"], "%Y-%m-%d")
+    except (ValueError, KeyError) as e:
+        return f"Invalid date '{item.get('date')}': {e}"
+
+    # Validate time (HH:MM:SS)
+    try:
+        datetime.strptime(item["time"], "%H:%M:%S")
+    except (ValueError, KeyError) as e:
+        return f"Invalid time '{item.get('time')}': {e}"
+
+    # Validate utc_offset (-12 to +14)
+    utc_offset = item.get("utc_offset")
+    if not isinstance(utc_offset, int):
+        return f"utc_offset must be int, got {type(utc_offset).__name__}"
+    if not (-12 <= utc_offset <= 14):
+        return f"utc_offset {utc_offset} out of range [-12, +14]"
+
+    return None
+
+
 def run_claude(
     prompt: str,
     schema: str = None,
@@ -111,14 +137,30 @@ def run_claude(
     return json.loads(result.stdout)
 
 
-def fetch_deadlines(conference: str) -> dict:
-    url = CONFERENCES.get(conference)
-    if not url:
-        raise ValueError(f"Unknown conference: {conference}. Available: {list(CONFERENCES.keys())}")
+def fetch_deadlines(conference: str, year: int) -> dict:
+    """Fetch and extract deadlines for a conference.
+
+    Returns:
+        {
+            "submission_deadline": {
+                "date": "YYYY-MM-DD",
+                "time": "HH:MM:SS",
+                "timezone": "AoE",
+                "utc_offset": -12,
+                "raw_string": "...",
+                "valid": true
+            },
+            "other_deadlines": [
+                { ...same structure... }
+            ]
+        }
+    """
+    url = CONFERENCES(year).get(conference)
 
     domain = urlparse(url).netloc
 
     print(f"Checking {conference}")
+    print(f"  {url}")
 
     # Step 1: Fetch the URL content
     print("  Fetching website content...", file=sys.stderr)
@@ -165,15 +207,48 @@ def fetch_deadlines(conference: str) -> dict:
             f"Submission deadline ({submission_deadline['date']}, {submission_deadline['time']}) not found in all_deadlines"
         )
 
+    # Step 5: Validate all items and add valid flag
+    def add_valid_flag(item: dict) -> dict:
+        return {**item, "valid": validate_deadline(item) is None}
+
     return {
-        "submission_deadline": submission_deadline,
-        "other_deadlines": [d for d in all_deadlines if not matches(d)],
+        "submission_deadline": add_valid_flag(submission_deadline),
+        "other_deadlines": [add_valid_flag(d) for d in all_deadlines if not matches(d)],
     }
 
 
+def print_deadline_table(results: dict):
+    """Sort conferences by submission deadline and print as table."""
+    valid = {k: v for k, v in results.items() if v["submission_deadline"]["valid"]}
+    invalid = [k for k, v in results.items() if not v["submission_deadline"]["valid"]]
+
+    if invalid:
+        print(f"Invalid: {', '.join(invalid)}")
+        print()
+
+    rows = [
+        (conf, data["submission_deadline"]["date"])
+        for conf, data in valid.items()
+    ]
+    rows.sort(key=lambda r: r[1])
+
+    # Header
+    print(f"{'Month':<10} {'Conference':<15} {'Date':<12}")
+    print("-" * 40)
+
+    # Rows
+    for conf, date in rows:
+        month = date[:7]  # YYYY-MM
+        print(f"{month:<10} {conf:<15} {date:<12}")
+
+
 def main():
-    results = {conf: fetch_deadlines(conf) for conf in CONFERENCES}
-    print(json.dumps(results, indent=2))
+    results = {}
+    for year in [2025, 2026]:
+        year_suffix = f"'{year % 100:02d}"
+        for conf in CONFERENCES(year):
+            results[f"{conf}{year_suffix}"] = fetch_deadlines(conf, year)
+    print_deadline_table(results)
 
 
 if __name__ == "__main__":
