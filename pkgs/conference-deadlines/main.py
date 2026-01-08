@@ -7,24 +7,32 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
+NOW=2026
+
 # List of (name, year, url) tuples
 CONFERENCES = [
-    *[(f"SIGCOMM'{y % 100:02d}", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in [2025, 2026]],
-    *[(f"EuroSys'{y % 100:02d}", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in [2025, 2026]],
-    ("NSDI'26", 2026, "https://www.usenix.org/conference/nsdi26/call-for-papers"),
-    ("CoNEXT'26", 2026, "https://conferences2.sigcomm.org/co-next/2026/#!/cfp"),
-    ("SoCC'25", 2025, "https://acmsocc.org/2025/papers.html"),
-    ("SOSP'26", 2026, "https://sigops.org/s/conferences/sosp/2026/cfp.html"),
-    ("HotOS'25", 2025, "https://sigops.org/s/conferences/hotos/2025/"),
-    ("ASPLOS'25", 2025, "https://www.asplos-conference.org/asplos2025/cfp/"),
-    ("FAST'27", 2027, "https://www.usenix.org/conference/fast27"),
-    ("NDSS'26", 2026, "https://www.ndss-symposium.org/ndss2026/submissions/call-for-papers/"),
-    ("Middleware'26", 2026, "https://middleware-conf.github.io/2026/calls/call-for-research-papers/"),
-    ("APSys'25", 2025, "https://apsys2025.github.io/call_for_papers.html"),
-    ("HotNets'25", 2025, "https://conferences.sigcomm.org/hotnets/2025/cfp.html"),
-    ("ATC'25", 2025, "https://www.usenix.org/conference/atc25/call-for-papers"),
-    ("OSDI'20", 2020, "https://www.usenix.org/conference/osdi20/call-for-papers"),
+    *[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
+    *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
+    *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
+    *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
+    *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
+    *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
+    *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
+    *[("ASPLOS", y, f"https://www.asplos-conference.org/asplos{y}/cfp/") for y in range(2024, NOW+1)],
+    *[("FAST", y, f"https://www.usenix.org/conference/fast{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    *[("NDSS", y, f"https://www.ndss-symposium.org/ndss{y}/submissions/call-for-papers/") for y in range(2017, NOW+1)],
+    *[("Middleware", y, f"https://middleware-conf.github.io/{y}/calls/call-for-research-papers/") for y in range(2023, NOW+1)],
+    *[("APSys", y, f"https://apsys{y}.github.io/call_for_papers.html") for y in [2025]],
+    # APSys needs new links
+    *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
+    *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
 ]
+
+
+def conf_label(name: str, year: int) -> str:
+    """Generate display label like SIGCOMM'26."""
+    return f"{name}'{year % 100:02d}"
 
 CYCLES_SCHEMA = json.dumps({
     "type": "object",
@@ -316,15 +324,15 @@ def main():
     results = {}
     with ThreadPoolExecutor() as executor:
         futures = {
-            executor.submit(fetch_deadlines, name, url): name
+            executor.submit(fetch_deadlines, conf_label(name, year), url): conf_label(name, year)
             for name, year, url in CONFERENCES
         }
         for future in as_completed(futures):
-            name = futures[future]
+            label = futures[future]
             try:
-                results[name] = future.result()
+                results[label] = future.result()
             except Exception as e:
-                print(f"Error fetching {name}: {e}", file=sys.stderr)
+                print(f"Error fetching {label}: {e}", file=sys.stderr)
 
     print_deadline_table(results)
 
