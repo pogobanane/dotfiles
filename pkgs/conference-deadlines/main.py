@@ -7,11 +7,24 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
-def CONFERENCES(year: int):
-    return {
-        "SIGCOMM": f"https://conferences.sigcomm.org/sigcomm/{year}/cfp/",
-        "EuroSys": f"https://{year}.eurosys.org/cfp.html#calls",
-    }
+# List of (name, year, url) tuples
+CONFERENCES = [
+    *[(f"SIGCOMM'{y % 100:02d}", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in [2025, 2026]],
+    *[(f"EuroSys'{y % 100:02d}", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in [2025, 2026]],
+    ("NSDI'26", 2026, "https://www.usenix.org/conference/nsdi26/call-for-papers"),
+    ("CoNEXT'26", 2026, "https://conferences2.sigcomm.org/co-next/2026/#!/cfp"),
+    ("SoCC'25", 2025, "https://acmsocc.org/2025/papers.html"),
+    ("SOSP'26", 2026, "https://sigops.org/s/conferences/sosp/2026/cfp.html"),
+    ("HotOS'25", 2025, "https://sigops.org/s/conferences/hotos/2025/"),
+    ("ASPLOS'25", 2025, "https://www.asplos-conference.org/asplos2025/cfp/"),
+    ("FAST'27", 2027, "https://www.usenix.org/conference/fast27"),
+    ("NDSS'26", 2026, "https://www.ndss-symposium.org/ndss2026/submissions/call-for-papers/"),
+    ("Middleware'26", 2026, "https://middleware-conf.github.io/2026/calls/call-for-research-papers/"),
+    ("APSys'25", 2025, "https://apsys2025.github.io/call_for_papers.html"),
+    ("HotNets'25", 2025, "https://conferences.sigcomm.org/hotnets/2025/cfp.html"),
+    ("ATC'25", 2025, "https://www.usenix.org/conference/atc25/call-for-papers"),
+    ("OSDI'20", 2020, "https://www.usenix.org/conference/osdi20/call-for-papers"),
+]
 
 CYCLES_SCHEMA = json.dumps({
     "type": "object",
@@ -150,8 +163,12 @@ def run_claude(
     return json.loads(result.stdout)
 
 
-def fetch_deadlines(conference: str, year: int) -> dict:
+def fetch_deadlines(name: str, url: str) -> dict:
     """Fetch and extract deadlines for a conference.
+
+    Args:
+        name: Display name like "SIGCOMM'26"
+        url: CFP page URL
 
     Returns:
         {
@@ -171,14 +188,12 @@ def fetch_deadlines(conference: str, year: int) -> dict:
             ]
         }
     """
-    url = CONFERENCES(year).get(conference)
     domain = urlparse(url).netloc
 
-    print(f"Checking {conference}")
-    print(f"  {url}")
+    print(f"  {name}: {url}")
 
     # Step 1: Fetch the URL content
-    print("  Fetching website content...", file=sys.stderr)
+    print(f"  {name}: Fetching website content...", file=sys.stderr)
     fetch_output = run_claude(
         prompt=f"Fetch {url} and summarize the page content",
         allowed_tools=f"WebFetch(domain:{domain})",
@@ -192,7 +207,7 @@ def fetch_deadlines(conference: str, year: int) -> dict:
         raise ClaudeQueryError("Failed to fetch page content")
 
     # Step 1.5: Extract submission cycles
-    print("  Extracting submission cycles...", file=sys.stderr)
+    print(f"  {name}: Extracting submission cycles...", file=sys.stderr)
     cycles_output = run_claude(
         prompt="What submission/review cycles does this conference have? E.g. Spring/Fall, Round 1/2/3, or just a single cycle. Return cycle labels as array.",
         schema=CYCLES_SCHEMA,
@@ -203,7 +218,7 @@ def fetch_deadlines(conference: str, year: int) -> dict:
         cycles = [""]
 
     # Step 2: Extract submission deadline for each cycle
-    print("  Extracting submission deadlines...", file=sys.stderr)
+    print(f"  {name}: Extracting submission deadlines...", file=sys.stderr)
     submission_deadlines = []
     for cycle in cycles:
         cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
@@ -224,7 +239,7 @@ def fetch_deadlines(conference: str, year: int) -> dict:
         raise ClaudeQueryError("No submission deadlines found")
 
     # Step 3: Extract all deadlines for each cycle
-    print("  Extracting all deadlines...", file=sys.stderr)
+    print(f"  {name}: Extracting all deadlines...", file=sys.stderr)
     all_deadlines = []
     for cycle in cycles:
         cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
@@ -238,7 +253,7 @@ def fetch_deadlines(conference: str, year: int) -> dict:
             all_deadlines.append({**d, "cycle": cycle, "deadline_type": "unknown"})
 
     # Step 4: Merge - replace matching entries with submission deadlines
-    print("  Validating results...", file=sys.stderr)
+    print(f"  {name}: Validating results...", file=sys.stderr)
     for sub in submission_deadlines:
         sub_key = (sub["date"], sub["time"])
         found = False
@@ -288,30 +303,21 @@ def print_deadline_table(results: dict):
     rows.sort(key=lambda r: r[1])
 
     # Header
-    print(f"{'Month':<10} {'Conference':<20} {'Deadline':<12}")
+    print(f"{'Month':<10} {'Conference':<25} {'Deadline':<12}")
     print("-" * 45)
 
     # Rows
     for conf, date in rows:
         month = date[:7]  # YYYY-MM
-        print(f"{month:<10} {conf:<20} {date:<12}")
+        print(f"{month:<10} {conf:<25} {date:<12}")
 
 
 def main():
-    tasks = [
-        (f"{conf}'{year % 100:02d}", conf, year)
-        for year in [2025, 2026]
-        for conf in CONFERENCES(year)
-    ]
-    # tasks = [
-    #     ("SIGCOMM'25", "SIGCOMM", 2025)
-    # ]
-
     results = {}
     with ThreadPoolExecutor() as executor:
         futures = {
-            executor.submit(fetch_deadlines, conf, year): name
-            for name, conf, year in tasks
+            executor.submit(fetch_deadlines, name, url): name
+            for name, year, url in CONFERENCES
         }
         for future in as_completed(futures):
             name = futures[future]
