@@ -321,9 +321,54 @@ def print_deadline_table(results: dict):
         print(f"{month:<10} {conf:<25} {date:<12}")
 
 
+def write_html_table(results: dict, filepath: str):
+    """Write deadline table as HTML file."""
+    # Flatten: (conf_name, date) for each submission deadline
+    rows = []
+    for conf, data in results.items():
+        submission_deadlines = [
+            d for d in data["deadlines"]
+            if d["deadline_type"] == "submission" and d["valid"]
+        ]
+        for d in submission_deadlines:
+            label = f"{conf} ({d['cycle']})" if d["cycle"] else conf
+            rows.append((label, d["date"]))
+
+    rows.sort(key=lambda r: r[1])
+
+    html = """<!DOCTYPE html>
+<html>
+<head>
+    <title>Conference Deadlines</title>
+    <style>
+        body { max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Conference Deadlines</h1>
+    <table>
+        <tr><th>Month</th><th>Conference</th><th>Deadline</th></tr>
+"""
+    for conf, date in rows:
+        month = date[:7]
+        html += f"        <tr><td>{month}</td><td>{conf}</td><td>{date}</td></tr>\n"
+
+    html += """    </table>
+</body>
+</html>
+"""
+    with open(filepath, "w") as f:
+        f.write(html)
+
+    print(f"Wrote {filepath}", file=sys.stderr)
+
+
 def main():
     results = {}
-    with ThreadPoolExecutor() as executor:
+    with ThreadPoolExecutor(max_workers=16) as executor:
         futures = {
             executor.submit(fetch_deadlines, conf_label(name, year), url): conf_label(name, year)
             for name, year, url in CONFERENCES
@@ -336,8 +381,25 @@ def main():
             except Exception as e:
                 print(f"Error fetching {label}: {e}", file=sys.stderr)
 
+    # Write JSON cache
+    with open("/tmp/deadlines.json", "w") as f:
+        json.dump(results, f, indent=2)
+    print("Wrote /tmp/deadlines.json", file=sys.stderr)
+
     print_deadline_table(results)
+    write_html_table(results, "/tmp/deadlines.html")
+
+
+def render_only():
+    """Re-render HTML from cached JSON."""
+    with open("/tmp/deadlines.json") as f:
+        results = json.load(f)
+    print_deadline_table(results)
+    write_html_table(results, "/tmp/deadlines.html")
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 1 and sys.argv[1] == "--render":
+        render_only()
+    else:
+        main()
