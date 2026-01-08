@@ -7,6 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
+FROM_YEAR=2025
 NOW=2026
 
 # List of (name, year, url) tuples
@@ -326,6 +327,7 @@ def main():
         futures = {
             executor.submit(fetch_deadlines, conf_label(name, year), url): conf_label(name, year)
             for name, year, url in CONFERENCES
+            if year >= FROM_YEAR
         }
         for future in as_completed(futures):
             label = futures[future]
