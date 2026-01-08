@@ -3,6 +3,7 @@ import subprocess
 import json
 import shlex
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
@@ -233,7 +234,7 @@ def print_deadline_table(results: dict):
     rows.sort(key=lambda r: r[1])
 
     # Header
-    print(f"{'Month':<10} {'Conference':<15} {'Date':<12}")
+    print(f"{'Month':<10} {'Conference':<15} {'Deadline':<12}")
     print("-" * 40)
 
     # Rows
@@ -243,11 +244,25 @@ def print_deadline_table(results: dict):
 
 
 def main():
+    tasks = [
+        (f"{conf}'{year % 100:02d}", conf, year)
+        for year in [2025, 2026]
+        for conf in CONFERENCES(year)
+    ]
+
     results = {}
-    for year in [2025, 2026]:
-        year_suffix = f"'{year % 100:02d}"
-        for conf in CONFERENCES(year):
-            results[f"{conf}{year_suffix}"] = fetch_deadlines(conf, year)
+    with ThreadPoolExecutor() as executor:
+        futures = {
+            executor.submit(fetch_deadlines, conf, year): name
+            for name, conf, year in tasks
+        }
+        for future in as_completed(futures):
+            name = futures[future]
+            try:
+                results[name] = future.result()
+            except Exception as e:
+                print(f"Error fetching {name}: {e}", file=sys.stderr)
+
     print_deadline_table(results)
 
 
