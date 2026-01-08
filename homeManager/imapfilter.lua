@@ -54,7 +54,7 @@ function addressfilter(mailbox, address)
     return results
 end
 
-function subjectfilter(mailbox, subject_patterns, from_patterns)
+function subjectfilter(mailbox, subject_patterns, from_patterns, to_patterns)
     -- return a list of results/emails that match a pattern
     local results = nil
     local unseen = mailbox:is_unseen()
@@ -71,6 +71,16 @@ function subjectfilter(mailbox, subject_patterns, from_patterns)
     for _, pattern in ipairs(from_patterns) do
         -- matches = mailbox:contain_subject(pattern)
         local matches = unseen:contain_from(pattern)
+        io.write(pattern .. ": #" .. tostring(#matches) .. "\n")
+        if results == nil then
+            results = matches
+        else
+            results = results + matches
+        end
+    end
+    for _, pattern in ipairs(to_patterns) do
+        -- matches = mailbox:contain_subject(pattern)
+        local matches = unseen:contain_to(pattern)
         io.write(pattern .. ": #" .. tostring(#matches) .. "\n")
         if results == nil then
             results = matches
@@ -151,7 +161,11 @@ function aenderboy_spamfilter(account)
         "betragreport.de",
         "commerz-bank.com",
     }
-    result = subjectfilter(account["INBOX"], subject_patterns, from_patterns)
+    to_patterns = {
+        -- spam mailing lists etc
+        "theses-applications@noreply.github.com",
+    }
+    result = subjectfilter(account["INBOX"], subject_patterns, from_patterns, to_patterns)
     result:move_messages(account["imapfiltered"])
 end
 
