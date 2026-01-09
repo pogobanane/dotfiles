@@ -4,7 +4,7 @@ import json
 import shlex
 import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
@@ -333,6 +333,9 @@ def print_deadline_table(results: dict):
 def predict_deadlines(rows: list, target_year: int) -> list:
     """Predict deadlines for target_year based on historical patterns.
 
+    Uses cycle-aware prediction: only considers the consecutive block of years
+    (going backwards from latest) that have the same cycle setup as the latest year.
+
     Args:
         rows: list of (name, year, cycle, date, predicted, json_data, url) tuples
         target_year: year to predict for
@@ -341,34 +344,76 @@ def predict_deadlines(rows: list, target_year: int) -> list:
     """
     from collections import defaultdict
 
-    # Group by (conference_name, cycle)
-    by_conf = defaultdict(list)
+    # Group by conference name -> year -> list of (cycle, date)
+    by_conf = defaultdict(lambda: defaultdict(list))
     for name, year, cycle, date, _, *_ in rows:
-        by_conf[(name, cycle)].append((year, date))
+        by_conf[name][year].append((cycle, date))
 
-    # Find conferences missing target_year and predict
     predictions = []
-    for (name, cycle), entries in by_conf.items():
-        years_present = {y for y, _ in entries}
-        if target_year not in years_present and len(entries) >= 1:
+    for name, year_data in by_conf.items():
+        years_present = set(year_data.keys())
+        if target_year in years_present:
+            continue  # Already have data for target year
+
+        if not year_data:
+            continue
+
+        # Get latest year and its cycle setup
+        latest_year = max(year_data.keys())
+        latest_cycles = frozenset(c for c, _ in year_data[latest_year])
+
+        # Find block of years with same cycle setup (going backwards, ignoring gaps)
+        valid_years = []
+        for y in sorted(year_data.keys(), reverse=True):
+            year_cycles = frozenset(c for c, _ in year_data[y])
+            if year_cycles != latest_cycles:
+                break  # Different cycle setup, stop
+            valid_years.append(y)
+
+        if not valid_years:
+            continue
+
+        # For each cycle in latest setup, predict using most recent valid year
+        for cycle in latest_cycles:
             # Check for manual hint first
             hint_key = (name, target_year, cycle)
             if hint_key in PREDICTION_HINTS:
                 predictions.append((name, target_year, cycle, PREDICTION_HINTS[hint_key], True, None, ""))
                 continue
 
-            # Use most recent year to predict
-            entries_sorted = sorted(entries, key=lambda x: x[0], reverse=True)
-            recent_year, recent_date = entries_sorted[0]
+            # Collect all dates for this cycle from valid years
+            cycle_dates = []
+            history = []
+            for y in valid_years:
+                for c, d in year_data[y]:
+                    if c == cycle:
+                        try:
+                            dt = datetime.strptime(d, "%Y-%m-%d")
+                            # Calculate days from start of conference year
+                            conf_year_start = datetime(y, 1, 1)
+                            days_offset = (dt - conf_year_start).days
+                            cycle_dates.append(days_offset)
+                            history.append(f"{conf_label(name, y)}: {d}")
+                        except ValueError:
+                            pass
 
-            # Shift date to target year
+            if not cycle_dates:
+                continue
+
+            # Average the day offsets and apply to target year
+            avg_days = sum(cycle_dates) // len(cycle_dates)
+            max_dev = max(abs(d - avg_days) for d in cycle_dates)
             try:
-                dt = datetime.strptime(recent_date, "%Y-%m-%d")
-                predicted_dt = dt.replace(year=target_year)
+                predicted_dt = datetime(target_year, 1, 1) + timedelta(days=avg_days)
                 predicted_date = predicted_dt.strftime("%Y-%m-%d")
-                predictions.append((name, target_year, cycle, predicted_date, True, None, ""))
+                pred_info = {
+                    "history": "\n".join(sorted(history)),
+                    "max_dev": max_dev,
+                    "count": len(cycle_dates),
+                }
+                predictions.append((name, target_year, cycle, predicted_date, True, pred_info, ""))
             except ValueError:
-                pass  # Skip if date doesn't exist in target year (e.g., Feb 29)
+                pass  # Skip if date is invalid
 
     return predictions
 
@@ -390,9 +435,12 @@ def write_html_table(results: dict, filepath: str):
         for d in submission_deadlines:
             rows.append((name, year, d["cycle"], d["date"], False, d, url))
 
-    # Add predictions for NOW year
+    # Add predictions for NOW and NOW+1 years
     predictions = predict_deadlines(rows, NOW)
     rows.extend(predictions)
+    predictions_next = predict_deadlines(rows, NOW + 1)
+    # Only include next year's predictions if deadline falls in current year
+    rows.extend(p for p in predictions_next if p[3].startswith(str(NOW)))
 
     # Apply prediction hints as overrides (replace existing rows or add new ones)
     for (hint_name, hint_year, hint_cycle), hint_date in PREDICTION_HINTS.items():
@@ -453,9 +501,20 @@ def write_html_table(results: dict, filepath: str):
                     label_html = f'<a href="{url}">{label}</a>'
                 else:
                     label_html = label
-                tooltip = json.dumps(json_data, indent=2) if json_data else "Predicted"
+                if isinstance(json_data, dict) and "history" in json_data:
+                    tooltip = json_data["history"]
+                    warn = "⚠ " if json_data["max_dev"] > 15 or json_data["count"] == 1 else ""
+                    date_display = f"{warn}{date} (±{json_data['max_dev']}d, n={json_data['count']})"
+                elif isinstance(json_data, dict):
+                    tooltip = json.dumps(json_data, indent=2)
+                    date_display = f"{date} (predicted)" if predicted else date
+                elif json_data:
+                    tooltip = json.dumps(json_data, indent=2)
+                    date_display = f"{date} (predicted)" if predicted else date
+                else:
+                    tooltip = "Predicted" if predicted else ""
+                    date_display = f"{date} (predicted)" if predicted else date
                 tooltip_escaped = tooltip.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("\n", "&#10;")
-                date_display = f"{date} (predicted)" if predicted else date
                 if i == 0:
                     html += f'        <tr><td rowspan="{len(group_rows)}">{month_name}</td><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
                 else:
