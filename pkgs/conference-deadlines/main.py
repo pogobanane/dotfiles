@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
-FROM_YEAR=2025
+FROM_YEAR=2020
 NOW=2026
 
 # List of (name, year, url) tuples
@@ -321,20 +321,65 @@ def print_deadline_table(results: dict):
         print(f"{month:<10} {conf:<25} {date:<12}")
 
 
+def predict_deadlines(rows: list, target_year: int) -> list:
+    """Predict deadlines for target_year based on historical patterns.
+
+    Args:
+        rows: list of (name, year, cycle, date, predicted, json_data) tuples
+        target_year: year to predict for
+
+    Returns list of (name, year, cycle, date, predicted=True, json_data=None) tuples.
+    """
+    from collections import defaultdict
+
+    # Group by (conference_name, cycle)
+    by_conf = defaultdict(list)
+    for name, year, cycle, date, _, *_ in rows:
+        by_conf[(name, cycle)].append((year, date))
+
+    # Find conferences missing target_year and predict
+    predictions = []
+    for (name, cycle), entries in by_conf.items():
+        years_present = {y for y, _ in entries}
+        if target_year not in years_present and len(entries) >= 1:
+            # Use most recent year to predict
+            entries_sorted = sorted(entries, key=lambda x: x[0], reverse=True)
+            recent_year, recent_date = entries_sorted[0]
+
+            # Shift date to target year
+            try:
+                dt = datetime.strptime(recent_date, "%Y-%m-%d")
+                predicted_dt = dt.replace(year=target_year)
+                predicted_date = predicted_dt.strftime("%Y-%m-%d")
+                predictions.append((name, target_year, cycle, predicted_date, True, None))
+            except ValueError:
+                pass  # Skip if date doesn't exist in target year (e.g., Feb 29)
+
+    return predictions
+
+
 def write_html_table(results: dict, filepath: str):
     """Write deadline table as HTML file."""
-    # Flatten: (conf_name, date) for each submission deadline
+    from itertools import groupby
+
+    # Flatten: (name, year, cycle, date, predicted, deadline_json) for each submission deadline
     rows = []
     for conf, data in results.items():
+        name = data["name"]
+        year = data["year"]
+
         submission_deadlines = [
             d for d in data["deadlines"]
             if d["deadline_type"] == "submission" and d["valid"]
         ]
         for d in submission_deadlines:
-            label = f"{conf} ({d['cycle']})" if d["cycle"] else conf
-            rows.append((label, d["date"]))
+            rows.append((name, year, d["cycle"], d["date"], False, d))
 
-    rows.sort(key=lambda r: r[1])
+    # Add predictions for NOW year
+    predictions = predict_deadlines(rows, NOW)
+    rows.extend(predictions)
+
+    rows.sort(key=lambda r: r[3])  # Sort by date
 
     html = """<!DOCTYPE html>
 <html>
@@ -342,22 +387,45 @@ def write_html_table(results: dict, filepath: str):
     <title>Conference Deadlines</title>
     <style>
         body { max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
         th { background: #f0f0f0; }
+        .predicted { font-style: italic; color: #666; }
     </style>
 </head>
 <body>
     <h1>Conference Deadlines</h1>
-    <table>
+    <p><em>Predicted deadlines are shit - just last year's date shifted forward.</em></p>
+"""
+    # Group by deadline year (descending), then by month
+    years = {}
+    for row in rows:
+        y = row[3][:4]  # year from deadline date
+        years.setdefault(y, []).append(row)
+    for year in sorted(years.keys(), reverse=True):
+        year_rows = years[year]
+        html += f"    <h2>{year}</h2>\n"
+        html += """    <table>
         <tr><th>Month</th><th>Conference</th><th>Deadline</th></tr>
 """
-    for conf, date in rows:
-        month = date[:7]
-        html += f"        <tr><td>{month}</td><td>{conf}</td><td>{date}</td></tr>\n"
+        for month, month_group in groupby(year_rows, key=lambda r: r[3][:7]):
+            group_rows = list(month_group)
+            month_name = datetime.strptime(month, "%Y-%m").strftime("%B")
+            for i, (name, yr, cycle, date, predicted, json_data) in enumerate(group_rows):
+                label = conf_label(name, yr)
+                if cycle:
+                    label += f" ({cycle})"
+                cls = ' class="predicted"' if predicted else ""
+                tooltip = json.dumps(json_data, indent=2) if json_data else "Predicted"
+                tooltip_escaped = tooltip.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("\n", "&#10;")
+                date_display = f"{date} (predicted)" if predicted else date
+                if i == 0:
+                    html += f'        <tr><td rowspan="{len(group_rows)}">{month_name}</td><td{cls} title="{tooltip_escaped}">{label}</td><td{cls}>{date_display}</td></tr>\n'
+                else:
+                    html += f'        <tr><td{cls} title="{tooltip_escaped}">{label}</td><td{cls}>{date_display}</td></tr>\n'
+        html += "    </table>\n"
 
-    html += """    </table>
-</body>
+    html += """</body>
 </html>
 """
     with open(filepath, "w") as f:
@@ -370,14 +438,17 @@ def main():
     results = {}
     with ThreadPoolExecutor(max_workers=16) as executor:
         futures = {
-            executor.submit(fetch_deadlines, conf_label(name, year), url): conf_label(name, year)
+            executor.submit(fetch_deadlines, conf_label(name, year), url): (conf_label(name, year), name, year)
             for name, year, url in CONFERENCES
             if year >= FROM_YEAR
         }
         for future in as_completed(futures):
-            label = futures[future]
+            label, name, year = futures[future]
             try:
-                results[label] = future.result()
+                result = future.result()
+                result["name"] = name
+                result["year"] = year
+                results[label] = result
             except Exception as e:
                 print(f"Error fetching {label}: {e}", file=sys.stderr)
 
