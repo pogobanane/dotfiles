@@ -7,6 +7,15 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 from urllib.parse import urlparse
 
+# TODO ATC has a wrong 2026 entry that breaks the prediction hint
+
+# Manual predictions from private intelligence, keyed by (name, year, cycle)
+# These override automatic predictions
+PREDICTION_HINTS = {
+    # ("SIGCOMM", 2027, ""): "2027-01-30",
+    ("ATC", 2026, "Based on user submitted information"): "2026-06-10"
+}
+
 FROM_YEAR=2020
 NOW=2026
 
@@ -342,6 +351,12 @@ def predict_deadlines(rows: list, target_year: int) -> list:
     for (name, cycle), entries in by_conf.items():
         years_present = {y for y, _ in entries}
         if target_year not in years_present and len(entries) >= 1:
+            # Check for manual hint first
+            hint_key = (name, target_year, cycle)
+            if hint_key in PREDICTION_HINTS:
+                predictions.append((name, target_year, cycle, PREDICTION_HINTS[hint_key], True, None, ""))
+                continue
+
             # Use most recent year to predict
             entries_sorted = sorted(entries, key=lambda x: x[0], reverse=True)
             recent_year, recent_date = entries_sorted[0]
@@ -378,6 +393,13 @@ def write_html_table(results: dict, filepath: str):
     # Add predictions for NOW year
     predictions = predict_deadlines(rows, NOW)
     rows.extend(predictions)
+
+    # Apply prediction hints as overrides (replace existing rows or add new ones)
+    for (hint_name, hint_year, hint_cycle), hint_date in PREDICTION_HINTS.items():
+        # Remove any existing row for this (name, year, cycle)
+        rows = [r for r in rows if not (r[0] == hint_name and r[1] == hint_year and r[2] == hint_cycle)]
+        # Add the hint row
+        rows.append((hint_name, hint_year, hint_cycle, hint_date, True, None, ""))
 
     rows.sort(key=lambda r: r[3])  # Sort by date
 
