@@ -9,6 +9,9 @@ from urllib.parse import urlparse
 
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
 # TODO check correctness of conext eurosy and fast
+# TODO add a menu to select and deselect conferences
+# TODO remove javascript for hover or improve it.
+# TODO understand other deadlines types as well and add gnatt charts [submission, notification]
 
 # Manual predictions from private intelligence, keyed by (name, year, cycle)
 # These override automatic predictions
@@ -382,21 +385,35 @@ def predict_deadlines(rows: list, target_year: int) -> list:
 
         # Find block of years with same cycle setup (going backwards, ignoring gaps)
         valid_years = []
+        other_cycle_years = []  # Years with different cycle setup
+        found_mismatch = False
         for y in sorted(valid_year_data.keys(), reverse=True):
             year_cycles = frozenset(c for c, _ in valid_year_data[y])
             if year_cycles != latest_cycles:
-                break  # Different cycle setup, stop
-            valid_years.append(y)
+                found_mismatch = True
+            if found_mismatch:
+                other_cycle_years.append(y)
+            else:
+                valid_years.append(y)
 
         if not valid_years:
             continue
+
+        # Collect other cycle deadlines for tooltip
+        other_cycle_history = []
+        for y in other_cycle_years:
+            for c, d in valid_year_data[y]:
+                label = f"{conf_label(name, y)}"
+                if c:
+                    label += f" ({c})"
+                other_cycle_history.append(f"{label}: {d}")
 
         # For each cycle in latest setup, predict using most recent valid year
         for cycle in latest_cycles:
             # Check for manual hint first
             hint_key = (name, target_year, cycle)
             if hint_key in PREDICTION_HINTS:
-                predictions.append((name, target_year, cycle, PREDICTION_HINTS[hint_key], True, None, ""))
+                predictions.append((name, target_year, cycle, PREDICTION_HINTS[hint_key], True, {"user_provided": True}, ""))
                 continue
 
             # Collect all dates for this cycle from valid years
@@ -426,6 +443,7 @@ def predict_deadlines(rows: list, target_year: int) -> list:
                 predicted_date = predicted_dt.strftime("%Y-%m-%d")
                 pred_info = {
                     "history": "\n".join(sorted(history)),
+                    "other_cycles": "\n".join(sorted(other_cycle_history)) if other_cycle_history else "",
                     "max_dev": max_dev,
                     "count": len(cycle_dates),
                 }
@@ -483,7 +501,9 @@ def write_html_table(results: dict, filepath: str):
 </head>
 <body>
     <h1>Conference Deadlines</h1>
-    <p><em>Predicted deadlines are shit - just last year's date shifted forward.</em></p>
+    <p>
+        Deadline predictions are in gray. Hover the conference name for more info.
+    </p>
 """
     # Group by deadline year (descending), then by month
     years = {}
@@ -519,8 +539,13 @@ def write_html_table(results: dict, filepath: str):
                     label_html = f'<a href="{url}">{label}</a>'
                 else:
                     label_html = label
-                if isinstance(json_data, dict) and "history" in json_data:
+                if isinstance(json_data, dict) and json_data.get("user_provided"):
+                    tooltip = "User provided"
+                    date_display = f"{date} (user provided)"
+                elif isinstance(json_data, dict) and "history" in json_data:
                     tooltip = json_data["history"]
+                    if json_data.get("other_cycles"):
+                        tooltip += "\n\nOlder deadlines with other submission cycle:\n" + json_data["other_cycles"]
                     warn = "⚠ " if json_data["max_dev"] > 15 or json_data["count"] == 1 else ""
                     date_display = f"{warn}{date} (±{json_data['max_dev']}d, n={json_data['count']})"
                 elif isinstance(json_data, dict):
