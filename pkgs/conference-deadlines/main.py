@@ -325,10 +325,10 @@ def predict_deadlines(rows: list, target_year: int) -> list:
     """Predict deadlines for target_year based on historical patterns.
 
     Args:
-        rows: list of (name, year, cycle, date, predicted, json_data) tuples
+        rows: list of (name, year, cycle, date, predicted, json_data, url) tuples
         target_year: year to predict for
 
-    Returns list of (name, year, cycle, date, predicted=True, json_data=None) tuples.
+    Returns list of (name, year, cycle, date, predicted=True, json_data=None, url="") tuples.
     """
     from collections import defaultdict
 
@@ -351,7 +351,7 @@ def predict_deadlines(rows: list, target_year: int) -> list:
                 dt = datetime.strptime(recent_date, "%Y-%m-%d")
                 predicted_dt = dt.replace(year=target_year)
                 predicted_date = predicted_dt.strftime("%Y-%m-%d")
-                predictions.append((name, target_year, cycle, predicted_date, True, None))
+                predictions.append((name, target_year, cycle, predicted_date, True, None, ""))
             except ValueError:
                 pass  # Skip if date doesn't exist in target year (e.g., Feb 29)
 
@@ -360,20 +360,20 @@ def predict_deadlines(rows: list, target_year: int) -> list:
 
 def write_html_table(results: dict, filepath: str):
     """Write deadline table as HTML file."""
-    from itertools import groupby
 
-    # Flatten: (name, year, cycle, date, predicted, deadline_json) for each submission deadline
+    # Flatten: (name, year, cycle, date, predicted, deadline_json, url) for each submission deadline
     rows = []
     for conf, data in results.items():
         name = data["name"]
         year = data["year"]
+        url = data.get("url", "")
 
         submission_deadlines = [
             d for d in data["deadlines"]
             if d["deadline_type"] == "submission" and d["valid"]
         ]
         for d in submission_deadlines:
-            rows.append((name, year, d["cycle"], d["date"], False, d))
+            rows.append((name, year, d["cycle"], d["date"], False, d, url))
 
     # Add predictions for NOW year
     predictions = predict_deadlines(rows, NOW)
@@ -408,21 +408,36 @@ def write_html_table(results: dict, filepath: str):
         html += """    <table>
         <tr><th>Month</th><th>Conference</th><th>Deadline</th></tr>
 """
-        for month, month_group in groupby(year_rows, key=lambda r: r[3][:7]):
-            group_rows = list(month_group)
+        # Group rows by month
+        rows_by_month = {}
+        for row in year_rows:
+            month = row[3][:7]
+            rows_by_month.setdefault(month, []).append(row)
+
+        # Iterate through all 12 months
+        for m in range(1, 13):
+            month = f"{year}-{m:02d}"
             month_name = datetime.strptime(month, "%Y-%m").strftime("%B")
-            for i, (name, yr, cycle, date, predicted, json_data) in enumerate(group_rows):
+            group_rows = rows_by_month.get(month, [])
+            if not group_rows:
+                html += f'        <tr><td>{month_name}</td><td></td><td></td></tr>\n'
+                continue
+            for i, (name, yr, cycle, date, predicted, json_data, url) in enumerate(group_rows):
                 label = conf_label(name, yr)
                 if cycle:
                     label += f" ({cycle})"
                 cls = ' class="predicted"' if predicted else ""
+                if url:
+                    label_html = f'<a href="{url}">{label}</a>'
+                else:
+                    label_html = label
                 tooltip = json.dumps(json_data, indent=2) if json_data else "Predicted"
                 tooltip_escaped = tooltip.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("\n", "&#10;")
                 date_display = f"{date} (predicted)" if predicted else date
                 if i == 0:
-                    html += f'        <tr><td rowspan="{len(group_rows)}">{month_name}</td><td{cls} title="{tooltip_escaped}">{label}</td><td{cls}>{date_display}</td></tr>\n'
+                    html += f'        <tr><td rowspan="{len(group_rows)}">{month_name}</td><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
                 else:
-                    html += f'        <tr><td{cls} title="{tooltip_escaped}">{label}</td><td{cls}>{date_display}</td></tr>\n'
+                    html += f'        <tr><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
         html += "    </table>\n"
 
     html += """</body>
@@ -438,16 +453,17 @@ def main():
     results = {}
     with ThreadPoolExecutor(max_workers=16) as executor:
         futures = {
-            executor.submit(fetch_deadlines, conf_label(name, year), url): (conf_label(name, year), name, year)
+            executor.submit(fetch_deadlines, conf_label(name, year), url): (conf_label(name, year), name, year, url)
             for name, year, url in CONFERENCES
             if year >= FROM_YEAR
         }
         for future in as_completed(futures):
-            label, name, year = futures[future]
+            label, name, year, url = futures[future]
             try:
                 result = future.result()
                 result["name"] = name
                 result["year"] = year
+                result["url"] = url
                 results[label] = result
             except Exception as e:
                 print(f"Error fetching {label}: {e}", file=sys.stderr)
