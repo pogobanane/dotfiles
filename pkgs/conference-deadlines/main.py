@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
+# TODO check correctness of conext eurosy and fast
 
 # Manual predictions from private intelligence, keyed by (name, year, cycle)
 # These override automatic predictions
@@ -355,17 +356,34 @@ def predict_deadlines(rows: list, target_year: int) -> list:
         if target_year in years_present:
             continue  # Already have data for target year
 
-        if not year_data:
+        # Filter to years with valid submission deadlines only
+        # A valid deadline should be within 2 years before the conference year
+        def is_valid_entry(conf_year, date_str):
+            if not date_str:
+                return False
+            try:
+                deadline_year = int(date_str[:4])
+                return conf_year - 2 <= deadline_year <= conf_year
+            except (ValueError, IndexError):
+                return False
+
+        valid_year_data = {
+            y: [(c, d) for c, d in entries if is_valid_entry(y, d)]
+            for y, entries in year_data.items()
+        }
+        valid_year_data = {y: entries for y, entries in valid_year_data.items() if entries}
+
+        if not valid_year_data:
             continue
 
-        # Get latest year and its cycle setup
-        latest_year = max(year_data.keys())
-        latest_cycles = frozenset(c for c, _ in year_data[latest_year])
+        # Get latest valid year and its cycle setup
+        latest_year = max(valid_year_data.keys())
+        latest_cycles = frozenset(c for c, _ in valid_year_data[latest_year])
 
         # Find block of years with same cycle setup (going backwards, ignoring gaps)
         valid_years = []
-        for y in sorted(year_data.keys(), reverse=True):
-            year_cycles = frozenset(c for c, _ in year_data[y])
+        for y in sorted(valid_year_data.keys(), reverse=True):
+            year_cycles = frozenset(c for c, _ in valid_year_data[y])
             if year_cycles != latest_cycles:
                 break  # Different cycle setup, stop
             valid_years.append(y)
@@ -385,7 +403,7 @@ def predict_deadlines(rows: list, target_year: int) -> list:
             cycle_dates = []
             history = []
             for y in valid_years:
-                for c, d in year_data[y]:
+                for c, d in valid_year_data[y]:
                     if c == cycle:
                         try:
                             dt = datetime.strptime(d, "%Y-%m-%d")
