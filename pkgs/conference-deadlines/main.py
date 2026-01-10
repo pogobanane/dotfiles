@@ -541,6 +541,7 @@ def write_html_table(results: dict, filepath: str):
     <h1>Conference Deadlines</h1>
     <p>
         Last updated: {now}<br>
+        Conference sites are crawled by an LLM, so be wary of errors.<br>
         Deadline predictions are in gray.<br>
         Hover the conference name for more info.<br>
     </p>
