@@ -3,9 +3,14 @@ import subprocess
 import json
 import shlex
 import sys
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
+
+# Global cost tracking
+_total_cost = 0.0
+_cost_lock = threading.Lock()
 
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
 # TODO check correctness of conext eurosy and fast
@@ -182,7 +187,15 @@ def run_claude(
         check=True,
     )
 
-    return json.loads(result.stdout)
+    output = json.loads(result.stdout)
+
+    # Track cost
+    global _total_cost
+    cost = output.get("total_cost_usd", 0.0)
+    with _cost_lock:
+        _total_cost += cost
+
+    return output
 
 
 def fetch_deadlines(name: str, url: str) -> dict:
@@ -599,6 +612,8 @@ def main():
 
     print_deadline_table(results)
     write_html_table(results, "/tmp/deadlines.html")
+
+    print(f"Total API cost: ${_total_cost:.4f}", file=sys.stderr)
 
 
 def render_only():
