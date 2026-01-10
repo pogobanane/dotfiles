@@ -8,6 +8,16 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
 
+# Optional tqdm for progress bar
+try:
+    from tqdm import tqdm
+    def progress_write(msg):
+        tqdm.write(msg, file=sys.stderr)
+except ImportError:
+    tqdm = None
+    def progress_write(msg):
+        print(msg, file=sys.stderr)
+
 # Global cost tracking
 _total_cost = 0.0
 _cost_lock = threading.Lock()
@@ -594,7 +604,11 @@ def main():
             for name, year, url in CONFERENCES
             if year >= FROM_YEAR
         }
-        for future in as_completed(futures):
+        futures_iter = as_completed(futures)
+        if tqdm:
+            futures_iter = tqdm(futures_iter, total=len(futures), desc="Fetching", file=sys.stderr)
+
+        for future in futures_iter:
             label, name, year, url = futures[future]
             try:
                 result = future.result()
@@ -602,8 +616,9 @@ def main():
                 result["year"] = year
                 result["url"] = url
                 results[label] = result
+                progress_write(f"  {label}: OK")
             except Exception as e:
-                print(f"Error fetching {label}: {e}", file=sys.stderr)
+                progress_write(f"  {label}: Error - {e}")
 
     # Write JSON cache
     with open("/tmp/deadlines.json", "w") as f:
