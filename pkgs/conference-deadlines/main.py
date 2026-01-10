@@ -18,10 +18,12 @@ except ImportError:
     def progress_write(msg):
         print(msg, file=sys.stderr)
 
-# Global cost tracking
+# Global cost and call tracking
 _total_cost = 0.0
-_cost_lock = threading.Lock()
+_total_calls = 0
+_stats_lock = threading.Lock()
 
+# TODO ctrl c doesn't stop it on first try
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
 # TODO check correctness of conext eurosy and fast
 # TODO add a menu to select and deselect conferences
@@ -199,11 +201,13 @@ def run_claude(
 
     output = json.loads(result.stdout)
 
-    # Track cost
-    global _total_cost
+    # Track cost and calls
+    global _total_cost, _total_calls
     cost = output.get("total_cost_usd", 0.0)
-    with _cost_lock:
+
+    with _stats_lock:
         _total_cost += cost
+        _total_calls += 1
 
     return output
 
@@ -235,10 +239,10 @@ def fetch_deadlines(name: str, url: str) -> dict:
     """
     domain = urlparse(url).netloc
 
-    print(f"  {name}: {url}")
+    progress_write(f"  {name}: {url}")
 
     # Step 1: Fetch the URL content
-    print(f"  {name}: Fetching website content...", file=sys.stderr)
+    progress_write(f"  {name}: Fetching website content...")
     fetch_output = run_claude(
         prompt=f"Fetch {url} and summarize the page content",
         allowed_tools=f"WebFetch(domain:{domain})",
@@ -252,7 +256,7 @@ def fetch_deadlines(name: str, url: str) -> dict:
         raise ClaudeQueryError("Failed to fetch page content")
 
     # Step 1.5: Extract submission cycles
-    print(f"  {name}: Extracting submission cycles...", file=sys.stderr)
+    progress_write(f"  {name}: Extracting submission cycles...")
     cycles_output = run_claude(
         prompt="What submission/review cycles does this conference have? E.g. Spring/Fall, Round 1/2/3, or just a single cycle. Return cycle labels as array.",
         schema=CYCLES_SCHEMA,
@@ -263,7 +267,7 @@ def fetch_deadlines(name: str, url: str) -> dict:
         cycles = [""]
 
     # Step 2: Extract submission deadline for each cycle
-    print(f"  {name}: Extracting submission deadlines...", file=sys.stderr)
+    progress_write(f"  {name}: Extracting submission deadlines...")
     submission_deadlines = []
     for cycle in cycles:
         cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
@@ -284,7 +288,7 @@ def fetch_deadlines(name: str, url: str) -> dict:
         raise ClaudeQueryError("No submission deadlines found")
 
     # Step 3: Extract all deadlines for each cycle
-    print(f"  {name}: Extracting all deadlines...", file=sys.stderr)
+    progress_write(f"  {name}: Extracting all deadlines...")
     all_deadlines = []
     for cycle in cycles:
         cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
@@ -298,7 +302,7 @@ def fetch_deadlines(name: str, url: str) -> dict:
             all_deadlines.append({**d, "cycle": cycle, "deadline_type": "unknown"})
 
     # Step 4: Merge - replace matching entries with submission deadlines
-    print(f"  {name}: Validating results...", file=sys.stderr)
+    progress_write(f"  {name}: Validating results...")
     for sub in submission_deadlines:
         sub_key = (sub["date"], sub["time"])
         found = False
@@ -628,7 +632,7 @@ def main():
     print_deadline_table(results)
     write_html_table(results, "/tmp/deadlines.html")
 
-    print(f"Total API cost: ${_total_cost:.4f}", file=sys.stderr)
+    print(f"Total: {_total_calls} API calls, ${_total_cost:.4f}", file=sys.stderr)
 
 
 def render_only():
