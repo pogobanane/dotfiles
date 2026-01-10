@@ -518,6 +518,7 @@ def write_html_table(results: dict, filepath: str):
     html = f"""<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
     <title>Conference Deadlines</title>
     <style>
         body {{ max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }}
@@ -594,7 +595,10 @@ def write_html_table(results: dict, filepath: str):
                     html += f'        <tr><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
         html += "    </table>\n"
 
-    html += """</body>
+    html += """    <footer style="margin-top: 2em; color: #666; font-size: 0.9em; text-align: center;">
+        <a href="https://github.com/pogobanane/dotfiles/tree/master/pkgs/conference-deadlines">Source</a>
+    </footer>
+</body>
 </html>
 """
     with open(filepath, "w") as f:
