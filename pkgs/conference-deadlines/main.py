@@ -514,6 +514,9 @@ def write_html_table(results: dict, filepath: str):
 
     rows.sort(key=lambda r: r[3])  # Sort by date
 
+    # Collect unique conference names for filter
+    conf_names = sorted(set(r[0] for r in rows))
+
     now = datetime.now().strftime("%Y-%m-%d")
     html = f"""<!DOCTYPE html>
 <html>
@@ -522,10 +525,16 @@ def write_html_table(results: dict, filepath: str):
     <title>Conference Deadlines</title>
     <style>
         body {{ max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }}
-        table {{ border-collapse: collapse; width: 100%; margin-bottom: 2em; }}
+        table {{ border-collapse: collapse; width: 100%; margin-bottom: 2em; table-layout: fixed; }}
         th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }}
+        th:nth-child(1), td:nth-child(1) {{ width: 13%; }}
+        th:nth-child(2), td:nth-child(2) {{ width: 55%; }}
+        th:nth-child(3), td:nth-child(3) {{ width: 32%; }}
         th {{ background: #f0f0f0; }}
         .predicted {{ font-style: italic; color: #666; }}
+        #conf-filter {{ display: flex; flex-wrap: wrap; gap: 0.5em 1.5em; margin: 0.5em 0; }}
+        #conf-filter label {{ white-space: nowrap; }}
+        summary {{ cursor: pointer; }}
     </style>
 </head>
 <body>
@@ -535,6 +544,14 @@ def write_html_table(results: dict, filepath: str):
         Deadline predictions are in gray.<br>
         Hover the conference name for more info.<br>
     </p>
+    <details>
+        <summary>Filter conferences</summary>
+        <div id="conf-filter">
+"""
+    for conf in conf_names:
+        html += f'            <label><input type="checkbox" value="{conf}" checked> {conf}</label>\n'
+    html += """        </div>
+    </details>
 """
     # Group by deadline year (descending), then by month
     years = {}
@@ -589,13 +606,22 @@ def write_html_table(results: dict, filepath: str):
                     tooltip = "Predicted" if predicted else ""
                     date_display = f"{date} (predicted)" if predicted else date
                 tooltip_escaped = tooltip.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;").replace("\n", "&#10;")
-                if i == 0:
-                    html += f'        <tr><td rowspan="{len(group_rows)}">{month_name}</td><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
-                else:
-                    html += f'        <tr><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
+                html += f'        <tr data-conf="{name}"><td>{month_name}</td><td{cls} title="{tooltip_escaped}">{label_html}</td><td{cls}>{date_display}</td></tr>\n'
         html += "    </table>\n"
 
-    html += """    <footer style="margin-top: 2em; color: #666; font-size: 0.9em; text-align: center;">
+    html += """    <script>
+    document.querySelectorAll('#conf-filter input').forEach(cb => {
+        cb.addEventListener('change', applyFilter);
+        applyFilter();
+        function applyFilter() {
+            const conf = cb.value;
+            document.querySelectorAll(`tr[data-conf="${conf}"]`).forEach(tr => {
+                tr.style.display = cb.checked ? '' : 'none';
+            });
+        }
+    });
+    </script>
+    <footer style="margin-top: 2em; color: #666; font-size: 0.9em; text-align: center;">
         <a href="https://github.com/pogobanane/dotfiles/tree/master/pkgs/conference-deadlines">Source</a>
     </footer>
 </body>
