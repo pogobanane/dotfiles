@@ -514,22 +514,25 @@ def write_html_table(results: dict, filepath: str):
 
     rows.sort(key=lambda r: r[3])  # Sort by date
 
-    html = """<!DOCTYPE html>
+    now = datetime.now().strftime("%Y-%m-%d")
+    html = f"""<!DOCTYPE html>
 <html>
 <head>
     <title>Conference Deadlines</title>
     <style>
-        body { max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }
-        table { border-collapse: collapse; width: 100%; margin-bottom: 2em; }
-        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
-        th { background: #f0f0f0; }
-        .predicted { font-style: italic; color: #666; }
+        body {{ max-width: 60em; margin: 0 auto; padding: 20px; font-family: sans-serif; }}
+        table {{ border-collapse: collapse; width: 100%; margin-bottom: 2em; }}
+        th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }}
+        th {{ background: #f0f0f0; }}
+        .predicted {{ font-style: italic; color: #666; }}
     </style>
 </head>
 <body>
     <h1>Conference Deadlines</h1>
     <p>
-        Deadline predictions are in gray. Hover the conference name for more info.
+        Last updated: {now}<br>
+        Deadline predictions are in gray.<br>
+        Hover the conference name for more info.<br>
     </p>
 """
     # Group by deadline year (descending), then by month
