@@ -193,7 +193,13 @@ io.write(dump(mailboxes))
 io.write("\n")
 io.write(dump(folders))
 io.write("\n")
-aenderboy_spamfilter(account2)
+
+while true do
+    aenderboy_spamfilter(account2)
+    if not account2["INBOX"]:enter_idle() then
+        sleep(300) -- fall back to polling
+    end
+end
 --io.write(dump(account1["Inbox"]))
 --io.write("\n")
 --print_mails(account2.INBOX:is_unseen())
