@@ -52,6 +52,11 @@ def main():
         if new_dates != old_dates:
             changes.append(f"CHANGED: {conf}: {old_dates} -> {new_dates}")
 
+    # Check for lost conferences
+    for conf in old_data:
+        if conf not in new_data:
+            changes.append(f"LOST: {conf}")
+
     if changes:
         print("Submission deadline changes detected:")
         for c in changes:

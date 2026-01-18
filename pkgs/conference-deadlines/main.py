@@ -24,6 +24,7 @@ _total_calls = 0
 _stats_lock = threading.Lock()
 
 # TODO ctrl c doesn't stop it on first try
+# TODO failures in threads don't stop everything.
 # TODO ATC has a wrong 2026 entry that breaks the prediction hint
 # TODO check correctness of conext eurosy and fast
 # TODO add a menu to select and deselect conferences
@@ -45,7 +46,6 @@ CONFERENCES = [
     *[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
     *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
     *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
-    *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
     *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
     *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
     *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
@@ -58,6 +58,11 @@ CONFERENCES = [
     *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
     *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
     *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
+
+    *[("NINES", 2026, "https://nines-conference.org/cfp")],
+
+    # conext server often returns randomly broken content. Also claude refuses to evaluate the javascript needed to read the website.
+    # *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
 ]
 
 
@@ -192,12 +197,23 @@ def run_claude(
     # print(shlex.join(cmd), file=sys.stderr)
     # print(file=sys.stderr)
 
-    result = subprocess.run(
-        cmd,
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    for _ in range(3):
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+        )
+        if "An update to our Consumer Terms and Privacy Policy has taken effect" in result.stderr:
+            # is a random message to prevent automated use?
+            progress_write(f"Retrying Claude command after privacy policy message: {shlex.join(cmd)}")
+        else:
+            break
+
+    if result.returncode != 0:
+        progress_write(f"Command failed: {shlex.join(cmd)}")
+        progress_write(f"stdout: {result.stdout}")
+        progress_write(f"stderr: {result.stderr}")
+        result.check_returncode()  # Raise CalledProcessError
 
     output = json.loads(result.stdout)
 
@@ -624,6 +640,9 @@ def write_html_table(results: dict, filepath: str):
     </script>
     <footer style="margin-top: 2em; color: #666; font-size: 0.9em; text-align: center;">
         <a href="https://github.com/pogobanane/dotfiles/tree/master/pkgs/conference-deadlines">Source</a>
+        Inspired by:
+        <a href="https://dants.github.io/index_sysvenues_deadline.html">Dan Tsafrir</a>,
+        <a href="https://www.os.is.s.u-tokyo.ac.jp/conf/">Takahiro Shinagawa</a>
     </footer>
 </body>
 </html>
@@ -667,6 +686,7 @@ def main():
     write_html_table(results, "/tmp/deadlines.html")
 
     print(f"Total: {_total_calls} API calls, ${_total_cost:.4f}", file=sys.stderr)
+    print("This may account to up to 15% of a claude session (resets 4 hourly).")
 
 
 def render_only():
