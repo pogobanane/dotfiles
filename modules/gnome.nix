@@ -149,8 +149,8 @@
   services.usbmuxd.enable = true;
 
   services.xserver.enable = true;
-  services.displayManager.gdm.enable = true;
-  services.desktopManager.gnome.enable = true;
+  services.displayManager.gdm.enable = lib.mkDefault true;
+  services.desktopManager.gnome.enable = lib.mkDefault true;
   services.gnome.gcr-ssh-agent.enable = lib.mkForce false; # no, dear god, no!
 
   # printing:
