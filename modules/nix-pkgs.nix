@@ -79,6 +79,8 @@
       # drawio = inputs.unstablepkgs.legacyPackages.x86_64-linux.drawio;
       gnomeExtensions = unstablepkgs.gnomeExtensions; # remove one gnomeExtensiosn has been updated to >june 13th https://github.com/NixOS/nixpkgs/commits/nixos-24.05/pkgs/desktops/gnome/extensions
       claude-code = unstablepkgs.claude-code;
+      codex = unstablepkgs.codex;
+      gemini-cli = unstablepkgs.gemini-cli;
       #nextcloud-client = nixpkgs.legacyPackages.x86_64-linux.libsForQt5.callPackage pkgs/nextcloud-client { };
       #chromium = unstablepkgs.legacyPackages.x86_64-linux.chromium;
       #slack = unstablepkgs.legacyPackages.x86_64-linux.slack;
