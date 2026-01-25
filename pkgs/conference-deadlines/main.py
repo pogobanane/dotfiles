@@ -47,7 +47,7 @@ class Crawler:
     def _get_driver(self):
         if self._driver is None:
             options = FirefoxOptions()
-            # options.add_argument("--headless")
+            options.add_argument("--headless")
             self._driver = webdriver.Firefox(options=options)
         return self._driver
 
@@ -96,27 +96,27 @@ NOW=2026
 
 # List of (name, year, url) tuples
 CONFERENCES = [
-    #*[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
-    # *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
-    # *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
-    # *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
-    # *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
-    # *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
-    # *[("ASPLOS", y, f"https://www.asplos-conference.org/asplos{y}/cfp/") for y in range(2024, NOW+1)],
-    # *[("FAST", y, f"https://www.usenix.org/conference/fast{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
-    # *[("NDSS", y, f"https://www.ndss-symposium.org/ndss{y}/submissions/call-for-papers/") for y in range(2017, NOW+1)],
-    # *[("Middleware", y, f"https://middleware-conf.github.io/{y}/calls/call-for-research-papers/") for y in range(2023, NOW+1)],
-    # *[("APSys", y, f"https://apsys{y}.github.io/call_for_papers.html") for y in [2025]],
-    # # APSys needs new links
-    # *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
-    # *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
-    # *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
+    *[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
+    *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
+    *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
+    *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
+    *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
+    *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
+    *[("ASPLOS", y, f"https://www.asplos-conference.org/asplos{y}/cfp/") for y in range(2024, NOW+1)],
+    *[("FAST", y, f"https://www.usenix.org/conference/fast{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    *[("NDSS", y, f"https://www.ndss-symposium.org/ndss{y}/submissions/call-for-papers/") for y in range(2017, NOW+1)],
+    *[("Middleware", y, f"https://middleware-conf.github.io/{y}/calls/call-for-research-papers/") for y in range(2023, NOW+1)],
+    *[("APSys", y, f"https://apsys{y}.github.io/call_for_papers.html") for y in [2025]],
+    # APSys needs new links
+    *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
+    *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
 
-    # *[("NINES", 2026, "https://nines-conference.org/cfp")],
+    *[("NINES", 2026, "https://nines-conference.org/cfp")],
 
     # # conext server often returns randomly broken content. Also claude refuses to evaluate the javascript needed to read the website.
-    # *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
-    *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2024, NOW+1)],
+    *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
+    *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2026, NOW+1)],
 ]
 
 
@@ -426,8 +426,9 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
     progress_write(f"  {name}: {url}")
 
     progress_write(f"  {name}: Fetching website...")
-    os.makedirs(CACHE_DIR, exist_ok=True)
-    pdf_path = os.path.join(CACHE_DIR, f"/downloads/{name}.pdf")
+    downloads_dir = os.path.join(CACHE_DIR, "downloads")
+    os.makedirs(downloads_dir, exist_ok=True)
+    pdf_path = os.path.join(downloads_dir, f"{name}.pdf")
     _crawler.save_pdf(url, pdf_path) # TODO handle failures
 
     # Step 1: Fetch the URL content
@@ -451,6 +452,9 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
         schema=json.dumps(CYCLES_SCHEMA),
         session_id=session_id,
     )
+    maybe_cycles = cycles_output.get("structured_output", {}).get("cycles")
+    if maybe_cycles is None:
+        progress_write(f"  {name}: {cycles_output}")
     conference.set_cycles(cycles_output.get("structured_output", {}).get("cycles"))
 
     # Step 3: Extract submission deadline for each cycle
@@ -817,7 +821,7 @@ def write_html_table(results: dict[str, ConferenceEvent], filepath: str):
 
 def main():
     results = {}
-    with ThreadPoolExecutor(max_workers=1) as executor:
+    with ThreadPoolExecutor(max_workers=16) as executor:
         futures = {
             executor.submit(fetch_deadlines, conf_label(name, year), url): (conf_label(name, year), name, year, url)
             for name, year, url in CONFERENCES
