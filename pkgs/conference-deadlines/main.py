@@ -404,24 +404,22 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
     return conference
 
 
-def print_deadline_table(results: dict):
+def print_deadline_table(results: dict[str, ConferenceEvent]):
     """Sort conferences by submission deadline and print as table."""
     # Flatten: (conf_name, cycle, deadline) for each submission deadline
     rows = []
     invalid = []
 
     for conf, data in results.items():
-        submission_deadlines = [
-            d for d in data["deadlines"]
-            if d["deadline_type"] == "submission"
-        ]
-        for d in submission_deadlines:
-            if d["valid"]:
-                # Add cycle suffix if multiple cycles
-                label = f"{conf} ({d['cycle']})" if d["cycle"] else conf
-                rows.append((label, d["date"]))
-            else:
-                invalid.append(conf)
+        for cycle, cycle_deadlines in data.deadlines.items():
+            deadline = cycle_deadlines.get("submission")
+            if deadline:
+                if deadline.is_valid:
+                    # Add cycle suffix if multiple cycles
+                    label = f"{conf} ({cycle})" if cycle else conf
+                    rows.append((label, deadline.date))
+                else:
+                    invalid.append(conf)
 
     if invalid:
         print(f"Invalid: {', '.join(set(invalid))}")
@@ -559,22 +557,28 @@ def predict_deadlines(rows: list, target_year: int) -> list:
     return predictions
 
 
-def write_html_table(results: dict, filepath: str):
+def write_html_table(results: dict[str, ConferenceEvent], filepath: str):
     """Write deadline table as HTML file."""
 
     # Flatten: (name, year, cycle, date, predicted, deadline_json, url) for each submission deadline
     rows = []
     for conf, data in results.items():
-        name = data["name"]
-        year = data["year"]
-        url = data.get("url", "")
+        name = data.name
+        year = data.year
+        url = data.url
 
-        submission_deadlines = [
-            d for d in data["deadlines"]
-            if d["deadline_type"] == "submission" and d["valid"]
-        ]
-        for d in submission_deadlines:
-            rows.append((name, year, d["cycle"], d["date"], False, d, url))
+        for cycle, cycle_deadlines in data.deadlines.items():
+            deadline = cycle_deadlines.get("submission")
+            if deadline and deadline.is_valid:
+                # Convert Deadline to dict for tooltip compatibility
+                d_dict = {
+                    "date": deadline.date,
+                    "time": deadline.time,
+                    "timezone": deadline.timezone,
+                    "utc_offset": deadline.utc_offset,
+                    "raw_string": deadline.raw_string,
+                }
+                rows.append((name, year, cycle, deadline.date, False, d_dict, url))
 
     # Add predictions for NOW and NOW+1 years
     predictions = predict_deadlines(rows, NOW)
@@ -730,10 +734,9 @@ def main():
         for future in futures_iter:
             label, name, year, url = futures[future]
             try:
-                result = future.result()
-                result["name"] = name
-                result["year"] = year
-                result["url"] = url
+                result = future.result()  # ConferenceEvent
+                result.name = name
+                result.year = year
                 results[label] = result
                 progress_write(f"  {label}: OK")
             except Exception as e:
