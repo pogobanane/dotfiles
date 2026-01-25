@@ -7,6 +7,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta
 from urllib.parse import urlparse
+from dataclasses import dataclass
 
 # Optional tqdm for progress bar
 try:
@@ -76,7 +77,7 @@ CYCLES_SCHEMA = json.dumps({
         "cycles": {
             "type": "array",
             "items": {"type": "string"},
-            "description": "List of submission cycle labels, e.g. ['Spring', 'Fall'] or [''] for single cycle"
+            "description": "List of submission cycle labels. When cycles are not announced yet, put []. Otherwise put [''] for single cycle or e.g. ['Spring', 'Fall']."
         }
     },
     "required": ["cycles"]
@@ -85,6 +86,10 @@ CYCLES_SCHEMA = json.dumps({
 SINGLE_DEADLINE_SCHEMA = json.dumps({
     "type": "object",
     "properties": {
+        "is_announced": {
+            "type": "boolean",
+            "description": "Whether the deadline time is announced on the website."
+        },
         "date": {
             "type": "string",
             "description": "ISO 8601 date, e.g. 2026-01-30"
@@ -106,7 +111,7 @@ SINGLE_DEADLINE_SCHEMA = json.dumps({
             "description": "Exact quote from website containing the deadline type and date, e.g. 'Abstract registration: Friday, January 30, 2026 AoE'"
         }
     },
-    "required": ["date", "time", "timezone", "utc_offset", "raw_string"]
+    "required": ["is_announced", "date", "time", "timezone", "utc_offset", "raw_string"]
 })
 
 OTHER_DEADLINES_SCHEMA = json.dumps({
@@ -114,37 +119,112 @@ OTHER_DEADLINES_SCHEMA = json.dumps({
     "properties": {
         "deadlines": {
             "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "date": {
-                        "type": "string",
-                        "description": "ISO 8601 date, e.g. 2026-01-30"
-                    },
-                    "time": {
-                        "type": "string",
-                        "description": "Time as HH:MM:SS, e.g. 23:59:59"
-                    },
-                    "timezone": {
-                        "type": "string",
-                        "description": "Timezone as stated on website, e.g. AoE, PST, UTC"
-                    },
-                    "utc_offset": {
-                        "type": "integer",
-                        "description": "Timezone offset from UTC in hours, e.g. -12 for AoE, -8 for PST, 0 for UTC"
-                    },
-                    "raw_string": {
-                        "type": "string",
-                        "description": "Exact quote from website containing the deadline type and date, e.g. 'Abstract registration: Friday, January 30, 2026 AoE'"
-                    }
-                },
-                "required": ["date", "time", "timezone", "utc_offset", "raw_string"]
-            }
+            "items": SINGLE_DEADLINE_SCHEMA
         }
     },
     "required": ["deadlines"]
 })
 
+@dataclass
+class Deadline:
+    """
+    If a deadline is not announced yet, or if any data field cannot be determined, is_announce must be False and the other fields must be empty.
+    """
+    is_announced: bool
+    is_valid: bool
+
+    date: str
+    time: str
+    timezone: str
+    utc_offset: int
+    raw_string: str
+
+    @classmethod
+    def from_json(cls, item: dict) -> "Deadline":
+        assert isinstance(item, dict)
+        is_valid = validate_deadline(item) is None
+        deadline = Deadline(
+            is_announced=item.get("is_announced"),
+            is_valid=is_valid,
+            date=item.get("date"),
+            time=item.get("time"),
+            timezone=item.get("timezone"),
+            utc_offset=item.get("utc_offset"),
+            raw_string=item.get("raw_string"),
+        )
+        return deadline
+
+    def time_equals(self, other: "Deadline") -> bool:
+        return (
+            self.date == other.date and
+            self.time == other.time and
+            self.timezone == other.timezone and
+            self.utc_offset == other.utc_offset
+        )
+
+
+
+class ConferenceEvent:
+    """
+    """
+    name: str
+    year: int
+    url: str
+
+    cycles: list[str] # [] if not announced; [ "" ] if single cycle
+
+    deadlines: dict[str, dict[str, Deadline]] # deadline = deadlines[cycle][deadline_type]
+
+    def __init__(self, name: str, year: int, url: str):
+        self.name = name
+        self.year = year
+        self.url = url
+        self.cycles_announced = False
+        self.cycles = []
+        self.deadlines = dict()
+
+    def set_cycles(self, cycles: list[str]):
+        # assert that contract from json scheme is fulfilled
+        assert isinstance(cycles, list)
+        assert all(isinstance(c, str) for c in cycles)
+
+        self.cycles = cycles
+
+    def set_deadline(self, cycle: str, deadline_type: str, deadline: Deadline):
+        """
+        cycle: "" if single cycle
+        """
+        assert isinstance(cycle, str)
+        assert isinstance(deadline_type, str)
+        assert isinstance(deadline, Deadline)
+
+        # TODO dont throw, but invalidate deadline
+        if cycle not in self.cycles:
+            ConsistencyError(f"Cycle '{cycle}' not in announced cycles {self.cycles}")
+        if cycle not in self.deadlines:
+            self.deadlines[cycle] = dict()
+        if deadline_type in self.deadlines[cycle]:
+            ConsistencyError(f"Deadline type '{deadline_type}' for cycle '{cycle}' already set")
+        self.deadlines[cycle][deadline_type] = deadline
+
+    def get_deadline(self, cycle: str, deadline_type: str) -> Deadline | None:
+        return self.deadlines.get(cycle, {}).get(deadline_type, None)
+
+    def validate(self):
+        # TODO dont throw, but invalidate ConferenceEvent
+        if len(self.cycles) == 0 and len(self.deadlines.keys()) > 0:
+            raise ConsistencyError("Deadlines exist but no cycles announced")
+        if not self.cycles_announced and len(self.cycles) != 0:
+            raise ConsistencyError("Cycles announced flag is False but cycles list is not empty")
+        if "submission" not in [ deadline_type for cycle_deadlines in self.deadlines.values() for deadline_type in cycle_deadlines.keys() ]:
+            # required submission deadline missing (should be at least Deadline(is_announced=False))
+            raise ConsistencyError("Submission deadline missing")
+        # maybe validate each deadline?
+
+
+class ConsistencyError(Exception):
+    """Raised when inconsistencies are found in deadline data that are most likely caused by LLM fuzzyness."""
+    pass
 
 class ClaudeQueryError(Exception):
     """Raised when a Claude query fails to return expected output."""
@@ -228,7 +308,7 @@ def run_claude(
     return output
 
 
-def fetch_deadlines(name: str, url: str) -> dict:
+def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
     """Fetch and extract deadlines for a conference.
 
     Args:
@@ -254,6 +334,7 @@ def fetch_deadlines(name: str, url: str) -> dict:
         }
     """
     domain = urlparse(url).netloc
+    conference = ConferenceEvent(name, 0, url) # TODO year
 
     progress_write(f"  {name}: {url}")
 
@@ -271,21 +352,18 @@ def fetch_deadlines(name: str, url: str) -> dict:
     if not page_content:
         raise ClaudeQueryError("Failed to fetch page content")
 
-    # Step 1.5: Extract submission cycles
+    # Step 2: Extract submission cycles
     progress_write(f"  {name}: Extracting submission cycles...")
     cycles_output = run_claude(
-        prompt="What submission/review cycles does this conference have? E.g. Spring/Fall, Round 1/2/3, or just a single cycle. Return cycle labels as array.",
+        prompt="What submission/review cycles does this conference website announce? E.g. Spring/Fall, Round 1/2/3, just a single cycle, or none if not announced. Return cycle labels as array.",
         schema=CYCLES_SCHEMA,
         session_id=session_id,
     )
-    cycles = cycles_output.get("structured_output", {}).get("cycles", [""])
-    if not cycles:
-        cycles = [""]
+    conference.set_cycles(cycles_output.get("structured_output", {}).get("cycles"))
 
-    # Step 2: Extract submission deadline for each cycle
+    # Step 3: Extract submission deadline for each cycle
     progress_write(f"  {name}: Extracting submission deadlines...")
-    submission_deadlines = []
-    for cycle in cycles:
+    for cycle in conference.cycles:
         cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
         sub_output = run_claude(
             prompt=cycle_prompt,
@@ -294,19 +372,11 @@ def fetch_deadlines(name: str, url: str) -> dict:
         )
         sub_deadline = sub_output.get("structured_output")
         if sub_deadline:
-            submission_deadlines.append({
-                **sub_deadline,
-                "cycle": cycle,
-                "deadline_type": "submission",
-            })
+            conference.set_deadline(cycle, "submission", Deadline.from_json(sub_deadline))
 
-    if not submission_deadlines:
-        raise ClaudeQueryError("No submission deadlines found")
-
-    # Step 3: Extract all deadlines for each cycle
+    # Step 4: Extract all deadlines for each cycle
     progress_write(f"  {name}: Extracting all deadlines...")
-    all_deadlines = []
-    for cycle in cycles:
+    for cycle in conference.cycles:
         cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
         all_output = run_claude(
             prompt=cycle_prompt,
@@ -315,31 +385,23 @@ def fetch_deadlines(name: str, url: str) -> dict:
         )
         cycle_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
         for d in cycle_deadlines:
-            all_deadlines.append({**d, "cycle": cycle, "deadline_type": "unknown"})
+            conference.set_deadline(cycle, "unknown", Deadline.from_json(d))
 
-    # Step 4: Merge - replace matching entries with submission deadlines
+    # Merge - replace matching entries with submission deadlines
     progress_write(f"  {name}: Validating results...")
-    for sub in submission_deadlines:
-        sub_key = (sub["date"], sub["time"])
-        found = False
-        for i, d in enumerate(all_deadlines):
-            if (d["date"], d["time"]) == sub_key:
-                all_deadlines[i] = sub
-                found = True
-                break
-        if not found:
+    for cycle in conference.cycles:
+        deadlines = conference.deadlines.get(cycle).values()
+        submission: Deadline = [ d for d in deadlines if d.deadline_type == "submission" ][0]
+        submission_duplicates: list[Deadline] = [ d for d in deadlines if d.deadline_type != "submission" and submission.time_equals(d) ]
+        _ = [ deadlines.remove(d) for d in submission_duplicates ]
+        duplicates = len(submission_duplicates)
+        if duplicates != 0:
+            # TODO rather invalidate?
             raise ClaudeQueryError(
-                f"Submission deadline ({sub['date']}, {sub['time']}) not found in all_deadlines"
+                f"Submission deadline ({submission.date}, {submission.time}) not found in all_deadlines"
             )
 
-    # Step 5: Validate all items and add valid flag
-    def add_valid_flag(item: dict) -> dict:
-        return {**item, "valid": validate_deadline(item) is None}
-
-    return {
-        "cycles": cycles,
-        "deadlines": [add_valid_flag(d) for d in all_deadlines],
-    }
+    return conference
 
 
 def print_deadline_table(results: dict):
