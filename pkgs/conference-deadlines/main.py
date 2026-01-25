@@ -15,6 +15,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 import time
 import os
+import base64
 from pathlib import Path
 
 CACHE_DIR = Path(__file__).parent / "history"
@@ -36,7 +37,8 @@ _stats_lock = threading.Lock()
 
 
 class Crawler:
-    """Thread-safe browser manager for taking screenshots."""
+    """Thread-safe browser manager for saving pages as PDF."""
+    # TODO separate worker. Generate jobs for other workers each time this one produces output.
 
     def __init__(self):
         self._lock = threading.Lock()
@@ -45,11 +47,11 @@ class Crawler:
     def _get_driver(self):
         if self._driver is None:
             options = FirefoxOptions()
-            options.add_argument("--headless")
+            # options.add_argument("--headless")
             self._driver = webdriver.Firefox(options=options)
         return self._driver
 
-    def screenshot(self, url: str, filepath: str, timeout: int = 30):
+    def save_pdf(self, url: str, filepath: str, timeout: int = 30):
         with self._lock:
             driver = self._get_driver()
             driver.get(url)
@@ -60,8 +62,11 @@ class Crawler:
             )
 
             time.sleep(5) # give time for js rendering
-            # Firefox supports native full-page screenshots
-            driver.save_full_page_screenshot(filepath)
+
+            # Print to PDF
+            pdf_base64 = driver.print_page()
+            with open(filepath, "wb") as f:
+                f.write(base64.b64decode(pdf_base64))
 
     def quit(self):
         if self._driver:
@@ -422,14 +427,14 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
 
     progress_write(f"  {name}: Fetching website...")
     os.makedirs(CACHE_DIR, exist_ok=True)
-    screenshot = os.path.join(CACHE_DIR, f"{name}.png")
-    _crawler.screenshot(url, screenshot) # TODO handle failures
+    pdf_path = os.path.join(CACHE_DIR, f"/downloads/{name}.pdf")
+    _crawler.save_pdf(url, pdf_path) # TODO handle failures
 
     # Step 1: Fetch the URL content
     progress_write(f"  {name}: Reading website content...")
     fetch_output = run_claude(
-        prompt=f"Read the {screenshot} website screenshot of {name} () and summarize the page content",
-        allowed_tools=f"Read({screenshot})",
+        prompt=f"Read the {pdf_path} PDF of the {name} website and summarize the page content",
+        allowed_tools=f"Read({pdf_path})",
     )
     session_id = fetch_output.get("session_id")
     if not session_id:
