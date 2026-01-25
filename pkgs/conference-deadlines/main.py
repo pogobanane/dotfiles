@@ -416,72 +416,71 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
     conference = ConferenceEvent(name, 0, url) # TODO year
     with tempfile.TemporaryDirectory() as tmpdir:
         _crawler.screenshot(url, f"{tmpdir}/screenshot.png")
-        pass
 
-    progress_write(f"  {name}: {url}")
+        progress_write(f"  {name}: {url}")
 
-    # Step 1: Fetch the URL content
-    progress_write(f"  {name}: Fetching website content...")
-    fetch_output = run_claude(
-        prompt=f"Fetch {url} and summarize the page content",
-        allowed_tools=f"WebFetch(domain:{domain})",
-    )
-    session_id = fetch_output.get("session_id")
-    if not session_id:
-        raise ClaudeQueryError("No session_id returned from fetch")
+        # Step 1: Fetch the URL content
+        progress_write(f"  {name}: Fetching website content...")
+        fetch_output = run_claude(
+            prompt=f"Fetch {url} and summarize the page content",
+            allowed_tools=f"WebFetch(domain:{domain})",
+        )
+        session_id = fetch_output.get("session_id")
+        if not session_id:
+            raise ClaudeQueryError("No session_id returned from fetch")
 
-    page_content = fetch_output.get("result", "")
-    if not page_content:
-        raise ClaudeQueryError("Failed to fetch page content")
+        page_content = fetch_output.get("result", "")
+        if not page_content:
+            raise ClaudeQueryError("Failed to fetch page content")
 
-    # Step 2: Extract submission cycles
-    progress_write(f"  {name}: Extracting submission cycles...")
-    cycles_output = run_claude(
-        prompt="What submission/review cycles does this conference website announce? E.g. Spring/Fall, Round 1/2/3, just a single cycle, or none if not announced. Return cycle labels as array.",
-        schema=json.dumps(CYCLES_SCHEMA),
-        session_id=session_id,
-    )
-    conference.set_cycles(cycles_output.get("structured_output", {}).get("cycles"))
-
-    # Step 3: Extract submission deadline for each cycle
-    progress_write(f"  {name}: Extracting submission deadlines...")
-    for cycle in conference.cycles:
-        cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
-        sub_output = run_claude(
-            prompt=cycle_prompt,
-            schema=json.dumps(SINGLE_DEADLINE_SCHEMA),
+        # Step 2: Extract submission cycles
+        progress_write(f"  {name}: Extracting submission cycles...")
+        cycles_output = run_claude(
+            prompt="What submission/review cycles does this conference website announce? E.g. Spring/Fall, Round 1/2/3, just a single cycle, or none if not announced. Return cycle labels as array.",
+            schema=json.dumps(CYCLES_SCHEMA),
             session_id=session_id,
         )
-        sub_deadline = sub_output.get("structured_output")
-        if sub_deadline:
-            conference.set_deadline(cycle, Deadline.from_json(sub_deadline, DeadlineType.SUBMISSION))
+        conference.set_cycles(cycles_output.get("structured_output", {}).get("cycles"))
 
-    # Step 4: Extract all deadlines for each cycle
-    progress_write(f"  {name}: Extracting all deadlines...")
-    for cycle in conference.cycles:
-        cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
-        all_output = run_claude(
-            prompt=cycle_prompt,
-            schema=json.dumps(OTHER_DEADLINES_SCHEMA),
-            session_id=session_id,
-        )
-        cycle_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
-        for d in cycle_deadlines:
-            conference.set_deadline(cycle, Deadline.from_json(d, DeadlineType.UNKNOWN))
-
-    # Merge - replace matching entries with submission deadlines
-    progress_write(f"  {name}: Validating results...")
-    for cycle in conference.cycles:
-        deadlines = conference.deadlines.get(cycle, [])
-        submission: Deadline = [ d for d in deadlines if d.deadline_type == DeadlineType.SUBMISSION ][0]
-        submission_duplicates: list[Deadline] = [ d for d in deadlines if d.deadline_type != DeadlineType.SUBMISSION and submission.time_equals(d) ]
-        _ = [ deadlines.remove(d) for d in submission_duplicates ]
-        duplicates = len(submission_duplicates)
-        if duplicates != 1:
-            # TODO rather invalidate?
-            raise ClaudeQueryError(
-                f"Submission deadline ({submission.date}, {submission.time}) not found in all_deadlines"
+        # Step 3: Extract submission deadline for each cycle
+        progress_write(f"  {name}: Extracting submission deadlines...")
+        for cycle in conference.cycles:
+            cycle_prompt = f"Extract the paper submission deadline for the {cycle} cycle" if cycle else "Extract the paper submission deadline"
+            sub_output = run_claude(
+                prompt=cycle_prompt,
+                schema=json.dumps(SINGLE_DEADLINE_SCHEMA),
+                session_id=session_id,
             )
+            sub_deadline = sub_output.get("structured_output")
+            if sub_deadline:
+                conference.set_deadline(cycle, Deadline.from_json(sub_deadline, DeadlineType.SUBMISSION))
+
+        # Step 4: Extract all deadlines for each cycle
+        progress_write(f"  {name}: Extracting all deadlines...")
+        for cycle in conference.cycles:
+            cycle_prompt = f"Extract all deadlines for the {cycle} cycle" if cycle else "Extract all deadlines"
+            all_output = run_claude(
+                prompt=cycle_prompt,
+                schema=json.dumps(OTHER_DEADLINES_SCHEMA),
+                session_id=session_id,
+            )
+            cycle_deadlines = all_output.get("structured_output", {}).get("deadlines", [])
+            for d in cycle_deadlines:
+                conference.set_deadline(cycle, Deadline.from_json(d, DeadlineType.UNKNOWN))
+
+        # Merge - replace matching entries with submission deadlines
+        progress_write(f"  {name}: Validating results...")
+        for cycle in conference.cycles:
+            deadlines = conference.deadlines.get(cycle, [])
+            submission: Deadline = [ d for d in deadlines if d.deadline_type == DeadlineType.SUBMISSION ][0]
+            submission_duplicates: list[Deadline] = [ d for d in deadlines if d.deadline_type != DeadlineType.SUBMISSION and submission.time_equals(d) ]
+            _ = [ deadlines.remove(d) for d in submission_duplicates ]
+            duplicates = len(submission_duplicates)
+            if duplicates != 1:
+                # TODO rather invalidate?
+                raise ClaudeQueryError(
+                    f"Submission deadline ({submission.date}, {submission.time}) not found in all_deadlines"
+                )
 
     return conference
 
