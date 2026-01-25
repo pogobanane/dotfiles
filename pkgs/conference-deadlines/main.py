@@ -9,6 +9,11 @@ from datetime import datetime, timedelta
 from urllib.parse import urlparse
 from dataclasses import dataclass
 from enum import Enum
+import tempfile
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+import time
 
 # Optional tqdm for progress bar
 try:
@@ -24,6 +29,43 @@ except ImportError:
 _total_cost = 0.0
 _total_calls = 0
 _stats_lock = threading.Lock()
+
+
+class Crawler:
+    """Thread-safe browser manager for taking screenshots."""
+
+    def __init__(self):
+        self._lock = threading.Lock()
+        self._driver = None
+
+    def _get_driver(self):
+        if self._driver is None:
+            options = FirefoxOptions()
+            options.add_argument("--headless")
+            self._driver = webdriver.Firefox(options=options)
+        return self._driver
+
+    def screenshot(self, url: str, filepath: str, timeout: int = 30):
+        with self._lock:
+            driver = self._get_driver()
+            driver.get(url)
+
+            # Wait for page to fully load
+            WebDriverWait(driver, timeout).until(
+                lambda d: d.execute_script("return document.readyState") == "complete"
+            )
+
+            time.sleep(1) # give time for js rendering
+            # Firefox supports native full-page screenshots
+            driver.save_full_page_screenshot(filepath)
+
+    def quit(self):
+        if self._driver:
+            self._driver.quit()
+            self._driver = None
+
+
+_crawler = Crawler()
 
 # TODO ctrl c doesn't stop it on first try
 # TODO failures in threads don't stop everything.
@@ -45,26 +87,27 @@ NOW=2026
 
 # List of (name, year, url) tuples
 CONFERENCES = [
-    *[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
-    *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
-    *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
-    *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
-    *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
-    *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
-    *[("ASPLOS", y, f"https://www.asplos-conference.org/asplos{y}/cfp/") for y in range(2024, NOW+1)],
-    *[("FAST", y, f"https://www.usenix.org/conference/fast{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
-    *[("NDSS", y, f"https://www.ndss-symposium.org/ndss{y}/submissions/call-for-papers/") for y in range(2017, NOW+1)],
-    *[("Middleware", y, f"https://middleware-conf.github.io/{y}/calls/call-for-research-papers/") for y in range(2023, NOW+1)],
-    *[("APSys", y, f"https://apsys{y}.github.io/call_for_papers.html") for y in [2025]],
-    # APSys needs new links
-    *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
-    *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
-    *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
+    #*[("SIGCOMM", y, f"https://conferences.sigcomm.org/sigcomm/{y}/cfp/") for y in range(2024, NOW+1)],
+    # *[("EuroSys", y, f"https://{y}.eurosys.org/cfp.html#calls") for y in range(2025, NOW+1)],
+    # *[("NSDI", y, f"https://www.usenix.org/conference/nsdi{y % 100:02d}/call-for-papers") for y in range(2012, NOW+1)],
+    # *[("SoCC", y, f"https://acmsocc.org/{y}/papers.html") for y in range(2015, NOW+1)],
+    # *[("SOSP", y, f"https://sigops.org/s/conferences/sosp/{y}/cfp.html") for y in range(2024, NOW+1)],
+    # *[("HotOS", y, f"https://sigops.org/s/conferences/hotos/{y}/cfp.html") for y in range(2023, NOW+1)],
+    # *[("ASPLOS", y, f"https://www.asplos-conference.org/asplos{y}/cfp/") for y in range(2024, NOW+1)],
+    # *[("FAST", y, f"https://www.usenix.org/conference/fast{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    # *[("NDSS", y, f"https://www.ndss-symposium.org/ndss{y}/submissions/call-for-papers/") for y in range(2017, NOW+1)],
+    # *[("Middleware", y, f"https://middleware-conf.github.io/{y}/calls/call-for-research-papers/") for y in range(2023, NOW+1)],
+    # *[("APSys", y, f"https://apsys{y}.github.io/call_for_papers.html") for y in [2025]],
+    # # APSys needs new links
+    # *[("HotNets", y, f"https://conferences.sigcomm.org/hotnets/{y}/cfp.html") for y in range(2005, NOW+1)],
+    # *[("ATC", y, f"https://www.usenix.org/conference/atc{y % 100:02d}/call-for-papers") for y in range(2013, NOW+1)],
+    # *[("OSDI", y, f"https://www.usenix.org/conference/osdi{y % 100:02d}/call-for-papers") for y in range(2018, NOW+1)],
 
-    *[("NINES", 2026, "https://nines-conference.org/cfp")],
+    # *[("NINES", 2026, "https://nines-conference.org/cfp")],
 
-    # conext server often returns randomly broken content. Also claude refuses to evaluate the javascript needed to read the website.
+    # # conext server often returns randomly broken content. Also claude refuses to evaluate the javascript needed to read the website.
     # *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2012, NOW+1)],
+    *[("CoNEXT", y, f"https://conferences2.sigcomm.org/co-next/{y}/#!/cfp") for y in range(2024, NOW+1)],
 ]
 
 
@@ -371,6 +414,9 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
     """
     domain = urlparse(url).netloc
     conference = ConferenceEvent(name, 0, url) # TODO year
+    with tempfile.TemporaryDirectory() as tmpdir:
+        _crawler.screenshot(url, f"{tmpdir}/screenshot.png")
+        pass
 
     progress_write(f"  {name}: {url}")
 
@@ -761,7 +807,7 @@ def write_html_table(results: dict[str, ConferenceEvent], filepath: str):
 
 def main():
     results = {}
-    with ThreadPoolExecutor(max_workers=16) as executor:
+    with ThreadPoolExecutor(max_workers=1) as executor:
         futures = {
             executor.submit(fetch_deadlines, conf_label(name, year), url): (conf_label(name, year), name, year, url)
             for name, year, url in CONFERENCES
@@ -793,6 +839,8 @@ def main():
 
     print(f"Total: {_total_calls} API calls, ${_total_cost:.4f}", file=sys.stderr)
     print("This may account to up to 15% of a claude session (resets 4 hourly).")
+
+    _crawler.quit()
 
 
 def render_only():

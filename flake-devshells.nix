@@ -6,9 +6,12 @@
           just
           nix-output-monitor
           inputs'.disko.packages.disko
+          # selenium-manager
+          chromedriver
           (python3.withPackages (python-pkgs: with python-pkgs; [
             dnspython
             tqdm
+            selenium
           ]))
         ];
       };
