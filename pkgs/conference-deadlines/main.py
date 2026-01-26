@@ -492,10 +492,11 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
         _ = [ deadlines.remove(d) for d in submission_duplicates ]
         duplicates = len(submission_duplicates)
         if duplicates != 1:
-            # TODO rather invalidate?
-            raise ClaudeQueryError(
-                f"Submission deadline ({submission.date}, {submission.time}) not found in all_deadlines"
-            )
+            submission.is_valid = False
+            progress_write(f"  {name}: WARNING: hsubmission deadline ({submission.date}, {submission.time}) doesnt have exactly one ({duplicates}) duplicates in all_deadlines")
+            # raise ClaudeQueryError(
+            #     f"Submission deadline ({submission.date}, {submission.time}) not found in all_deadlines" # marker
+            # )
 
     return conference
 

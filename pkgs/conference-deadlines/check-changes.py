@@ -7,6 +7,17 @@ from pathlib import Path
 CACHE_DIR = Path(__file__).parent / "history"
 
 
+def unique_path(path: Path) -> Path:
+    """Return path with number suffix if it already exists."""
+    if not path.exists():
+        return path
+    counter = 1
+    stem = path.stem
+    while (path.parent / f"{stem}-{counter}{path.suffix}").exists():
+        counter += 1
+    return path.parent / f"{stem}-{counter}{path.suffix}"
+
+
 def main():
     # Run main.py
     script_dir = Path(__file__).parent
@@ -16,20 +27,20 @@ def main():
     with open("/tmp/deadlines.json") as f:
         new_data = json.load(f)
 
-    # Save with date filename
+    # Find previous JSON before saving new one
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    jsons = sorted(CACHE_DIR.glob("*.json"))
+    prev_path = jsons[-1] if jsons else None
+
+    # Save with date filename
     today = datetime.now().strftime("%Y-%m-%d")
-    new_path = CACHE_DIR / f"{today}.json"
+    new_path = unique_path(CACHE_DIR / f"{today}.json")
     with open(new_path, "w") as f:
         json.dump(new_data, f, indent=2)
 
-    # Find previous JSON
-    jsons = sorted(CACHE_DIR.glob("*.json"))
-    if len(jsons) < 2:
+    if not prev_path:
         print("No previous data to compare")
         return
-
-    prev_path = jsons[-2]  # second to last
     with open(prev_path) as f:
         old_data = json.load(f)
 
