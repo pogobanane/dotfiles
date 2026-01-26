@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import subprocess
 import json
+import traceback
 import shlex
 import sys
 import threading
@@ -198,6 +199,19 @@ class Deadline:
     raw_string: str
 
     @classmethod
+    def invalid(cls, deadline_type: DeadlineType) -> "Deadline":
+        return Deadline(
+            is_announced=False,
+            is_valid=False,
+            deadline_type=deadline_type,
+            date="",
+            time="",
+            timezone="",
+            utc_offset=0,
+            raw_string="",
+        )
+
+    @classmethod
     def from_json(cls, item: dict, deadline_type: DeadlineType) -> "Deadline":
         assert isinstance(item, dict)
         assert isinstance(deadline_type, DeadlineType)
@@ -383,7 +397,7 @@ def run_claude(
     # print(shlex.join(cmd), file=sys.stderr)
     # print(file=sys.stderr)
 
-    for _ in range(3):
+    for _ in range(4):
         result = subprocess.run(
             cmd,
             capture_output=True,
@@ -392,6 +406,8 @@ def run_claude(
         if "An update to our Consumer Terms and Privacy Policy has taken effect" in result.stderr:
             # is a random message to prevent automated use?
             progress_write(f"Retrying Claude command after privacy policy message: {shlex.join(cmd)}")
+        elif "error_during_execution" in result.subtype:
+            progress_write(f"Retrying Claude command after claude-cli error: {'\n'.join(result.errors)}")
         else:
             break
 
@@ -469,6 +485,9 @@ def fetch_deadlines(name: str, url: str) -> ConferenceEvent:
         sub_deadline = sub_output.get("structured_output")
         if sub_deadline:
             conference.set_deadline(cycle, Deadline.from_json(sub_deadline, DeadlineType.SUBMISSION))
+        else:
+            progress_write(f"  {name}: WARNING: {sub_output}")
+            conference.set_deadline(cycle, Deadline.invalid(DeadlineType.SUBMISSION))
 
     # Step 4: Extract all deadlines for each cycle
     progress_write(f"  {name}: Extracting all deadlines...")
@@ -842,6 +861,7 @@ def main():
                 progress_write(f"  {label}: OK")
             except Exception as e:
                 progress_write(f"  {label}: Error - {e}")
+                [ progress_write(f"  {label}: {line}") for line in traceback.format_exception(e) ]
 
     # Write JSON cache
     with open("/tmp/deadlines.json", "w") as f:
