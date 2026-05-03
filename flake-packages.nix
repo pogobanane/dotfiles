@@ -48,6 +48,7 @@
       easyeffects = pkgs.easyeffects.overrideAttrs (final: prev: {
         buildInputs = prev.buildInputs ++ [ pkgs.wrapGAppsHook3 pkgs.wrapGAppsHook4 ];
       });
+      grist-desktop = pkgs.callPackage ./pkgs/grist-desktop.nix { };
     };
   };
   flake = let
