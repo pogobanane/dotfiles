@@ -50,8 +50,6 @@ in
       Install.WantedBy = [ "sleep.target" ];
     };
 
-    systemd.user.services.noctalia-shell.Service.Environment = [ "QML_DISABLE_DISK_CACHE=1" ]; # qt caches doesnt notice changes in plugins when they live in the nix store. This fixes it.
-
     # kanshi driven by ~/.config/kanshi/config, which the noctalia display-config
     # plugin writes via "Remember monitors". Don't manage profiles here so the
     # plugin stays authoritative.
@@ -191,7 +189,6 @@ in
     # configure options
     programs.noctalia-shell = {
       enable = true;
-      systemd.enable = true;
       # Patch the launcher sort in LauncherCore.qml so open windows always
       # appear above apps. Upstream sorts by `return sb - sa` (descending
       # fuzzy-match _score). We prepend a check and higher priority
