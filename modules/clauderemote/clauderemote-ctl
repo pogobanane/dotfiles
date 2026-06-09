@@ -15,6 +15,7 @@ Usage: clauderemote-ctl <subcommand> [args]
 Subcommands:
   start [session-name]   (re)start claude in a tmux window (default: "default")
   stop [session-name]    gracefully stop claude and close its window
+  attach [session-name]  attach to the tmux window of a session
   list                   list sessions and whether claude is still running
 EOF
     exit 1
@@ -70,6 +71,26 @@ cmd_start() {
     else
         "${TMUX[@]}" new-session -d -s "$SESSION" -n "$name" -c "$PWD" "$cmd"
     fi
+
+    local wid pid
+    wid=$(window_id "$name")
+
+    # Wait for the claude process to come up.
+    for _ in $(seq 30); do
+        pid=$("${TMUX[@]}" display-message -p -t "$wid" '#{pane_pid}' 2>/dev/null || true)
+        [ -n "$pid" ] && claude_pid "$pid" >/dev/null && break
+        sleep 0.5
+    done
+    sleep 2
+
+    # Acknowledge possible startup questions (trust dialog etc.), then enable
+    # remote control.
+    "${TMUX[@]}" send-keys -t "$wid" Enter
+    sleep 1
+    "${TMUX[@]}" send-keys -t "$wid" -l '/remote-control'
+    sleep 1
+    "${TMUX[@]}" send-keys -t "$wid" Enter
+
     echo "started session '$name'"
 }
 
@@ -101,6 +122,18 @@ cmd_stop() {
     echo "stopped session '$name'"
 }
 
+cmd_attach() {
+    local name=${1:-default}
+    local wid
+    wid=$(window_id "$name")
+    if [ -z "$wid" ]; then
+        echo "no session '$name' to attach to" >&2
+        exit 1
+    fi
+    # Targeting a window attaches the session with that window selected.
+    exec "${TMUX[@]}" attach-session -t "$SESSION:$wid"
+}
+
 cmd_list() {
     if ! "${TMUX[@]}" has-session -t "$SESSION" 2>/dev/null; then
         echo "no sessions"
@@ -129,6 +162,7 @@ shift
 case "$subcommand" in
     start) cmd_start "$@" ;;
     stop) cmd_stop "$@" ;;
+    attach) cmd_attach "$@" ;;
     list) cmd_list "$@" ;;
     *) usage ;;
 esac
