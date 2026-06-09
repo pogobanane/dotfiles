@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -z "${TMUX_PANE:-}" ]; then
+    echo "Error: not inside a tmux pane (TMUX_PANE unset)" >&2
+    exit 1
+fi
+
+pane="$TMUX_PANE"
+
+(
+    while sleep 900; do
+        tmux send-keys -t "$pane" ' ' BSpace
+    done
+) &
+keepalive_pid=$!
+trap 'kill "$keepalive_pid" 2>/dev/null' EXIT
+
+"$@"

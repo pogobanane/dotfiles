@@ -38,6 +38,7 @@
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
       ./modules/musician.nix
+      ./modules/clauderemote
     ];
 
   #sops.defaultSopsFile = ./secrets.yaml;

@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Manage clauderemote claude sessions running in tmux windows ("tabs") on a
+# dedicated tmux server (socket -L clauderemote).
+
+SOCKET=clauderemote
+SESSION=clauderemote
+TMUX=(tmux -L "$SOCKET")
+
+usage() {
+    cat >&2 <<EOF
+Usage: clauderemote-ctl <subcommand> [args]
+
+Subcommands:
+  start [session-name]   (re)start claude in a tmux window (default: "default")
+  stop [session-name]    gracefully stop claude and close its window
+  list                   list sessions and whether claude is still running
+EOF
+    exit 1
+}
+
+clauderemote_bin() {
+    if command -v clauderemote >/dev/null 2>&1; then
+        echo clauderemote
+    else
+        echo "$(dirname "$(readlink -f "$0")")/clauderemote"
+    fi
+}
+
+# Print the window id of the window named $1, if any.
+window_id() {
+    "${TMUX[@]}" list-windows -t "$SESSION" -F '#{window_id} #{window_name}' 2>/dev/null \
+        | awk -v n="$1" '{id=$1; sub(/^[^ ]+ /, ""); if ($0 == n) {print id; exit}}' \
+        || true
+}
+
+window_exists() {
+    [ -n "$(window_id "$1")" ]
+}
+
+# Print the pid of the claude process at or below pid $1, if any.
+claude_pid() {
+    local queue=("$1") p kids k
+    while [ "${#queue[@]}" -gt 0 ]; do
+        p=${queue[0]}
+        queue=("${queue[@]:1}")
+        # On NixOS the binary may be wrapped and show up as ".claude-wrapped".
+        case "$(ps -o comm= -p "$p" 2>/dev/null)" in
+            *claude*)
+                echo "$p"
+                return 0
+                ;;
+        esac
+        kids=$(ps -o pid= --ppid "$p" 2>/dev/null || true)
+        for k in $kids; do
+            queue+=("$k")
+        done
+    done
+    return 1
+}
+
+cmd_start() {
+    local name=${1:-default}
+    cmd_stop "$name"
+    local cmd
+    cmd="$(clauderemote_bin) claude"
+    if "${TMUX[@]}" has-session -t "$SESSION" 2>/dev/null; then
+        "${TMUX[@]}" new-window -t "$SESSION" -n "$name" -c "$PWD" "$cmd"
+    else
+        "${TMUX[@]}" new-session -d -s "$SESSION" -n "$name" -c "$PWD" "$cmd"
+    fi
+    echo "started session '$name'"
+}
+
+cmd_stop() {
+    local name=${1:-default}
+    local wid
+    wid=$(window_id "$name")
+    if [ -z "$wid" ]; then
+        echo "no session '$name' to stop"
+        return 0
+    fi
+
+    # Claude exits on Ctrl-C pressed twice in quick succession. The window
+    # (and possibly the whole server) may vanish between the two keypresses.
+    "${TMUX[@]}" send-keys -t "$wid" C-c 2>/dev/null || true
+    sleep 0.3
+    "${TMUX[@]}" send-keys -t "$wid" C-c 2>/dev/null || true
+
+    # The window closes by itself once claude (and the clauderemote wrapper)
+    # exit; give it a grace period, then kill it.
+    for _ in $(seq 50); do
+        window_exists "$name" || break
+        sleep 0.2
+    done
+    if window_exists "$name"; then
+        echo "session '$name' did not exit gracefully, killing window" >&2
+        "${TMUX[@]}" kill-window -t "$wid"
+    fi
+    echo "stopped session '$name'"
+}
+
+cmd_list() {
+    if ! "${TMUX[@]}" has-session -t "$SESSION" 2>/dev/null; then
+        echo "no sessions"
+        return 0
+    fi
+    local fmt="%-20s %-10s %s\n"
+    # shellcheck disable=SC2059
+    printf "$fmt" "SESSION" "PANE_PID" "CLAUDE"
+    local wid name pid cpid
+    while read -r wid name; do
+        pid=$("${TMUX[@]}" display-message -p -t "$wid" '#{pane_pid}' 2>/dev/null || true)
+        [ -n "$pid" ] || continue
+        if cpid=$(claude_pid "$pid"); then
+            # shellcheck disable=SC2059
+            printf "$fmt" "$name" "$pid" "running (pid $cpid)"
+        else
+            # shellcheck disable=SC2059
+            printf "$fmt" "$name" "$pid" "not running"
+        fi
+    done < <("${TMUX[@]}" list-windows -t "$SESSION" -F '#{window_id} #{window_name}')
+}
+
+[ $# -ge 1 ] || usage
+subcommand=$1
+shift
+case "$subcommand" in
+    start) cmd_start "$@" ;;
+    stop) cmd_stop "$@" ;;
+    list) cmd_list "$@" ;;
+    *) usage ;;
+esac
