@@ -8,7 +8,7 @@ let
   '';
 in
 {
-  environment.systemPackages = [ clauderemote ];
+  environment.systemPackages = [ clauderemote ]; # the packages in the systemd path are also implied here, but i'm evil so i omit them
 
   systemd.services.clauderemote = {
     description = "claude session in tmux -L clauderemote";
@@ -23,6 +23,7 @@ in
       pkgs.coreutils
       pkgs.procps
       pkgs.gawk
+      pkgs.hostname-debian
     ];
     serviceConfig = {
       # clauderemote-ctl start returns after spawning the tmux server, which

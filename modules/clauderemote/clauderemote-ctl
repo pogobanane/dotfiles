@@ -65,7 +65,7 @@ cmd_start() {
     local name=${1:-default}
     cmd_stop "$name"
     local cmd
-    cmd="$(clauderemote_bin) claude"
+    cmd="$(clauderemote_bin) claude --name $(hostname)-$name"
     if "${TMUX[@]}" has-session -t "$SESSION" 2>/dev/null; then
         "${TMUX[@]}" new-window -t "$SESSION" -n "$name" -c "$PWD" "$cmd"
     else
@@ -90,8 +90,29 @@ cmd_start() {
     "${TMUX[@]}" send-keys -t "$wid" -l '/remote-control'
     sleep 1
     "${TMUX[@]}" send-keys -t "$wid" Enter
+    sleep 1
+
+    # Query the claude session id via the /status dialog so the session can be
+    # recovered manually (claude --resume <uuid>).
+    "${TMUX[@]}" send-keys -t "$wid" -l '/status'
+    sleep 1
+    "${TMUX[@]}" send-keys -t "$wid" Enter
+    local sid=""
+    for _ in $(seq 20); do
+        sid=$("${TMUX[@]}" capture-pane -p -t "$wid" 2>/dev/null \
+            | sed -n 's/.*Session ID:[[:space:]]*\([0-9a-f-]\{36\}\).*/\1/p' \
+            | head -n1)
+        [ -n "$sid" ] && break
+        sleep 0.5
+    done
+    "${TMUX[@]}" send-keys -t "$wid" Escape
 
     echo "started session '$name'"
+    if [ -n "$sid" ]; then
+        echo "claude session id: $sid (recover with: claude --resume $sid)"
+    else
+        echo "warning: could not determine claude session id" >&2
+    fi
 }
 
 cmd_stop() {
