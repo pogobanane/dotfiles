@@ -30,6 +30,10 @@
 
   home-manager.extraSpecialArgs = { my-noctalia = true; };
 
+  # networkmanager: lets noctalia's network UI add new connection profiles
+  # without polkit auth (otherwise we'd need to run something like hyprpolkitagent)
+  users.users.peter.extraGroups = [ "networkmanager" ];
+
   programs.niri.enable = true;
 
   # Use KDE Wallet instead of gnome-keyring for secret storage
