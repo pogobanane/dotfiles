@@ -186,30 +186,30 @@ in
                       '# Module overview'
   '';
 
-  home.file.".claude/plugins/marketplaces/claude-reflect-marketplace".source = inputs.claude-reflect-src;
-  home.file.${claudeReflectCachePath}.source = inputs.claude-reflect-src;
+  # home.file.".claude/plugins/marketplaces/claude-reflect-marketplace".source = inputs.claude-reflect-src;
+  # home.file.${claudeReflectCachePath}.source = inputs.claude-reflect-src;
   home.file.".claude/plugins/known_marketplaces.json".text = builtins.toJSON {
     claude-plugins-official = {
       source = { source = "github"; repo = "anthropics/claude-plugins-official"; };
       installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-plugins-official";
       lastUpdated = "2025-12-17T12:49:07.220Z";
     };
-    claude-reflect-marketplace = {
-      source = { source = "github"; repo = "bayramannakov/claude-reflect"; };
-      installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-reflect-marketplace";
-      lastUpdated = "2026-04-12T00:00:00.000Z";
-    };
+    # claude-reflect-marketplace = {
+    #   source = { source = "github"; repo = "bayramannakov/claude-reflect"; };
+    #   installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-reflect-marketplace";
+    #   lastUpdated = "2026-04-12T00:00:00.000Z";
+    # };
   };
   home.file.".claude/plugins/installed_plugins.json".text = builtins.toJSON {
     version = 2;
-    plugins."claude-reflect@claude-reflect-marketplace" = [{
-      scope = "user";
-      installPath = "${homeDirectory}/${claudeReflectCachePath}";
-      version = claudeReflectRev;
-      installedAt = "2026-04-12T00:00:00.000Z";
-      lastUpdated = "2026-04-12T00:00:00.000Z";
-      gitCommitSha = inputs.claude-reflect-src.rev;
-    }];
+    # plugins."claude-reflect@claude-reflect-marketplace" = [{
+    #   scope = "user";
+    #   installPath = "${homeDirectory}/${claudeReflectCachePath}";
+    #   version = claudeReflectRev;
+    #   installedAt = "2026-04-12T00:00:00.000Z";
+    #   lastUpdated = "2026-04-12T00:00:00.000Z";
+    #   gitCommitSha = inputs.claude-reflect-src.rev;
+    # }];
   };
 
   home.packages = with pkgs; [
@@ -250,6 +250,18 @@ in
     flakepkgs.extrasuite # llm firendly google docs cli
     inputs.claude-history.packages.${stdenv.hostPlatform.system}.default
     flakepkgs.nono
+    (pkgs.writeShellApplication {
+      name = "nonoclaude";
+      runtimeInputs = [
+        # flakepkgs.nono
+        # inputs.llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
+      ];
+      text = ''
+        set -e
+        nono run --profile nix-claude --allow-cwd -- claude --dangerously-skip-permissions "$@"
+      '';
+    })
+
     (pkgs.writeShellApplication {
       name = "nonowrap";
       runtimeInputs = [ pkgs.bubblewrap ];
