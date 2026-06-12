@@ -1,3 +1,5 @@
+pw-metadata -n settings 0 clock.force-rate 48000
+
 # My dotfiles for NixOS
 
 Built with flake-parts, home-manager and sops-nix.
