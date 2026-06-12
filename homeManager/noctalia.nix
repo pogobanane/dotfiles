@@ -187,6 +187,7 @@ in
       libheif
 
       gnome-calculator
+      gnome-clocks
       eog # gnome image viewer
       gnome-system-monitor
       nautilus
