@@ -12,7 +12,7 @@ in
 
   systemd.services.clauderemote = {
     description = "claude session in tmux -L clauderemote";
-    wantedBy = [ "multi-user.target" ];
+    # wantedBy = [ "multi-user.target" ];
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
     path = [
