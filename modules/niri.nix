@@ -62,6 +62,7 @@
     libnotify
     kanshi
     wdisplays # drag-and-drop output arrangement; launched from noctalia display-config plugin for 3+ monitor setups
+    wl-mirror # screen mirroring (wl-mirror + wl-present); driven by noctalia display-config plugin and kanshi mirror profiles
 
     # Audio
     pavucontrol

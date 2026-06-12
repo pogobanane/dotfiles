@@ -1123,11 +1123,11 @@
     "my-noctalia-plugins-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1776462990,
-        "narHash": "sha256-mhiNzOMV2Vm/DVu4DKf92ndZ85JJ8epa6u5epo63C9o=",
+        "lastModified": 1781297999,
+        "narHash": "sha256-P7/uXvbPbMhXno5Oysg0spxJPe4ZFL9cLxGStLJL150=",
         "owner": "pogoba",
         "repo": "noctalia-plugins",
-        "rev": "37a6d04a294c4d93771ce642252db4a03942f4f6",
+        "rev": "a1dd1ba4e7114c677eb79eb3933ffde51af45ae4",
         "type": "github"
       },
       "original": {
