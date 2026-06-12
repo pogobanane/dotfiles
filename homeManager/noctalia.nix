@@ -25,6 +25,15 @@ in
   };
 
   config = lib.mkIf config.my-noctalia.enable {
+    # Startup chain: greetd (modules/niri.nix) runs niri-session, which starts
+    # the niri.service user unit; niri then spawns noctalia-shell via
+    # spawn-sh-at-startup in niri.kdl. noctalia-shell is a wrapper around
+    # quickshell (noctalia is a quickshell config).
+    #
+    # Logs: niri -> `journalctl --user -u niri.service`. noctalia gets no
+    # journal entries (niri spawns it with stdout/stderr -> /dev/null); read
+    # `noctalia-shell log -f` instead, which tails the quickshell log at
+    # /run/user/$UID/quickshell/by-pid/$(pgrep quickshell)/log.log (tmpfs, lost on reboot).
     my-wluma.enable = true;
 
     # Set the GTK icon theme so Qt's gtk3 platform theme (QT_QPA_PLATFORMTHEME=gtk3)
