@@ -66,6 +66,8 @@ in
   my-noctalia.enable = my-noctalia;
   programs.nix-index-database.comma.enable = true;
 
+  programs.nh.enable = true;
+
   # Configuration of secrets
   sops = {
     #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
