@@ -7,7 +7,7 @@
   ];
 
   # android stuff
-  programs.adb.enable = true;
+  # programs.adb.enable = true;
   users.extraUsers.peter.extraGroups = [ "adbusers" ];
   # simple audio streaming for andoid
   # https://github.com/kaytat/SimpleProtocolPlayer
