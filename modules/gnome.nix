@@ -79,6 +79,7 @@
 
     vlc
     libreoffice
+    flakepkgs.grist-desktop # python spreadsheet excel
     gimp
     gthumb # photo folder viewer
     inkscape
