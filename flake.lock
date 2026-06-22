@@ -257,11 +257,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1766326534,
-        "narHash": "sha256-zb90amYQTByb6Gtwq850y7ybGsUSiVR+2UdRKiqqV/k=",
+        "lastModified": 1780776875,
+        "narHash": "sha256-/AXM+S6QKvnejxkELPUCcl4Jj8BE594ArfslA1/P/u4=",
         "ref": "refs/heads/master",
-        "rev": "69d83d73eab52ecfe1097bf459b87802d876f131",
-        "revCount": 68,
+        "rev": "92f39fb6e8f716fdff043eeaf4bd4b9d7400456e",
+        "revCount": 69,
         "type": "git",
         "url": "https://gitlab.com/pogobanane/gnome-ctile.git"
       },
