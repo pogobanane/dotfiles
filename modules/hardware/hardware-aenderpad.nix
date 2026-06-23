@@ -24,7 +24,7 @@
   services.hardware.bolt.enable = true;
 
   boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" ];
-  boot.initrd.kernelModules = [ ];
+  # boot.initrd.kernelModules = [ ];
   # with linux 5.10 lts, BT audio works. With latest it doesnt.
   boot.kernelModules = [ "kvm-amd" ];
   # boot.kernelPackages = pkgs.linuxPackages; # _latest;
@@ -76,6 +76,8 @@
 
   # replace oomd and earlyoom with zswap:
   swapDevices = [{ device = "/dev/cryptvl/swap"; }];
+  # ensure lz4 crypto is available before zswap inits, else it falls back to zstd
+  boot.initrd.kernelModules = [ "lz4" "lz4_compress" ];
   boot.kernelParams = [
     "zswap.enabled=1" # enables zswap
     "zswap.compressor=lz4" # compression algorithm
