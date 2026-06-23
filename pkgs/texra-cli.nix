@@ -1,6 +1,6 @@
 { pkgs, lib, ... }:
 let
-  version = "0.38.10";
+  version = "0.38.9";
 in
 pkgs.stdenv.mkDerivation {
   pname = "texra-cli";
@@ -8,7 +8,7 @@ pkgs.stdenv.mkDerivation {
 
   src = pkgs.fetchurl {
     url = "https://registry.npmjs.org/@texra-ai/cli/-/cli-${version}.tgz";
-    hash = "sha256-bDZShg+pMvGzlQZZPbtueDECORKEdSidsbYexvjOFNY=";
+    hash = "sha256-h2ukEMDvGBndYiMWDJJoxMKf9uQshZSntojGf41MCag=";
   };
 
   nativeBuildInputs = [ pkgs.makeWrapper ];
