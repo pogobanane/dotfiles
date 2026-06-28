@@ -56,8 +56,19 @@ def parse_n26(args):
     uuid = os.path.basename(args.input_csv).strip(".csv")
     kontonr = derive_account_number(uuid, "f5e510059cb5ff4268f5")
     iban = assemble_iban("DE", "10011001", kontonr)
-    breakpoint()
-    pass
+
+    with open(args.input_csv, newline='') as csvfile:
+        csvreader = csv.DictReader(csvfile, delimiter=",", quotechar="\"")
+        rows = list(csvreader)
+
+    fieldnames = [ "Auftragskonto" ] + csvreader.fieldnames
+
+    writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
+    writer.writeheader()
+    for row in rows:
+        row["Auftragskonto"] = iban
+        writer.writerow(row)
+
 
 CRYPT_ITERATIONS = 5_000_000
 CRYPT_HMAC = "sha256"
