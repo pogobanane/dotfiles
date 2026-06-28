@@ -2,6 +2,8 @@
 import argparse
 import csv
 import sys
+import hashlib
+import os
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -50,6 +52,32 @@ def parse_vwbank(args):
         writer.writerow(row)
 
 
+def parse_n26(args):
+    uuid = os.path.basename(args.input_csv).strip(".csv")
+    kontonr = derive_account_number(uuid, "f5e510059cb5ff4268f5")
+    iban = assemble_iban("DE", "10011001", kontonr)
+    breakpoint()
+    pass
+
+CRYPT_ITERATIONS = 5_000_000
+CRYPT_HMAC = "sha256"
+CRYPT_SALT = b"iban-acct-v1"
+
+def _crypt_pad(uuid: str, n: int) -> bytes:
+    return hashlib.pbkdf2_hmac(CRYPT_HMAC, uuid.encode(), CRYPT_SALT, CRYPT_ITERATIONS, n)
+
+def _crypt_encrypt(uuid: str, account_number: str) -> str:
+    acct = account_number.encode()
+    return bytes(a ^ b for a, b in zip(acct, _crypt_pad(uuid, len(acct)))).hex()
+
+def derive_account_number(uuid: str, blob_hex: str) -> str:
+    """
+    This function effectively decrypts the blob_hex with the uuid as a key,
+    """
+    raw = bytes.fromhex(blob_hex)
+    ks  = hashlib.pbkdf2_hmac(CRYPT_HMAC, uuid.encode(), CRYPT_SALT, CRYPT_ITERATIONS, len(raw))
+    return bytes(a ^ b for a, b in zip(raw, ks)).decode()
+
 def iban_check_digits(country: str, blz: str, kontonr: str) -> str:
     """An iban looks like DEXX<"""
     """
@@ -73,6 +101,8 @@ def probe_parser(args):
         line = file.readline()
         if line.startswith("Kontoinhaber;"):
             return parse_vwbank
+        if line.startswith('"Booking Date",'):
+            return parse_n26
         else:
             raise Exception("Can't detect input format")
 
