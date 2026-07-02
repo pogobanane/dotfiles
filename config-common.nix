@@ -220,6 +220,8 @@
     gamescope # util for proton games steam
     flakepkgs.wondershaper
     gamemode
+    gh
+    corkscrew # needs to available where git is available
   ];
 
   # Since git version 2.33.3, it fails when operating on a repo of
@@ -229,6 +231,12 @@
   environment.etc.gitconfig.text = ''
     [safe]
       directory = /home/peter/dev/dotfiles
+    [credential "https://github.com"]
+        helper =
+        helper = !/usr/bin/gh auth git-credential
+    [credential "https://gist.github.com"]
+        helper =
+        helper = !/usr/bin/gh auth git-credential
   '';
 
   # not flake ready
