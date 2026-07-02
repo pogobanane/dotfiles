@@ -7,6 +7,9 @@ nixos-build HOST=`hostname`:
 nixos-switch HOST=`hostname`:
   sudo nixos-rebuild switch --flake .#{{HOST}}
 
+nixos-switch-offline HOST=`hostname`:
+  sudo nixos-rebuild switch --flake .#{{HOST}} --offline --option substitute false --builders ""
+
 # repl into current system
 nixos-repl:
   # use `:lf .` to load the underlying flake
