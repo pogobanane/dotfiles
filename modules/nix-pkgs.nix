@@ -1,7 +1,7 @@
 { self, inputs, lib, config, pkgs, ... }: with lib; {
   nix = {
     settings = {
-      trusted-users = [ "peter" "root" ];
+      trusted-users = [ "peter" "root" "nixos" ];
       auto-optimise-store = true;
       substituters = [
         "https://nix-community.cachix.org"
