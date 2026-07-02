@@ -62,6 +62,21 @@
         boot.kernelPackages = pkgs.linuxPackages_latest;
       };
     };
+    proxy = {
+      inheritParentConfig = true;
+      configuration = {
+        networking.proxy.default = "http://10.158.100.2:8080";
+      system.activationScripts.proxySpecialisation = {
+        text =
+          ''
+              echo "Run 'source /etc/set-environment' if you're too lazy to restart your shells."
+              # ln -sfn "$(readlink -f "TODO{config.system.build.separateActivationScript}")" /run/base-system
+              # echo "FOOBAR $0"
+          '';
+      };
+
+      };
+    };
     #iorefd = {
     #inheritParentConfig = true;
     #configuration = {
