@@ -32,12 +32,13 @@
       ./modules/logger.nix
       ./modules/dnsmasq.nix
       ./modules/tor-ssh.nix
-      ./modules/remote-builder.nix
+      # ./modules/remote-builder.nix
       ./modules/zsh.nix
       ./modules/libreweb/libreweb.nix
       ./modules/make-linux-fast.nix
       # ./modules/musician.nix
     ];
+
 
   #sops.defaultSopsFile = ./secrets.yaml;
   #sops.secrets.testsecret = {
