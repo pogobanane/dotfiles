@@ -219,6 +219,19 @@
         "type": "github"
       }
     },
+    "claude-monitor-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1783448105,
+        "narHash": "sha256-KeSpS+CdIRmtrl8UVnSXxYWMfkl9PVxPPZcLr8YhQ/A=",
+        "path": "/home/peter/dev/github/Claude-Code-Usage-Monitor",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/peter/dev/github/Claude-Code-Usage-Monitor",
+        "type": "path"
+      }
+    },
     "claude-reflect-src": {
       "flake": false,
       "locked": {
@@ -1935,6 +1948,7 @@
         "academic-research-skills-src": "academic-research-skills-src",
         "astro-nvim": "astro-nvim",
         "claude-history": "claude-history",
+        "claude-monitor-src": "claude-monitor-src",
         "claude-reflect-src": "claude-reflect-src",
         "ctile": "ctile",
         "discord-tar": "discord-tar",
