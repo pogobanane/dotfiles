@@ -276,6 +276,7 @@ in
     codex
     gemini-cli
     github-copilot-cli
+    flakepkgs.claude-monitor
     flakepkgs.nix-top
   ];
 }

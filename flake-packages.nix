@@ -42,6 +42,9 @@
       extrasuite = pkgs.callPackage ./pkgs/extrasuite.nix {
         inherit (inputs) pyproject-nix uv2nix pyproject-build-systems extrasuite-src;
       };
+      claude-monitor = pkgs.callPackage ./pkgs/claude-monitor.nix {
+        inherit (inputs) claude-monitor-src;
+      };
       hifiscan = pkgs.hifiscan.overrideAttrs (final: prev: {
         buildInputs = prev.buildInputs ++ [ pkgs.wrapGAppsHook3 pkgs.wrapGAppsHook4 ];
       });
