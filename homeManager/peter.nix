@@ -224,7 +224,15 @@ in
     tmux
     psmisc
     # libguestfs-with-appliance
-    lazygit
+    (lazygit.overrideAttrs (prev: final: { # override  until pogoba/lazygit/word-diff is upstream
+      version = "0.63.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "pogoba";
+        repo = "lazygit";
+        rev = "97f1b9e2ccee12ef7b773854a1e7a11173ab27d2";
+        sha256 = "sha256-SJn2sREO3q1y0A3rwNmS2tt9m7q+s3hQc4qI2G99pm8=";
+      };
+    }))
     gitui
     ack
     ripgrep
