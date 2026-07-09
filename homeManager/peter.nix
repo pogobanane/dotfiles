@@ -240,6 +240,9 @@ in
         sha256 = "sha256-SJn2sREO3q1y0A3rwNmS2tt9m7q+s3hQc4qI2G99pm8=";
       };
     }))
+    delta # diff pager, e.g., for lazygit
+    difftastic # diff pager, e.g., for lazygit
+    ydiff # diff pager, e.g., for lazygit
     gitui
     ack
     ripgrep
