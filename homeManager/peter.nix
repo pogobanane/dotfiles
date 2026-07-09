@@ -172,6 +172,13 @@ in
   home.file.".tmate.conf".source = ./tmate.conf;
   home.file.".config/workmux/config.yaml".source = ./workmux.yaml;
   home.file.".config/lazygit/config.yml".source = ./lazygit.yml;
+  home.file.".config/lazygit/git-word-diff.sh" = {
+    executable = true;
+    text = ''
+    #!/bin/sh
+    git diff --word-diff=color --no-index --color=always --no-ext-diff "$2" "$5"
+    '';
+  };
   home.file.".config/nono/profiles/nix-claude.json".source = ./nono-nix-claude.json;
   home.file.".claude/CLAUDE.md".source = ./user-claude.md;
   home.file.".claude/skills/academic-paper-reviewer".source = "${inputs.academic-research-skills-src}/academic-paper-reviewer";

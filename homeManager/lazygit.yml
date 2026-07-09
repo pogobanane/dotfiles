@@ -1,2 +1,6 @@
 refresher:
     fetchInterval: 31557600
+git:
+    pagers:
+      - pager: ""
+      - externalDiffCommand: ~/.config/lazygit/git-word-diff.sh
