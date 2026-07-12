@@ -144,7 +144,7 @@
     # impurity.url = "path:./modules/empty";
     # impurity.flake = false;
 
-    claude-monitor-src.url = "path:/home/peter/dev/github/Claude-Code-Usage-Monitor";
+    claude-monitor-src.url = "github:Maciek-roboblog/Claude-Code-Usage-Monitor";
     claude-monitor-src.flake = false;
   };
 

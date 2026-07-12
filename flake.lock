@@ -222,14 +222,17 @@
     "claude-monitor-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1783448105,
-        "narHash": "sha256-KeSpS+CdIRmtrl8UVnSXxYWMfkl9PVxPPZcLr8YhQ/A=",
-        "path": "/home/peter/dev/github/Claude-Code-Usage-Monitor",
-        "type": "path"
+        "lastModified": 1782552671,
+        "narHash": "sha256-f/g8OygQYYfZqboTNePwCW3OxcH/wlvsHvL8Cv+iyCU=",
+        "owner": "Maciek-roboblog",
+        "repo": "Claude-Code-Usage-Monitor",
+        "rev": "c59a83bf943f329f0e61f1a29c760353ee1860a5",
+        "type": "github"
       },
       "original": {
-        "path": "/home/peter/dev/github/Claude-Code-Usage-Monitor",
-        "type": "path"
+        "owner": "Maciek-roboblog",
+        "repo": "Claude-Code-Usage-Monitor",
+        "type": "github"
       }
     },
     "claude-reflect-src": {
