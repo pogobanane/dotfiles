@@ -37,6 +37,8 @@
 
   programs.niri.enable = true;
 
+  hardware.bluetooth.enable = true;
+
   # Use KDE Wallet instead of gnome-keyring for secret storage
   # KWallet is unlocked via TPM (see ./kwallet-tpm), not PAM
   services.gnome.gnome-keyring.enable = false;
