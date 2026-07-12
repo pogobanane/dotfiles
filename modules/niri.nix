@@ -9,6 +9,7 @@
   imports = [
     # ./kwallet-tpm
     # ./janet.nix
+    ./printing.nix
   ];
 
   # Lock secrets before suspend (carried over from KDE module)
