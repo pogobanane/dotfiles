@@ -146,6 +146,9 @@
 
     claude-monitor-src.url = "github:Maciek-roboblog/Claude-Code-Usage-Monitor";
     claude-monitor-src.flake = false;
+
+    hallucinator-src.url = "github:gianlucasb/hallucinator";
+    hallucinator-src.flake = false;
   };
 
   outputs = {

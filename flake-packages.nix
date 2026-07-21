@@ -45,6 +45,9 @@
       claude-monitor = pkgs.callPackage ./pkgs/claude-monitor.nix {
         inherit (inputs) claude-monitor-src;
       };
+      hallucinator = pkgs.callPackage ./pkgs/hallucinator.nix {
+        inherit (inputs) hallucinator-src;
+      };
       hifiscan = pkgs.hifiscan.overrideAttrs (final: prev: {
         buildInputs = prev.buildInputs ++ [ pkgs.wrapGAppsHook3 pkgs.wrapGAppsHook4 ];
       });

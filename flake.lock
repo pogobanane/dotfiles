@@ -849,6 +849,22 @@
         "type": "github"
       }
     },
+    "hallucinator-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1784551436,
+        "narHash": "sha256-BfspGZKLj+3rTTLs97o+t83spbY4YEIi18wBsOmcYRA=",
+        "owner": "gianlucasb",
+        "repo": "hallucinator",
+        "rev": "4c3821695a9c01478ad87aa9e66b31ca39298548",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gianlucasb",
+        "repo": "hallucinator",
+        "type": "github"
+      }
+    },
     "harmonia": {
       "inputs": {
         "crane": [
@@ -1961,6 +1977,7 @@
         "flake-parts": "flake-parts",
         "ghostty": "ghostty",
         "googleworkspace-cli": "googleworkspace-cli",
+        "hallucinator-src": "hallucinator-src",
         "home-manager": "home-manager_2",
         "hosthog": "hosthog",
         "lambda-pirate": "lambda-pirate",
