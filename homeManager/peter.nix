@@ -209,8 +209,8 @@ in
     #   lastUpdated = "2026-04-12T00:00:00.000Z";
     # };
   };
-  home.file.".claude/plugins/installed_plugins.json".text = builtins.toJSON {
-    version = 2;
+  # home.file.".claude/plugins/installed_plugins.json".text = builtins.toJSON {
+  #   version = 2;
     # plugins."claude-reflect@claude-reflect-marketplace" = [{
     #   scope = "user";
     #   installPath = "${homeDirectory}/${claudeReflectCachePath}";
@@ -219,7 +219,7 @@ in
     #   lastUpdated = "2026-04-12T00:00:00.000Z";
     #   gitCommitSha = inputs.claude-reflect-src.rev;
     # }];
-  };
+  # };
 
   home.packages = with pkgs; [
     antigen
