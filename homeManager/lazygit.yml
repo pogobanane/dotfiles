@@ -2,9 +2,9 @@ refresher:
     fetchInterval: 31557600
 git:
     pagers:
+      - externalDiffCommand: difft --color=always
       - pager: "" # default (no pager)
       - externalDiffCommand: ~/.config/lazygit/git-word-diff.sh
-      - pager: delta --dark --paging=never
-      - externalDiffCommand: difft --color=always
+      - pager: delta --dark --paging=never --line-numbers --hyperlinks --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
       - pager: ydiff -p cat -s --wrap --width={{columnWidth}}
         colorArg: never
