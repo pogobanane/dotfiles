@@ -169,7 +169,14 @@ function aenderboy_spamfilter(account)
         "commerz-bank.com",
         "GMX Magazin <mailings@mailings.gmx.net>",
         "GMX Umfrage <mailings@mailings.gmx.net>",
-        "Declan4f6@att.net"
+        "Declan4f6@att.net",
+        "Doctolib VIP <info@asb.de>",
+        "Doctolib Team",
+        "schalke04.de",
+        "fc.de",
+        "kunzmann.de",
+        "ttsysteme-shop.de",
+        "contact-agency.de"
     }
     to_patterns = {
         -- spam mailing lists etc
@@ -183,6 +190,7 @@ function network_detector(account)
     -- very well known entrypoints for network detection
     local subject_patterns = {
         "Deutsche Postcode Lotterie",
+        "Doctolib"
     }
 
     -- find all email addresses that sent matching spam (across ?all? mailboxes?)
