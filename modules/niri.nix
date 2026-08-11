@@ -74,7 +74,7 @@
     # Audio
     pavucontrol
 
-    # Desktop shell: installed via Home Manager (programs.noctalia-shell)
+    # Desktop shell: installed via Home Manager (programs.noctalia)
     # Qt's wayland QPA leaves QIcon::themeName empty so noctalia falls through
     # to hicolor and can't find generic icons like user-desktop. The gtk3
     # platform theme reads gtk-icon-theme-name; ship breeze so that resolves.

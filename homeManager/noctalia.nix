@@ -197,7 +197,7 @@ in
     ];
 
     # configure options
-    programs.noctalia-shell = {
+    programs.noctalia = {
       enable = true;
       # Patch the launcher sort in LauncherCore.qml so open windows always
       # appear above apps. Upstream sorts by `return sb - sa` (descending
