@@ -15,12 +15,16 @@
       IdentityFile /home/peter/.ssh/doctorBuilder
 
     Host graham-builder-via-jumphost
+      User nix
       HostName graham.dse.in.tum.de
       ProxyJump builder-jumphost
+      IdentityFile /home/peter/.ssh/doctorBuilder
 
     Host rose-builder-via-jumphost
+      User nix
       HostName rose.dse.in.tum.de
       ProxyJump builder-jumphost
+      IdentityFile /home/peter/.ssh/doctorBuilder
   '';
   programs.ssh.knownHosts = {
     "login.dos.cit.tum.de" = {
@@ -69,8 +73,6 @@
       speedFactor = 0;
       hostName = "rose-builder-via-jumphost";
       protocol = "ssh";
-      sshUser = "nix";
-      sshKey = "/home/peter/.ssh/doctorBuilder"; # TODO use sops
       system = "x86_64-linux";
       maxJobs = 64;
       supportedFeatures = [
