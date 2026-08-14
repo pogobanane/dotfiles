@@ -1,0 +1,20 @@
+--- a/src/shell/launcher/launcher_panel.cpp	2026-08-14 23:20:48.104188018 +0200
++++ b/src/shell/launcher/launcher_panel.cpp	2026-08-14 23:20:48.152119330 +0200
+@@ -103,7 +103,16 @@
+   }
+ 
+   void sortResultsByScore(std::vector<LauncherResult>& results) {
+-    std::ranges::stable_sort(results, std::ranges::greater{}, &LauncherResult::score);
++    // Patched (dotfiles): open windows always sort above other results so the
++    // launcher doubles as a window switcher; ties keep score order.
++    std::ranges::stable_sort(results, [](const LauncherResult& a, const LauncherResult& b) {
++      const bool aWindow = a.providerId == "Windows";
++      const bool bWindow = b.providerId == "Windows";
++      if (aWindow != bWindow) {
++        return aWindow;
++      }
++      return a.score > b.score;
++    });
+   }
+ 
+   struct LauncherListStyle {

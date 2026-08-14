@@ -25,9 +25,6 @@
     #   github:pogoba/noctalia-plugins; keybind-cheatsheet, slowbongo from
     #   upstream) cannot run on v5 (plugins are Luau now) and are disabled
     #   until ported.
-    # - The v4 LauncherCore.qml patch (open windows sort above apps in the
-    #   launcher) is dropped; needs a C++ port against
-    #   src/shell/launcher/launcher_panel.cpp.
     my-wluma.enable = true;
 
     # Set the GTK icon theme so gtk apps pick up breeze instead of falling
@@ -141,6 +138,15 @@
     # configure options
     programs.noctalia = {
       enable = true;
+      # Port of the v4 LauncherCore.qml patch: open windows always sort above
+      # apps in the launcher (Mod+D), making it double as a window switcher.
+      # Windows join the unprefixed search via shell.launcher.providers below;
+      # the sort priority needs a source patch (sort lives in C++ now).
+      package =
+        inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs
+          (old: {
+            patches = (old.patches or [ ]) ++ [ ./noctalia-launcher-windows-first.patch ];
+          });
       # settings become ~/.config/noctalia/config.toml and are validated at
       # build time with `noctalia config validate`. Runtime tweaks from the
       # settings UI land in the state dir's settings.toml, not here.
@@ -178,6 +184,15 @@
         # lock-screen-on-suspend user unit (built into v5, default on — set
         # explicitly since we rely on it).
         lockscreen.lock_before_suspend = true;
+        # Open windows show up in the plain launcher search (>= 2 typed
+        # chars), not only behind the "win " prefix; the package patch above
+        # sorts them first.
+        shell.launcher.providers = [
+          {
+            name = "Windows";
+            global = true;
+          }
+        ];
         keybinds = {
           up = [ "Up" "Ctrl+P" ];
           down = [ "Down" "Ctrl+N" ];
