@@ -1,17 +1,4 @@
 { config, lib, pkgs, inputs, ... }:
-let
-  patchPluginSettings = src: settings:
-    if settings == {} then src
-    else pkgs.runCommand "${builtins.baseNameOf src}-patched" {} ''
-      cp -r ${src} $out
-      chmod -R +w $out
-      ${pkgs.jq}/bin/jq ${lib.escapeShellArg (
-        lib.concatStringsSep " | "
-          (lib.mapAttrsToList (k: v: ".metadata.defaultSettings.${k} = ${builtins.toJSON v}") settings)
-      )} $out/manifest.json > $out/manifest.json.tmp
-      mv $out/manifest.json.tmp $out/manifest.json
-    '';
-in
 {
   imports = [ ./wluma.nix ];
 
@@ -26,18 +13,25 @@ in
 
   config = lib.mkIf config.my-noctalia.enable {
     # Startup chain: greetd (modules/niri.nix) runs niri-session, which starts
-    # the niri.service user unit; niri then spawns noctalia-shell via
-    # spawn-sh-at-startup in niri.kdl. noctalia-shell is a wrapper around
-    # quickshell (noctalia is a quickshell config).
+    # the niri.service user unit; niri then spawns noctalia via
+    # spawn-sh-at-startup in niri.kdl. Since v5 noctalia is a native Wayland
+    # shell (C++ rewrite), no longer a quickshell/QML config; the binary is
+    # `noctalia` (was `noctalia-shell`).
     #
-    # Logs: niri -> `journalctl --user -u niri.service`. noctalia gets no
-    # journal entries (niri spawns it with stdout/stderr -> /dev/null); read
-    # `noctalia-shell log -f` instead, which tails the quickshell log at
-    # /run/user/$UID/quickshell/by-pid/$(pgrep quickshell)/log.log (tmpfs, lost on reboot).
+    # Logs: niri -> `journalctl --user -u niri.service`.
+    #
+    # v5 migration status (see git log of this file for the v4 setup):
+    # - The v4 QML plugins (display-config, khal-next from
+    #   github:pogoba/noctalia-plugins; keybind-cheatsheet, slowbongo from
+    #   upstream) cannot run on v5 (plugins are Luau now) and are disabled
+    #   until ported.
+    # - The v4 LauncherCore.qml patch (open windows sort above apps in the
+    #   launcher) is dropped; needs a C++ port against
+    #   src/shell/launcher/launcher_panel.cpp.
     my-wluma.enable = true;
 
-    # Set the GTK icon theme so Qt's gtk3 platform theme (QT_QPA_PLATFORMTHEME=gtk3)
-    # picks up breeze instead of falling back to hicolor.
+    # Set the GTK icon theme so gtk apps pick up breeze instead of falling
+    # back to hicolor.
     gtk = {
       enable = true;
       iconTheme = {
@@ -46,22 +40,9 @@ in
       };
     };
 
-    # Lock the screen before suspend (e.g. lid close)
-    systemd.user.services.lock-screen-on-suspend = {
-      Unit = {
-        Description = "Lock screen before suspend";
-        Before = [ "sleep.target" ];
-      };
-      Service = {
-        Type = "oneshot";
-        ExecStart = "${inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/noctalia-shell ipc call lockScreen lock";
-      };
-      Install.WantedBy = [ "sleep.target" ];
-    };
-
-    # kanshi driven by ~/.config/kanshi/config, which the noctalia display-config
-    # plugin writes via "Remember monitors". Don't manage profiles here so the
-    # plugin stays authoritative.
+    # kanshi driven by ~/.config/kanshi/config, which the (v4) display-config
+    # plugin wrote via "Remember monitors". The existing config keeps working
+    # while the plugin is unported; don't manage profiles here.
     services.kanshi = {
       enable = true;
       systemdTarget = "graphical-session.target";
@@ -89,45 +70,6 @@ in
     '';
 
     home.file.".config/niri/config.kdl".source = ./niri.kdl;
-    home.file.".config/noctalia/plugins/display-config".source =
-      patchPluginSettings "${inputs.my-noctalia-plugins-src}/display-config" { iconColor = "default"; };
-    home.file.".config/noctalia/plugins/khal-next".source =
-      patchPluginSettings "${inputs.my-noctalia-plugins-src}/khal-next" { iconColor = "default"; };
-    home.file.".config/noctalia/plugins/keybind-cheatsheet".source =
-      "${inputs.noctalia-plugins-src}/keybind-cheatsheet";
-    home.file.".config/noctalia/plugins/slowbongo".source =
-      patchPluginSettings "${inputs.noctalia-plugins-src}/slowbongo" {
-        inputDevices = [ "/dev/input/event1" ];
-        catSize = 1.5;
-      };
-    home.file.".config/noctalia/plugins.json".text = builtins.toJSON {
-      version = 2;
-      sources = [
-        {
-          enabled = true;
-          name = "Noctalia Plugins";
-          url = "https://github.com/noctalia-dev/noctalia-plugins";
-        }
-      ];
-      states = {
-        display-config = {
-          enabled = true;
-          sourceUrl = "";
-        };
-        khal-next = {
-          enabled = true;
-          sourceUrl = "";
-        };
-        keybind-cheatsheet = {
-          enabled = true;
-          sourceUrl = "";
-        };
-        slowbongo = {
-          enabled = true;
-          sourceUrl = "";
-        };
-      };
-    };
 
     home.packages = with pkgs; [
       jq
@@ -199,118 +141,56 @@ in
     # configure options
     programs.noctalia = {
       enable = true;
-      # Patch the launcher sort in LauncherCore.qml so open windows always
-      # appear above apps. Upstream sorts by `return sb - sa` (descending
-      # fuzzy-match _score). We prepend a check and higher priority
-      # comparator: wa/wb are 1 for window results (which carry a `windowId`
-      # field from WindowsProvider), 0 otherwise.
-      package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
-        postFixup = (old.postFixup or "") + ''
-          local f=$out/share/noctalia-shell/Modules/Panels/Launcher/LauncherCore.qml
-          chmod +w "$f"
-          ${pkgs.python3}/bin/python3 -c "
-          import sys
-          text = open(sys.argv[1]).read()
-          text = text.replace(
-              'return sb - sa;',
-              'const wa = a.windowId !== undefined ? 1 : 0; const wb = b.windowId !== undefined ? 1 : 0; if (wa !== wb) return wb - wa; return sb - sa;'
-          )
-          open(sys.argv[1], 'w').write(text)
-          " "$f"
-        '';
-      });
+      # settings become ~/.config/noctalia/config.toml and are validated at
+      # build time with `noctalia config validate`. Runtime tweaks from the
+      # settings UI land in the state dir's settings.toml, not here.
       settings = {
-        # configure noctalia here
-        bar = {
-          density = "compact";
+        bar.default = {
           position = "right";
-          showCapsule = false;
-          widgets = {
-            left = [
-              {
-                formatHorizontal = "HH:mm";
-                formatVertical = "HH mm";
-                id = "Clock";
-                useMonospacedFont = true;
-                usePrimaryColor = true;
-              }
-              {
-                id = "plugin:khal-next";
-              }
-              {
-                id = "Notifications";
-              }
-            ];
-            center = [
-              {
-                hideUnoccupied = false;
-                id = "Workspace";
-                labelMode = "none";
-              }
-            ];
-            right = [
-              { id = "plugin:display-config"; }
-              { id = "plugin:keybind-cheatsheet"; }
-              { id = "plugin:slowbongo"; }
-              {
-                id = "Tray";
-              }
-              {
-                id = "Network";
-              }
-              {
-                id = "Volume";
-              }
-              {
-                alwaysShowPercentage = true;
-                id = "Battery";
-                warningThreshold = 30;
-              }
-              {
-                id = "ControlCenter";
-                useDistroLogo = true;
-                enableColorization = true;
-                colorizeSystemIcon = "none";
-              }
-            ];
-          };
-        };
-        controlCenter.shortcuts = {
-          left = [
-            { id = "Network"; }
-            { id = "Bluetooth"; }
-            { id = "PowerProfile"; }
-            { id = "NoctaliaPerformance"; }
+          start_widgets = [
+            "clock"
+            "notifications"
           ];
-          right = [
-            { id = "Notifications"; }
-            { id = "NightLight"; }
-            { id = "DarkMode"; }
+          center_widgets = [ "workspaces" ];
+          end_widgets = [
+            "tray"
+            "network"
+            "volume"
+            "battery"
+            "control-center"
           ];
         };
-        controlCenter.cards = [
-          { enabled = true; id = "profile-card"; }
-          { enabled = true; id = "shortcuts-card"; }
-          { enabled = true; id = "audio-card"; }
-          { enabled = true; id = "brightness-card"; }
-          { enabled = true; id = "media-sysmon-card"; }
-        ];
-        colorSchemes.predefinedScheme = "Gruvbox";
+        widget.clock = {
+          format = "{:%H:%M}";
+          vertical_format = "{:%H %M}";
+        };
+        widget.battery = {
+          show_label = true;
+        };
+        theme = {
+          source = "builtin";
+          builtin = "Gruvbox";
+          mode = "dark";
+        };
         wallpaper.directory = "${../users-hm}";
-        # general = {
-        #   avatarImage = "/home/drfoobar/.face";
-        #   radiusRatio = 0.2;
-        # };
-        general.keybinds = {
-          keyUp = [ "Up" "Ctrl+P" ];
-          keyDown = [ "Down" "Ctrl+N" ];
+        location.address = "Munich, Germany";
+        # Lock the screen before suspend (e.g. lid close); replaces the v4
+        # lock-screen-on-suspend user unit (built into v5, default on — set
+        # explicitly since we rely on it).
+        lockscreen.lock_before_suspend = true;
+        keybinds = {
+          up = [ "Up" "Ctrl+P" ];
+          down = [ "Down" "Ctrl+N" ];
         };
-        location = {
-          monthBeforeDay = false;
-          name = "Munich, Germany";
-        };
+        control_center.shortcuts = [
+          { type = "wifi"; }
+          { type = "bluetooth"; }
+          { type = "power_profile"; }
+          { type = "notification"; }
+          { type = "nightlight"; }
+          { type = "dark_mode"; }
+        ];
       };
-      # this may also be a string or a path to a JSON file.
     };
   };
 }
