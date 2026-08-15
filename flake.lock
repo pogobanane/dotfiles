@@ -1710,19 +1710,35 @@
         "type": "github"
       }
     },
-    "noctalia-plugins-src": {
+    "noctalia-community-plugins-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1784742359,
-        "narHash": "sha256-M+7SLW+wI3KvDMj8dSrW/uUmpPiYhsXA2jpbbgL5imk=",
+        "lastModified": 1786747190,
+        "narHash": "sha256-y0L2ZmecntGxkdZzF/K6CmVlfVllzFCY94Uuj3KyPtM=",
         "owner": "noctalia-dev",
-        "repo": "noctalia-plugins",
-        "rev": "ea21cb63d063075bc0acd72d8b946ce2c5eef00d",
+        "repo": "community-plugins",
+        "rev": "c5092639e35e80bfcaf827dc219fcb719f2f88fb",
         "type": "github"
       },
       "original": {
         "owner": "noctalia-dev",
-        "repo": "noctalia-plugins",
+        "repo": "community-plugins",
+        "type": "github"
+      }
+    },
+    "noctalia-official-plugins-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1786565732,
+        "narHash": "sha256-+ANQuOUHwChz5mtnMWrceBTxQIHc8jIY9Q1Ez9gMB2A=",
+        "owner": "noctalia-dev",
+        "repo": "official-plugins",
+        "rev": "72939b31889c6026bf72847748bd122354c003f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "official-plugins",
         "type": "github"
       }
     },
@@ -1938,7 +1954,8 @@
         "nixos-hardware": "nixos-hardware_2",
         "nixpkgs": "nixpkgs_9",
         "noctalia": "noctalia",
-        "noctalia-plugins-src": "noctalia-plugins-src",
+        "noctalia-community-plugins-src": "noctalia-community-plugins-src",
+        "noctalia-official-plugins-src": "noctalia-official-plugins-src",
         "nono-src": "nono-src",
         "nur": "nur",
         "playpen": "playpen",

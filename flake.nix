@@ -104,8 +104,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    noctalia-plugins-src.url = "github:noctalia-dev/noctalia-plugins";
-    noctalia-plugins-src.flake = false;
+    noctalia-official-plugins-src.url = "github:noctalia-dev/official-plugins";
+    noctalia-official-plugins-src.flake = false;
+    noctalia-community-plugins-src.url = "github:noctalia-dev/community-plugins";
+    noctalia-community-plugins-src.flake = false;
 
     # my-noctalia-plugins-src.url = "path:/home/peter/dev/github/noctalia-plugins"; # "github:Mic92/noctalia-plugins";
     my-noctalia-plugins-src.url = "github:pogoba/noctalia-plugins";

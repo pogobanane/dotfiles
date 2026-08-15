@@ -176,21 +176,28 @@
         widget.battery = {
           show_label = true;
         };
-        widget.keybinds.type = "kenn/keybind-cheatsheet:keybinds";
+        widget.keybinds.type = "kenn/keybind-cheatsheet:keybinds"; # empty widget setting
         widget.bongocat = {
           type = "noctalia/bongocat:cat";
           input_devices = [ "/dev/input/event1" ];
         };
-        # Plugins come from noctalia's default git sources ("official" and
-        # "community" repos, seeded when no [[plugins.source]] is declared);
-        # they are cloned into the state dir on first start, so the first
-        # shell start needs network for these widgets to appear.
         plugins = {
+          source = [
+            {
+              name = "official-nix";
+              kind = "path";
+              location = "${inputs.noctalia-official-plugins-src}";
+            }
+            {
+              name = "community-nix";
+              kind = "path";
+              location = "${inputs.noctalia-community-plugins-src}";
+            }
+          ];
           enabled = [
             "noctalia/bongocat" # slowbongo equivalent (evtest-based)
             "kenn/keybind-cheatsheet" # supports niri, reads ~/.config/niri/config.kdl
           ];
-          auto_update = false;
         };
         theme = {
           source = "builtin";
