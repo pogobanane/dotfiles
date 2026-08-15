@@ -179,8 +179,14 @@
           vertical_format = "{:%H %M}";
         };
         widget.battery = {
-          show_label = true;
+          display_mode = "graphic";
+          show_label = false;
         };
+        widget.bluetooth.hide_when_no_connected_device = true;
+        widget."control-center".glyph = "snowflake";
+        widget.media.hide_when_no_media = true;
+        widget.volume.show_label = false;
+        widget.workspaces.show_labels = false;
         widget.keybinds.type = "kenn/keybind-cheatsheet:keybinds"; # empty widget setting
         widget.bongocat = {
           type = "noctalia/bongocat:cat";
@@ -210,6 +216,7 @@
           mode = "dark";
         };
         wallpaper.directory = "${../users-hm}";
+        wallpaper.default.path = "${../users-hm}/Jochberg_Nixos_v2.png";
         location.address = "Munich, Germany";
         # Lock the screen before suspend (e.g. lid close); replaces the v4
         # lock-screen-on-suspend user unit (built into v5, default on — set
