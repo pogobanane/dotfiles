@@ -21,10 +21,11 @@
     # Logs: niri -> `journalctl --user -u niri.service`.
     #
     # v5 migration status (see git log of this file for the v4 setup):
-    # - The v4 QML plugins (display-config, khal-next from
-    #   github:pogoba/noctalia-plugins; keybind-cheatsheet, slowbongo from
-    #   upstream) cannot run on v5 (plugins are Luau now) and are disabled
-    #   until ported.
+    # - The v4 QML plugins cannot run on v5 (plugins are Luau now).
+    #   keybind-cheatsheet and slowbongo have v5 equivalents in noctalia's
+    #   default plugin repos (wired below); our own display-config
+    #   (github:pogoba/noctalia-plugins) still needs a Luau port, khal-next
+    #   was dropped.
     my-wluma.enable = true;
 
     # Set the GTK icon theme so gtk apps pick up breeze instead of falling
@@ -132,7 +133,7 @@
       nautilus
       adwaita-icon-theme
 
-      evtest # dependency for slowbongo plugin
+      evtest # dependency for the bongocat plugin (input reactivity)
     ];
 
     # configure options
@@ -159,6 +160,8 @@
           ];
           center_widgets = [ "workspaces" ];
           end_widgets = [
+            "keybinds"
+            "bongocat"
             "tray"
             "network"
             "volume"
@@ -172,6 +175,22 @@
         };
         widget.battery = {
           show_label = true;
+        };
+        widget.keybinds.type = "kenn/keybind-cheatsheet:keybinds";
+        widget.bongocat = {
+          type = "noctalia/bongocat:cat";
+          input_devices = [ "/dev/input/event1" ];
+        };
+        # Plugins come from noctalia's default git sources ("official" and
+        # "community" repos, seeded when no [[plugins.source]] is declared);
+        # they are cloned into the state dir on first start, so the first
+        # shell start needs network for these widgets to appear.
+        plugins = {
+          enabled = [
+            "noctalia/bongocat" # slowbongo equivalent (evtest-based)
+            "kenn/keybind-cheatsheet" # supports niri, reads ~/.config/niri/config.kdl
+          ];
+          auto_update = false;
         };
         theme = {
           source = "builtin";
