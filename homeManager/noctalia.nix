@@ -154,19 +154,24 @@
       settings = {
         bar.default = {
           position = "right";
-          start_widgets = [
-            "clock"
-            "notifications"
+          start = [
+            "launcher"
+            "control-center"
           ];
-          center_widgets = [ "workspaces" ];
-          end_widgets = [
+          center = [
+            "clock"
+            "workspaces"
+          ];
+          end = [
             "keybinds"
             "bongocat"
+            "media"
             "tray"
+            "notifications"
             "network"
+            "bluetooth"
             "volume"
             "battery"
-            "control-center"
           ];
         };
         widget.clock = {
@@ -212,13 +217,9 @@
         lockscreen.lock_before_suspend = true;
         # Open windows show up in the plain launcher search (>= 2 typed
         # chars), not only behind the "win " prefix; the package patch above
-        # sorts them first.
-        shell.launcher.providers = [
-          {
-            name = "Windows";
-            global = true;
-          }
-        ];
+        # sorts them first. providers is a name-keyed map (lowercase), not a
+        # list ("Launcher > Windows in global search" in the settings UI).
+        shell.launcher.providers.windows.global = true;
         keybinds = {
           up = [ "Up" "Ctrl+P" ];
           down = [ "Down" "Ctrl+N" ];
