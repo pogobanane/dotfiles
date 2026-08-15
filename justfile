@@ -4,6 +4,12 @@ proot := `pwd`
 nixos-build HOST=`hostname`:
     nix build .#nixosConfigurations.{{ HOST }}.config.system.build.toplevel --log-format internal-json -v --builders "" |& nom --json
 
+nixos-build-remote HOST=`hostname`:
+    nix build .#nixosConfigurations.{{ HOST }}.config.system.build.toplevel --log-format internal-json -v --builders "ssh://nix@rose-builder-via-jumphost?ssh-key=/home/peter/.ssh/doctorBuilder" |& nom --json
+
+nixos-build-remote-only HOST=`hostname`:
+    nix build .#nixosConfigurations.{{ HOST }}.config.system.build.toplevel --log-format internal-json -v --builders "ssh://nix@rose-builder-via-jumphost?ssh-key=/home/peter/.ssh/doctorBuilder" --max-jobs 0 |& nom --json
+
 nixos-switch HOST=`hostname`:
   sudo nixos-rebuild switch --flake .#{{HOST}} --builders ""
 
