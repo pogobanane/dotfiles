@@ -154,6 +154,17 @@
       settings = {
         bar.default = {
           position = "right";
+          # Span the full screen edge like the v4 bar; v5 defaults to a
+          # floating bar inset 100px from each end. At margin_ends = 0 the
+          # renderer (bar_corner_shape.h) draws the desktop-facing corners as
+          # concave fillets flowing into the top/bottom screen edges (keep
+          # their default radius) but the screen-edge corners as convex
+          # rounding, which lets wallpaper peek through at the screen
+          # corners — square just those two.
+          margin_ends = 0;
+          radius_top_right = 0;
+          radius_bottom_right = 0;
+          background_opacity = 0.75;
           start = [
             "launcher"
             "control-center"
