@@ -73,6 +73,22 @@ in
       };
     };
 
+    homeConfigurations.peter-nvidia = inputs.home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [
+        ./homeManager/peter.nix
+      ];
+      extraSpecialArgs = {
+        inherit inputs;
+        inherit (inputs) astro-nvim;
+        inherit flakepkgs;
+        username = "pokelmann";
+        homeDirectory = "/home/pokelmann";
+        my-gui = false;
+        my-noctalia = false;
+      };
+    };
+
     nixosConfigurations.aendernix = nixosSystem {
       system = "x86_64-linux";
       modules = extraArgs ++ [
