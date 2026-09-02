@@ -73,7 +73,7 @@ in
       };
     };
 
-    homeConfigurations.peter-nvidia = inputs.home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.nvidia-laptop = inputs.home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [
         ./homeManager/peter.nix
@@ -84,6 +84,22 @@ in
         inherit flakepkgs;
         username = "pokelmann";
         homeDirectory = "/home/pokelmann";
+        my-gui = false;
+        my-noctalia = false;
+      };
+    };
+
+    homeConfigurations.nvidia-server = inputs.home-manager.lib.homeManagerConfiguration {
+      inherit pkgs;
+      modules = [
+        ./homeManager/peter.nix
+      ];
+      extraSpecialArgs = {
+        inherit inputs;
+        inherit (inputs) astro-nvim;
+        inherit flakepkgs;
+        username = "pokelmann";
+        homeDirectory = "/labhome/pokelmann";
         my-gui = false;
         my-noctalia = false;
       };
