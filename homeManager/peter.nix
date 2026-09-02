@@ -13,15 +13,6 @@
 let
 
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
-    set -e
-    echo "Sending \$1 as message to me: $1"
-
-    TOKEN=$(cat $XDG_RUNTIME_DIR/telegram_bot_token)
-    CHAT_ID="272730663"
-    URL="https://api.telegram.org/bot$TOKEN/sendMessage"
-    MESSAGE="$1"
-
-    [[ $(curl -s -X POST $URL -d chat_id=$CHAT_ID -d text="$MESSAGE" | ${pkgs.jq}/bin/jq .ok) = "true" ]]
   '';
 
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
@@ -50,9 +41,9 @@ let
 in
 {
   imports = [
-    "${inputs.sops-nix}/modules/home-manager/sops.nix"
+    # "${inputs.sops-nix}/modules/home-manager/sops.nix"
     ./gui.nix
-    ./pi
+    # ./pi
     ./calendar.nix
     ./noctalia.nix
     ./editors.nix
@@ -69,14 +60,14 @@ in
   programs.nh.enable = true;
 
   # Configuration of secrets
-  sops = {
-    #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
-    defaultSopsFile = ./secrets.yaml;
-    age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
-    secrets.telegram_bot_token = {
-      path = "%r/telegram_bot_token"; # %r gets replaced with your $XDG_RUNTIME_DIR
-    };
-  };
+  # sops = {
+  #   #age.sshKeyPaths = [ "/home/peter/.ssh/aenderpad_home_manager" ]; # must have no password!
+  #   defaultSopsFile = ./secrets.yaml;
+  #   age.keyFile = "${config.home.homeDirectory}/.config/sops/age/aenderpad_home_manager.txt";
+  #   secrets.telegram_bot_token = {
+  #     path = "%r/telegram_bot_token"; # %r gets replaced with your $XDG_RUNTIME_DIR
+  #   };
+  # };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
@@ -262,14 +253,14 @@ in
     # rustup
     ranger # command line file manager
     man-pages
-    inputs.hosthog.packages.${stdenv.hostPlatform.system}.default
+    # inputs.hosthog.packages.${stdenv.hostPlatform.system}.default
     inputs.llm-agents.packages.${stdenv.hostPlatform.system}.claude-code
     inputs.llm-agents.packages.${stdenv.hostPlatform.system}.workmux
     inputs.llm-agents.packages.${stdenv.hostPlatform.system}.ccusage
     google-cloud-sdk # needed for googleworkspace-cli
     inputs.googleworkspace-cli.packages.${stdenv.hostPlatform.system}.default # needed to log in for extrasuite
     flakepkgs.extrasuite # llm firendly google docs cli
-    inputs.claude-history.packages.${stdenv.hostPlatform.system}.default
+    # inputs.claude-history.packages.${stdenv.hostPlatform.system}.default
     flakepkgs.nono
     (pkgs.writeShellApplication {
       name = "nonoclaude";
