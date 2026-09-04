@@ -202,18 +202,18 @@ in
 
   # home.file.".claude/plugins/marketplaces/claude-reflect-marketplace".source = inputs.claude-reflect-src;
   # home.file.${claudeReflectCachePath}.source = inputs.claude-reflect-src;
-  home.file.".claude/plugins/known_marketplaces.json".text = builtins.toJSON {
-    claude-plugins-official = {
-      source = { source = "github"; repo = "anthropics/claude-plugins-official"; };
-      installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-plugins-official";
-      lastUpdated = "2025-12-17T12:49:07.220Z";
-    };
-    # claude-reflect-marketplace = {
-    #   source = { source = "github"; repo = "bayramannakov/claude-reflect"; };
-    #   installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-reflect-marketplace";
-    #   lastUpdated = "2026-04-12T00:00:00.000Z";
-    # };
-  };
+  # home.file.".claude/plugins/known_marketplaces.json".text = builtins.toJSON {
+  #   claude-plugins-official = {
+  #     source = { source = "github"; repo = "anthropics/claude-plugins-official"; };
+  #     installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-plugins-official";
+  #     lastUpdated = "2025-12-17T12:49:07.220Z";
+  #   };
+  #   # claude-reflect-marketplace = {
+  #   #   source = { source = "github"; repo = "bayramannakov/claude-reflect"; };
+  #   #   installLocation = "${homeDirectory}/.claude/plugins/marketplaces/claude-reflect-marketplace";
+  #   #   lastUpdated = "2026-04-12T00:00:00.000Z";
+  #   # };
+  # };
   # home.file.".claude/plugins/installed_plugins.json".text = builtins.toJSON {
   #   version = 2;
     # plugins."claude-reflect@claude-reflect-marketplace" = [{
