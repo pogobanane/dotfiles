@@ -15,6 +15,20 @@ let
   sendtelegram = pkgs.writeScriptBin "sendtelegram" ''
   '';
 
+  man-fzf = pkgs.writeShellApplication {
+    name = "man-fzf";
+    runtimeInputs = [ pkgs.ripgrep-all pkgs.mandoc ];
+    text = ''
+      # man-fzf: live full-text search over all installed man pages
+      mapfile -t man_dirs < <(manpath | tr ':' '\n')
+      rga --line-number --no-heading --color=always -i "''${1:-}" "''${man_dirs[@]}" 2>/dev/null |
+      fzf --ansi --delimiter=: \
+          --preview 'mandoc -Tutf8 {1} 2>/dev/null | less -p {q} 2>/dev/null || mandoc -Tutf8 {1}' \
+          --preview-window '60%,border-left' \
+          --bind 'enter:execute(man {1} < /dev/tty > /dev/tty)'
+    '';
+  };
+
   nixos-generations = pkgs.callPackage ../pkgs/nixos-generations.nix { };
   nixos-specializations = pkgs.callPackage ../pkgs/nixos-specializations.nix { };
 
@@ -288,5 +302,7 @@ in
     github-copilot-cli
     flakepkgs.claude-monitor
     flakepkgs.nix-top
+
+    man-fzf
   ];
 }
