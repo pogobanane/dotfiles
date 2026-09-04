@@ -59,6 +59,10 @@ doctor-home:
     # without flake: nix-shell '<home-manager>' -A install
     nix run {{ proot }}#homeConfigurations.peter-doctor-cluster.activationPackage
 
+nvidia-home:
+    test "$(hostname)" = "nsr-spc4-001" || test "$(hostname)" = "nsr-spc4-002"
+    NIXPKGS_ALLOW_UNFREE=1 nix run --impure .#homeConfigurations.nvidia-server.activationPackage
+
 # same as doctor-home, but runs it remotely on all hosts
 all-doctor-homes:
     ssh astrid.dse.in.tum.de     -- nix run ./dotfiles#homeConfigurations.peter-doctor-cluster.activationPackage
